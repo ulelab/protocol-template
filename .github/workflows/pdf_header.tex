@@ -1,0 +1,40 @@
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{framed}
+\usepackage{xcolor}
+
+\definecolor{notecolor}{RGB}{240,240,240}
+\definecolor{noteborder}{RGB}{100,100,100}
+
+\definecolor{statusgreen}{RGB}{34,139,34}
+\definecolor{statusamber}{RGB}{200,140,0}
+\definecolor{statusred}{RGB}{200,40,40}
+
+\newcommand{\OKstatus}{\textcolor{statusgreen}{\textbf{[OK]}}}
+\newcommand{\WARNstatus}{\textcolor{statusamber}{\textbf{[?]}}}
+\newcommand{\FAILstatus}{\textcolor{statusred}{\textbf{[X]}}}
+
+\renewenvironment{quote}{%
+  \def\FrameCommand{%
+    \hspace{1pt}%
+    {\color{noteborder}\vrule width 3pt}%
+    {\color{notecolor}\vrule width 4pt}%
+    \colorbox{notecolor}%
+  }%
+  \MakeFramed{\advance\hsize-\width\FrameRestore}%
+  \noindent\hspace{-4.55pt}%
+  \begin{minipage}{\linewidth}\vspace{2pt}%
+}{%
+  \vspace{2pt}\end{minipage}\endMakeFramed
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[L]{\small\href{\repoURL}{\nolinkurl{\repoURL}}}
+\fancyhead[R]{\small\textbf{Commit:} \href{\commitURL}{\githash}\ \textbar\ \texttt{\gitactor}}
+
+\fancyfoot[C]{\thepage}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}

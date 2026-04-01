@@ -1,0 +1,118 @@
+name: Build README PDF
+
+on:
+  push:
+    paths:
+      - README.md
+      - .github/workflows/readme_to_pdf.yml
+      - .github/workflows/pdf_header.tex
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: pandoc/latex:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          apk add --no-cache git perl
+          tlmgr install fancyhdr hyperref framed xcolor
+
+      - name: Prepare README._pdf.md
+        run: |
+          set -euo pipefail
+          cp README.md README._pdf.md
+
+      - name: Replace status legend table for PDF only
+        run: |
+          set -euo pipefail
+
+          awk '
+            BEGIN { skip = 0 }
+            /^\| \*\*\*Status legend\*\*\*:/ {
+              print ""
+              print "\\noindent\\textit{Status legend:}\\quad `[OK]` working \\quad `[?]` unconfirmed / partial \\quad `[X]` broken"
+              skip = 1
+              next
+            }
+            skip == 1 && /^\|---\|---\|---\|---\|/ {
+              skip = 0
+              next
+            }
+            skip == 0 { print }
+          ' README._pdf.md > README._pdf.tmp && mv README._pdf.tmp README._pdf.md
+
+      - name: Replace status tokens for PDF only
+        run: |
+          set -euo pipefail
+          perl -0pi -e 's/`\[OK\]`/\\OKstatus{}/g; s/`\[\?\]`/\\WARNstatus{}/g; s/`\[X\]`/\\FAILstatus{}/g' README._pdf.md
+
+      - name: Create PDF metadata definitions
+        run: |
+          set -euo pipefail
+          sha_short="${GITHUB_SHA::7}"
+
+          cat > pdf-meta.tex <<EOF
+          \newcommand{\repoURL}{https://github.com/${GITHUB_REPOSITORY}}
+          \newcommand{\commitURL}{https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}}
+          \newcommand{\githash}{${sha_short}}
+          \newcommand{\gitactor}{\detokenize{${GITHUB_ACTOR}}}
+          EOF
+
+      - name: Convert README -> PDF
+        run: |
+          set -euo pipefail
+          repo_name="${GITHUB_REPOSITORY##*/}"
+
+          pandoc README._pdf.md \
+            -o "${repo_name}.pdf" \
+            --pdf-engine=xelatex \
+            -V colorlinks=true \
+            -V linkcolor=blue \
+            -V urlcolor=blue \
+            -H pdf-meta.tex \
+            -H .github/workflows/pdf_header.tex
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: readme-pdf
+          path: "*.pdf"
+
+  commit:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download PDF
+        uses: actions/download-artifact@v4
+        with:
+          name: readme-pdf
+
+      - name: Commit PDF back to repo
+        run: |
+          set -euo pipefail
+          repo_name="${GITHUB_REPOSITORY##*/}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add "${repo_name}.pdf"
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: update ${repo_name}.pdf"
+          git push
