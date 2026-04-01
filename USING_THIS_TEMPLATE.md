@@ -25,8 +25,9 @@ You now have your own copy of the template.
 
 ## What to change
 
-1. Delete the `USING_THIS_TEMPLATE.md` and `Protocol_template.pdf` files.
-2. Open the new repository and edit the protocol file (`README.md`).
+Open the new repository and edit the protocol file (`README.md`).
+
+> **Note**: if using chatGPT etc to translate your protocol, provide the LLM with the template markdown structure. And always check the accuracy and that required sections (like protocol status and legend) are present.
 
 Replace:
 - `TODO: Protocol title`
@@ -42,9 +43,6 @@ Fill in:
 - all protocol steps
 - reagents / volumes / conditions
 - QC or output information if needed
-
-> **Note**: if using chatGPT etc to translate your protocol, provide the LLM with the template markdown structure.
-
 ---
 
 ## What to delete
@@ -93,6 +91,7 @@ content = """## Minimum things every protocol should have
 At minimum, make sure your protocol includes:
 
 - a clear title
+- status
 - a short description
 - the starting material
 - the actual steps
@@ -107,8 +106,9 @@ At minimum, make sure your protocol includes:
 3. Replace all template text with real content.
 4. Delete sections you do not need.
 5. Check that no `TODO` text remains.
-6. Commit your changes.
-7. Ask for review if needed.
+6. When done, delete the `USING_THIS_TEMPLATE.md` and `Protocol_template.pdf` files.
+7. Commit your changes.
+8. Ask for review if needed.
 
 ## Quick checklist before you finish
 
@@ -118,9 +118,9 @@ At minimum, make sure your protocol includes:
 - [ ] Step names updated
 - [ ] All `TODO` text removed
 - [ ] Unused sections deleted
-- [ ] Deletes the `USING_THIS_TEMPLATE.md` and `Protocol_template.pdf` files
 - [ ] Volumes / times / temperatures checked
 - [ ] Protocol is readable by someone else in the lab
+- [ ] Deleted the `USING_THIS_TEMPLATE.md` and `Protocol_template.pdf` files
 
 ## Common mistakes
 
