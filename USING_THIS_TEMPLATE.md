@@ -15,7 +15,7 @@ Instead, create your **own new repository from this template**, then edit that n
 3. Click **Create a new repository**.
 4. Choose a repository name.
    - Example: `Protocol_iCLIP`
-   - Use short, clear names.
+   - Use short, clear names, starting with "Protocol_".
 5. Choose where to create it.
 6. Click **Create repository**.
 
@@ -23,9 +23,10 @@ You now have your own copy of the template.
 
 ---
 
-## What to edit
+## What to change
 
-Open the new repository and edit the protocol file.
+1. Delete the `USING_THIS_TEMPLATE.md` and `Protocol_template.pdf` files.
+2. Open the new repository and edit the protocol file (`README.md`).
 
 Replace:
 - `TODO: Protocol title`
@@ -117,6 +118,7 @@ At minimum, make sure your protocol includes:
 - [ ] Step names updated
 - [ ] All `TODO` text removed
 - [ ] Unused sections deleted
+- [ ] Deletes the `USING_THIS_TEMPLATE.md` and `Protocol_template.pdf` files
 - [ ] Volumes / times / temperatures checked
 - [ ] Protocol is readable by someone else in the lab
 
