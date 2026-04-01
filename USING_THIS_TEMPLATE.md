@@ -48,9 +48,7 @@ Fill in:
 ## What to delete
 
 Delete anything you do not need.
-
 The template is intentionally generic.
-It is normal to remove sections.
 
 ---
 
@@ -63,8 +61,6 @@ Before finishing, search the file for:
 - placeholder text like `Step 1`, `Step 2`
 
 These should usually be replaced or deleted.
-
-A finished protocol should not still look like the template.
 
 ---
 
@@ -86,18 +82,17 @@ Examples:
 ### Status: 🔴 `[X]` | do not use, conditions still under review
 ```
 
-content = """## Minimum things every protocol should have
+## Minimum things every protocol should have
 
 At minimum, make sure your protocol includes:
 
 - a clear title
-- status
+- an accurate status
 - a short description
 - the starting material
 - the actual steps
 - key reagents / volumes / timings
 - notes or warnings if something is easy to get wrong
-- an accurate status
 
 ## Suggested workflow
 
@@ -146,10 +141,10 @@ Example:
 
 ### My protocol does not need all six steps
 
-That is fine. Delete the unused steps.
+Delete the unused steps.
 
 ### My protocol needs more than six steps
 
-Also fine. Add more sections using the same format.
+Add more sections using the same format.
 
 
