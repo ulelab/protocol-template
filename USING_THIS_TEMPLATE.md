@@ -16,8 +16,9 @@ Instead, create your **own new repository from this template**, then edit that n
 4. Choose a repository name.
    - Example: `Protocol_iCLIP`
    - Use short, clear names, starting with "Protocol_".
-5. Choose where to create it.
-6. Click **Create repository**.
+5. Choose the `lab protocols` custom property.
+6. Choose where to create it.
+7. Click **Create repository**.
 
 You now have your own copy of the template.
 
