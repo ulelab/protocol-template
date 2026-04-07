@@ -30,13 +30,13 @@ Open the new repository and edit the protocol file (`README.md`).
 
 > **Note**: if using chatGPT etc to translate your protocol, provide the LLM with the template markdown structure. And always check the accuracy and that required sections (like protocol status and legend) are present.
 
-Replace:
+Modify:
 - `TODO: Protocol title`
 - all other `TODO` entries
-- the status line
+- the status line, according to the legend
 - the step names
 - the notes, tables, and reagent details
-- feel free to move tables etc around
+- feel free to move tables etc. around
 
 Fill in:
 - protocol title
@@ -139,13 +139,4 @@ Example:
 - `Step 1` → `RNA extraction`
 - `Step 2` → `Fragmentation`
 - `Step 3` → `Reverse transcription`
-
-### My protocol does not need all six steps
-
-Delete the unused steps.
-
-### My protocol needs more than six steps
-
-Add more sections using the same format.
-
 
