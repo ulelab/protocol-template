@@ -54,6 +54,7 @@ When drafting a migrated protocol:
 - Keep all source content.
 - Add `CHECK:` markers for uncertainty.
 - Add an `# Migration notes` section listing:
+  - template metadata from `template-metadata.yml`
   - ambiguous mappings
   - normalized formatting changes
   - content copied verbatim but not confidently placed
