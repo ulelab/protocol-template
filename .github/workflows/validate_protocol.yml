@@ -14,12 +14,35 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      - name: Check whether validation should run
+        id: validation_gate
+        run: |
+          set -euo pipefail
+          initial_commit="$(git rev-list --max-parents=0 HEAD)"
+
+          if [ ! -f legacy/source.txt ]; then
+            echo "should_validate=false" >> "$GITHUB_OUTPUT"
+            echo "Validation skipped: legacy/source.txt does not exist yet."
+            exit 0
+          fi
+
+          if git diff --quiet "$initial_commit" -- README.md; then
+            echo "should_validate=false" >> "$GITHUB_OUTPUT"
+            echo "Validation skipped: README.md is unchanged from the initial commit."
+            exit 0
+          fi
+
+          echo "should_validate=true" >> "$GITHUB_OUTPUT"
+
       - name: Run protocol validation
+        if: steps.validation_gate.outputs.should_validate == 'true'
         run: |
           python scripts/validate_protocol.py README.md legacy/source.txt
