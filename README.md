@@ -122,7 +122,7 @@
 
 # Migration notes
 
-- Source file:
+- Source files: TODO: add folder path
 - Migration date:
 
 ## Unplaced content
