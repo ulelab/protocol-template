@@ -26,9 +26,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install pypdf
 
-      - name: Extract text from legacy/source.pdf
+      - name: Extract text from legacy pdf
         run: |
-          python scripts/extract_pdf_text.py legacy/source.pdf legacy/source.txt
+          python scripts/extract_pdf_text.py legacy legacy/source.txt
 
       - name: Show preview
         run: |
