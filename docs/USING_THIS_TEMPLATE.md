@@ -44,17 +44,15 @@ Next, choose one of the following routes:
 
 1. Create a new repository from the template (see above).
 2. Make and switch to a new branch named `migration`. **DO NOT** use a different name for this branch.
-3. Edit `README.md` on GitHub or locally on the `migration` branch.
+3. Edit `README.md` on GitHub or locally (after cloning the repo) on the `migration` branch.
 4. Replace all template text with real content.
 5. Delete sections you do not need.
 6. Check that no `TODO` text remains.
 7. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
-8. When done, delete `USING_THIS_TEMPLATE.md` and `Protocol_template.pdf`.
-9. Commit your changes, then push.
-10. Pushing to `migration` will trigger a GitHub Actions workflow that lints `README.md`. If there are problems, this check will fail.
-11. If checks fail, fix them before trying to merge into `main`.
-12. Once all checks pass and you are happy with the result, open a pull request from `migration` into `main`. This will re-trigger the verification CI test. Ask for a reviewer.
-13. Before taking the protocol to the lab, see [Using the protocol in the lab](#using-the-protocol-in-the-lab).
+8. Commit your changes, then push.
+9. Pushing to `migration` will trigger a GitHub Actions workflow that lints `README.md`. If there are problems, this check will fail.
+10. If checks fail, fix them before trying to merge into `main`.
+11. Once all checks pass and you are happy with the result, open a pull request from `migration` into `main`. This will re-trigger the verification CI test. Ask for a reviewer.
 
 > **Note:** Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
 
@@ -74,25 +72,38 @@ This route can save time. It helps keep the template structure consistent, norma
 1. Create a new repository from the template.
 2. Make and switch to a new branch named `migration`. **DO NOT** use a different name for this branch.
 3. Upload the legacy PDF to the `legacy` folder, then commit and push it.
-4. Keep exactly one PDF in that folder when you run the workflow.
-5. Run the `prepare migration` GitHub Action. This will extract the PDF text and write `legacy/source.txt`.
+4. Keep exactly one PDF in the `legacy` folder, otherwise the process will fail.
+5. Once you push to `migration`, the `prepare migration` GitHub Action will run. This will extract the PDF text and write `legacy/source.txt`.
 6. Run `git pull` to get the latest changes locally.
-7. Use the prompt in `PROMPT.md` to ask GitHub Copilot to rewrite `README.md` using `legacy/source.txt`. Copilot will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
-8. Verify that `README.md` is accurate by comparing it to the original PDF.
-9. Check the `Migration notes` section and every place marked with `CHECK:`. Resolve anything unclear.
-10. Delete sections you do not need.
-11. Check that no `TODO` text remains.
-12. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
-13. When done, delete `USING_THIS_TEMPLATE.md` and `Protocol_template.pdf`.
+7. Use the prompt in `PROMPT.md` to ask GitHub Copilot to rewrite `README.md` using `legacy/source.txt`. Copilot will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place.
+8. Review the changes. If most of them look reasonable, commit wih a message like `copilot migration`.
+9. Verify that `README.md` is accurate by comparing it to the original PDF.
+10. Check the `Migration notes` section and every place marked with `CHECK:`. Resolve anything unclear.
+11. Make any changes necessary. Delete sections you do not need.
+12. Check that no `TODO` text remains.
+13. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 14. Commit your changes, then push.
 15. Pushing to `migration` will trigger a GitHub Actions workflow that lints `README.md`. If there are problems, this check will fail.
 16. If checks fail, fix them before trying to merge into `main`.
 17. Once all checks pass and you are happy with the result, open a pull request from `migration` into `main`. This will re-trigger the verification CI test. Ask for a reviewer.
-18. Before taking the protocol to the lab, see [Using the protocol in the lab](#using-the-protocol-in-the-lab).
 
 ---
 
 ## 3. General guidelines for the protocol file (`README.md`)
+
+This section applies whether you updated the protocol manually or generated it from a legacy PDF.
+
+#### Minimum content every protocol should have
+
+At minimum, make sure your protocol includes:
+
+- a clear title
+- an accurate status
+- a short description
+- the starting material
+- the actual steps
+- key reagents, volumes, and timings
+- notes or warnings if something is easy to get wrong
 
 #### What to change
 
@@ -147,17 +158,6 @@ Examples:
 ### Status: 🔴 `[X]` | do not use, conditions still under review
 ```
 
-#### Minimum content every protocol should have
-
-At minimum, make sure your protocol includes:
-
-- a clear title
-- an accurate status
-- a short description
-- the starting material
-- the actual steps
-- key reagents, volumes, and timings
-- notes or warnings if something is easy to get wrong
 
 ### Common mistakes
 
@@ -185,7 +185,7 @@ Example:
 
 # How to make changes to a protocol
 
-If you want to adapt or improve a protocol:
+If you want to adapt or improve an existing protocol on GitHub:
 
 1. Create a new branch from `main`, or from another branch you want to build on.
 2. Do not work directly on `main`.
@@ -196,31 +196,25 @@ If you want to adapt or improve a protocol:
 7. If the change relates to a GitHub Issue, include the Issue number, for example `closes #12`.
 8. After pushing to any branch, wait a few minutes.
 9. GitHub will automatically generate a PDF version of the protocol on that branch.
-10. This creates another commit, usually with a message like `chore: update Protocol_x.pdf`.
-11. Always use the newest PDF that matches your changes.
-12. Always check that the commit SHA printed on the PDF matches the exact protocol version you want to use. See also [Using the protocol in the lab](#using-the-protocol-in-the-lab).
-13. If you have questions about a protocol, open a GitHub Issue and assign relevant people.
-14. If you are developing a protocol as a team, you can use a GitHub Project.
-15. Use Issues to track optimisation ideas or questions.
-16. Add images, gels, or notes to the relevant Issue.
-17. Close the Issue when the question is resolved.
-18. This helps keep a record of what has already been tried.
-19. If your change should become part of the main protocol, open a pull request to `main` and request review from relevant people.
-20. Do not merge into `main` without review, unless you are the only person using that protocol.
+10. This creates another commit, usually with a message like `Update Protocol_x.pdf`.
+11. If you have questions about a protocol, open a GitHub Issue and assign relevant people.
+12. If you are developing a protocol as a team, you can use a GitHub Project.
+13. Use Issues to track optimisation ideas or questions.
+14. Add images, gels, notes or links to code or data to the relevant Issue.
+15. Close the Issue when the question is resolved.
+16. This helps keep a record of what has already been tried.
+17. If your change should become part of the main protocol, open a pull request to `main` and request review from relevant people.
+18. Do not merge into `main` without review, unless you are the only person using that protocol.
 
 ---
 
 # Using the protocol in the lab
 
-This section applies whether you updated the protocol manually or generated it from a legacy PDF.
-
-### Use the PDF that matches the protocol version you want
+### Always use the PDF that matches the protocol version you want
 
 After pushing changes to `README.md`, wait a few minutes.
 
-GitHub will automatically generate a PDF version of the protocol on that branch and commit it back to the repository, usually with a message like `chore: update Protocol_x.pdf`.
-
-Always use the PDF that matches the intended `README.md`.
+GitHub will automatically generate a PDF version of the protocol on that branch and commit it back to the repository, usually with a message like `Update Protocol_x.pdf`.
 
 ### Use the commit SHA as the version identifier
 
@@ -235,8 +229,8 @@ Always check that the commit SHA printed on the PDF matches the exact protocol v
 ### Checks to do before using a protocol
 
 Before using a protocol in the lab, check all of the following:
-- the commit SHA printed on the PDF matches the protocol version you intend to use
 - `README.md` is accurate
+- the commit SHA printed on the PDF matches the protocol version you intend to use
 - the protocol status
 - any `CHECK:` items or migration uncertainties have been resolved
 
@@ -244,7 +238,7 @@ Before using a protocol in the lab, check all of the following:
 
 # Release a protocol
 
-Once a protocol has been added and confirmed to be working — that is, its status is 🟢 `[OK]` and this is clearly marked at the top of the file — create the first release: `1.0.0`.
+Once a protocol has been added and confirmed to be working — that is, its status is 🟢 `[OK]` and this is clearly marked at the top of the file, create the first release: `1.0.0`.
 
 Further changes can then be released using semantic versioning.
 
