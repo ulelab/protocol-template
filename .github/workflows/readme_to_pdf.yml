@@ -34,6 +34,14 @@ jobs:
           set -euo pipefail
           cp README.md README._pdf.md
 
+      - name: Exclude migration notes from PDF
+        run: |
+          set -euo pipefail
+          awk '
+            /^# Migration notes$/ { exit }
+            { print }
+          ' README._pdf.md > README._pdf.tmp && mv README._pdf.tmp README._pdf.md
+
       - name: Replace status legend table for PDF only
         run: |
           set -euo pipefail
@@ -114,5 +122,5 @@ jobs:
 
           git add "${repo_name}.pdf"
           git diff --cached --quiet && exit 0
-          git commit -m "chore: update ${repo_name}.pdf"
+          git commit -m "Update ${repo_name}.pdf"
           git push
