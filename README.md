@@ -124,7 +124,6 @@
 
 - Source file:
 - Migration date:
-- Reviewer:
 
 ## Unplaced content
 

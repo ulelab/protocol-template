@@ -32,6 +32,7 @@ You may normalize formatting only when the meaning is unchanged and unambiguous:
 - Normalize markdown headings, bullets, and tables
 - Notes start with `> **Note**` and are placed immediately after the step they refer to, or at the end of the protocol if they clearly refer to the whole protocol.
 - Remove empty columns from tables.
+- Synchronize `Contents` with actual headings in the protocol.
 
 ## Disallowed changes
 - Do not infer omitted concentrations, times, temperatures, or volumes.
