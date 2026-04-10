@@ -2,6 +2,9 @@ name: Prepare migration from PDF
 
 on:
   workflow_dispatch:
+push:
+  branches:
+    - migration
 
 permissions:
   contents: write
