@@ -1,22 +1,27 @@
-Migrate `legacy/source.txt` into `README.md` using `TEMPLATE.md` as the target structure.
+Convert `legacy/source.txt` into `README.md`.
+
+Use the existing `README.md` as the target template and structure.
+
+Also read and follow `.github/copilot-instructions.md`.
+Apply those instructions even if you are not GitHub Copilot.
 
 Requirements:
 1. Preserve all protocol content.
 2. Do not change scientific meaning.
 3. Do not invent missing information.
-4. Keep exact reagent names, quantities, temperatures, and timings unless only formatting is normalized.
-5. Normalize only safe surface formatting:
-   - add space between numbers and units
-   - use `seconds`, `minutes`, `hours`
-   - use `µL`, `mL`, `L`
-   - use `°C` with a preceding space before the unit, e.g. `37 °C`
-6. If any source text does not clearly fit a template section, place it in `# Migration notes` or `## Unplaced content`.
-7. Mark ambiguity with `CHECK:`.
-8. Do not delete repeated warnings or notes.
-9. Preserve step order from the source.
-10. After drafting, include a short migration summary in `# Migration notes` listing:
+4. Keep exact reagent names, quantities, temperatures, timings, and conditions unless only formatting is being normalized.
+5. Normalize only safe formatting, such as:
+   - adding a space between numbers and units
+   - using `seconds`, `minutes`, `hours`
+   - using `µL`, `mL`, `L`
+   - using `37 °C` style temperature formatting
+6. Preserve the step order from the source.
+7. Do not delete repeated warnings or notes.
+8. If any text does not fit cleanly into the template, place it under `# Migration notes` or `## Unplaced content`.
+9. Mark uncertainty with `CHECK:` instead of guessing.
+10. After drafting, add a short summary in `# Migration notes` covering:
    - formatting normalizations performed
-   - ambiguities flagged
+   - ambiguities and uncertainty flagged
    - content placed in `## Unplaced content`
 
 Only edit `README.md`.
