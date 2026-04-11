@@ -35,21 +35,22 @@ The structure of the template is:
 ```md
 .
 ├── .github
-│   ├── workflows/ # GitHub workflows to automate tasks, e.g protocol format validations, PDF generation
-│   └── copilot-instructions.md # Instructions for AI-assisted migration route
+│   ├── workflows/              # Automation for validations and PDF generation
+│   └── copilot-instructions.md # AI-assisted migration instructions
 ├── docs
-│   ├── PROMPT.md # Prompt for AI-assisted migration route
-│   ├── USING_THIS_TEMPLATE.md # Instructions on how to use the protocol template
-│   └── template-metadata.yml # Template metadata
+│   ├── PROMPT.md               # AI migration prompt
+│   ├── USING_THIS_TEMPLATE.md  # Usage guide for this protocol template
+│   └── template-metadata.yml   # Template metadata
 ├── legacy
-│   └── source-metadata.yml # EDIT THIS (recommended)
-├── scripts/ # Scripts used by GitHub Actions
-├── CODEOWNERS # GitHub handles of protocol maintainers
-└── README.md # Protocol file, EDIT THIS; initially with placeholder text, will be populated with the protocol content.
+│   └── source-metadata.yml     # [EDIT THIS] Source metadata
+├── scripts/                    # Logic used by GitHub Actions
+├── CODEOWNERS                  # GitHub handles of protocol maintainers
+└── README.md                   # [EDIT THIS] Protocol file (initially placeholders)
 ```
 
 The only file you must modify is `README.md`. It's recommended to also fill in `source-metadata.yml`.
-To proceed, choose one of the following routes:
+
+#### To proceed, choose one of the following routes:
 
 - [1. Add and update a protocol manually](#1-add-and-update-a-protocol-manually)
 - [2. Add and update a protocol from a legacy PDF using GitHub Actions and Copilot](#2-add-and-update-a-protocol-from-a-legacy-pdf-using-github-actions-and-copilot)
