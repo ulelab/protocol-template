@@ -261,6 +261,6 @@ Before using a protocol in the lab, check all of the following:
 
 Once a protocol has been added and confirmed to be working — that is, its status is 🟢 `[OK]` and this is clearly marked at the top of the file, create the first release: `1.0.0`.
 
-Further changes can then be released using semantic versioning.
+Further changes can then be released using semantic versioning. Ensure maintainers listed in `CODEOWNERS` are involved or aware if a new version release is planned.
 
 ---
