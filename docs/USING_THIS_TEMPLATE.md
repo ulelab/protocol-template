@@ -31,7 +31,25 @@ Instead, create a new repository from this template and edit that new repository
 
 You now have your own copy of the template.
 
-Next, choose one of the following routes:
+The structure of the template is:
+```md
+.
+├── .github
+│   ├── workflows/ # GitHub workflows to automate tasks, e.g protocol format validations, PDF generation
+│   └── copilot-instructions.md # Instructions for AI-assisted migration route
+├── docs
+│   ├── PROMPT.md # Prompt for AI-assisted migration route
+│   ├── USING_THIS_TEMPLATE.md # Instructions on how to use the protocol template
+│   └── template-metadata.yml # Template metadata
+├── legacy
+│   └── source-metadata.yml # EDIT THIS (recommended)
+├── scripts/ # Scripts used by GitHub Actions
+├── CODEOWNERS # GitHub handles of protocol maintainers
+└── README.md # Protocol file, EDIT THIS; initially with placeholder text, will be populated with the protocol content.
+```
+
+The only file you must modify is `README.md`. It's recommended to also fill in `source-metadata.yml`.
+To proceed, choose one of the following routes:
 
 - [1. Add and update a protocol manually](#1-add-and-update-a-protocol-manually)
 - [2. Add and update a protocol from a legacy PDF using GitHub Actions and Copilot](#2-add-and-update-a-protocol-from-a-legacy-pdf-using-github-actions-and-copilot)
@@ -45,6 +63,7 @@ Next, choose one of the following routes:
 1. Create a new repository from the template (see above).
 2. Make and switch to a new branch named `migration`. **DO NOT** use a different name for this branch.
 3. Edit `README.md` on GitHub or locally (after cloning the repo) on the `migration` branch.
+> **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps with source protocol provenance.
 4. Replace all template text with real content.
 5. Delete sections you do not need.
 6. Check that no `TODO` text remains.
@@ -72,6 +91,7 @@ This route can save time. It helps keep the template structure consistent, norma
 1. Create a new repository from the template.
 2. Make and switch to a new branch named `migration`. **DO NOT** use a different name for this branch.
 3. Upload the legacy PDF to the `legacy` folder, then commit and push it.
+> **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps with source protocol provenance. 
 4. Keep exactly one PDF in the `legacy` folder, otherwise the process will fail.
 5. Once you push to `migration`, the `prepare migration` GitHub Action will run. This will extract the PDF text and write `legacy/source.txt`.
 6. Run `git pull` to get the latest changes locally.
