@@ -26,6 +26,7 @@ You may normalize formatting only when the meaning is unchanged and unambiguous:
 - Standarize chemical names to match the source but with consistent formatting (e.g. `Tris-HCl` instead of `Tris HCl`).
 - Standardize pH formatting to `pH 7.4`.
 - Standardize `H2O` to `H₂O`. Similarly for other chemical formulas.
+- Standardize `RNAseq` or `RNA-Seq` to `RNA-seq`.Same for `ChIP-seq`, `ATAC-seq`, etc.
 - Normalize bullet formatting and markdown table formatting.
 - Normalize heading structure to match the repository template.
 - For reaction mixes and anything tabular, place them inside a table as in template.
@@ -55,6 +56,7 @@ When drafting a migrated protocol:
 - Keep all source content.
 - Add `CHECK:` markers for uncertainty.
 - Add an `# Migration notes` section listing:
+  - source metadata from `source-metadata.yml` (only the non-blank lines)
   - template metadata from `template-metadata.yml`
   - ambiguous mappings
   - normalized formatting changes
