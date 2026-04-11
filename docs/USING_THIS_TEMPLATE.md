@@ -48,12 +48,12 @@ The structure of the template is:
 └── README.md                   # [EDIT THIS] Protocol file (initially placeholders)
 ```
 
-The only file you must modify is `README.md`. It's recommended to also fill in `source-metadata.yml`.
+The only file you must modify is `README.md`. It's recommended to also fill in `source-metadata.yml` and `CODEOWNERS`.
 
 #### To proceed, choose one of the following routes:
 
-- [1. Add and update a protocol manually](#1-add-and-update-a-protocol-manually)
-- [2. Add and update a protocol from a legacy PDF using GitHub Actions and Copilot](#2-add-and-update-a-protocol-from-a-legacy-pdf-using-github-actions-and-copilot)
+- [1. Add and update a protocol manually](#1-add-and-update-a-protocol-manually): Useful if you write a protocol from scratch, editing the `README.md` directly.
+- [2. Add and update a protocol from a legacy PDF using GitHub Actions and Copilot](#2-add-and-update-a-protocol-from-a-legacy-pdf-using-github-actions-and-copilot): Useful for one-time conversion from a legacy source.
 
 ---
 
@@ -62,17 +62,17 @@ The only file you must modify is `README.md`. It's recommended to also fill in `
 ### Suggested workflow
 
 1. Create a new repository from the template (see above).
-2. Make and switch to a new branch named `migration`. **DO NOT** use a different name for this branch.
-3. Edit `README.md` on GitHub or locally (after cloning the repo) on the `migration` branch.
+2. Make and switch to a new branch named `import-protocol`. **DO NOT** use a different name for this branch.
+3. Edit `README.md` on GitHub or locally (after cloning the repo) on the `import-protocol` branch.
 > **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps with source protocol provenance.
 4. Replace all template text with real content.
 5. Delete sections you do not need.
 6. Check that no `TODO` text remains.
 7. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 8. Commit your changes, then push.
-9. Pushing to `migration` will trigger a GitHub Actions workflow that lints `README.md`. If there are problems, this check will fail.
+9. Pushing to `import-protocol` will trigger a GitHub Actions workflow that lints `README.md`. If there are problems, this check will fail.
 10. If checks fail, fix them before trying to merge into `main`.
-11. Once all checks pass and you are happy with the result, open a pull request from `migration` into `main`. This will re-trigger the verification CI test. Ask for a reviewer.
+11. Once all checks pass and you are happy with the result, open a pull request from `import-protocol` into `main`. This will re-trigger the verification CI test. Ask for a reviewer.
 
 > **Note:** Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
 
@@ -85,16 +85,16 @@ This repository also includes tools to help convert legacy protocol PDFs into Ma
 
 This route can save time. It helps keep the template structure consistent, normalizes formatting, standardizes units where this can be done without changing meaning, and highlights parts of the source protocol that need manual review.
 
-> **Important:** This route is AI-assisted, not AI-reliant. Always compare the generated `README.md` against the original PDF before merging. Every migration must be checked by the person carrying it out and by a separate reviewer before it is merged.
+> **Important:** This route is AI-assisted, not AI-reliant. Always compare the generated `README.md` against the original PDF before merging. Every migration must be checked by the person carrying it out and by a separate reviewer before it is merged into `main`.
 
 ### Suggested workflow
 
 1. Create a new repository from the template.
-2. Make and switch to a new branch named `migration`. **DO NOT** use a different name for this branch.
+2. Make and switch to a new branch named `import-protocol`. **DO NOT** use a different name for this branch.
 3. Upload the legacy PDF to the `legacy` folder, then commit and push it.
 > **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps with source protocol provenance. 
 4. Keep exactly one PDF in the `legacy` folder, otherwise the process will fail.
-5. Once you push to `migration`, the `prepare migration` GitHub Action will run. This will extract the PDF text and write `legacy/source.txt`.
+5. Once you push to `import-protocol`, the `prepare migration` GitHub Action will run. This will extract the PDF text and write `legacy/source.txt`.
 6. Run `git pull` to get the latest changes locally.
 7. Use the prompt in `PROMPT.md` to ask GitHub Copilot to rewrite `README.md` using `legacy/source.txt`. Copilot will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place.
 8. Review the changes. If most of them look reasonable, commit wih a message like `copilot migration`.
@@ -104,9 +104,9 @@ This route can save time. It helps keep the template structure consistent, norma
 12. Check that no `TODO` text remains.
 13. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 14. Commit your changes, then push.
-15. Pushing to `migration` will trigger a GitHub Actions workflow that lints `README.md`. If there are problems, this check will fail.
+15. Pushing to `import-protocol` will trigger a GitHub Actions workflow that lints `README.md`. If there are problems, this check will fail.
 16. If checks fail, fix them before trying to merge into `main`.
-17. Once all checks pass and you are happy with the result, open a pull request from `migration` into `main`. This will re-trigger the verification CI test. Ask for a reviewer.
+17. Once all checks pass and you are happy with the result, open a pull request from `import-protocol` into `main`. This will re-trigger the verification CI test. Ask for a reviewer.
 
 ---
 

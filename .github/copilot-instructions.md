@@ -31,7 +31,7 @@ You may normalize formatting only when the meaning is unchanged and unambiguous:
 - Normalize heading structure to match the repository template.
 - For reaction mixes and anything tabular, place them inside a table as in template.
 - Normalize markdown headings, bullets, and tables
-- Notes start with `> **Note**` and are placed immediately after the step they refer to, or at the end of the protocol if they clearly refer to the whole protocol.
+- Notes or "Optional" or "Recommended" or "Warning" start with `>` (example `> **Note**`) and are placed immediately after the step they refer to, or at the end of the protocol if they clearly refer to the whole protocol.
 - Remove empty columns from tables.
 - Synchronize `Contents` with actual headings in the protocol.
 
@@ -56,7 +56,7 @@ When drafting a migrated protocol:
 - Keep all source content.
 - Add `CHECK:` markers for uncertainty.
 - Add an `# Migration notes` section listing:
-  - source metadata from `source-metadata.yml` (only the non-blank lines)
+  - Imported protocol metadata from `source-metadata.yml` (only the non-blank lines).
   - template metadata from `template-metadata.yml`
   - ambiguous mappings
   - normalized formatting changes
