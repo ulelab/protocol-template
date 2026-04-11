@@ -4,6 +4,8 @@ This repository stores laboratory protocols in Markdown in `README.md`.
 
 ## Primary rule
 Do not change protocol meaning.
+Use `legacy/source.txt` as the primary source when rewriting `README.md`.
+Also consult the PDF file in `legacy/` as the reference source for tables, layout-dependent content, and anything unclear.
 
 ## Migration behavior
 When converting legacy protocol text into the repository template:

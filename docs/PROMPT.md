@@ -5,6 +5,9 @@ Use the existing `README.md` as the target template and structure.
 Also read and follow `.github/copilot-instructions.md`.
 Apply those instructions even if you are not GitHub Copilot.
 
+Use `legacy/source.txt` as the primary source.
+Also check the PDF file in the `legacy/` folder as the reference source, especially for tables, layout-dependent content, and anything unclear.
+
 Requirements:
 1. Preserve all protocol content.
 2. Do not change scientific meaning.
