@@ -34,12 +34,14 @@ jobs:
           set -euo pipefail
           cp README.md README._pdf.md
 
-      - name: Exclude template badge from PDF
+      - name: Trim README preamble for PDF
         run: |
           set -euo pipefail
           awk '
-            index($0, "Created with ulelab Protocol Template") == 0 &&
-            index($0, "Template version") == 0 { print }
+            found || /^# / {
+              found = 1
+              print
+            }
           ' README._pdf.md > README._pdf.tmp && mv README._pdf.tmp README._pdf.md
 
       - name: Exclude migration notes from PDF
