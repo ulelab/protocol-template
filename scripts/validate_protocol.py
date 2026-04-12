@@ -3,26 +3,52 @@
 from pathlib import Path
 import re
 import sys
+from typing import List, Optional, Tuple
+
+HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$", re.MULTILINE)
+STATUS_LINE_RE = re.compile(
+    r"^### Status:\s+.*`\[(?:OK|\?|X)\]`.*$",
+    re.MULTILINE,
+)
+STATUS_LEGEND_RE = re.compile(
+    r"^\| \*\*\*Status legend\*\*\*:.*`\[OK\]`.*`\[\?\]`.*`\[X\]`.*\|$",
+    re.MULTILINE,
+)
+PLACEHOLDER_STEP_HEADING_RE = re.compile(
+    r"^#{1,6}\s+\d+(?:\.\d+)*(?:\.)?\s+(?:Step|Sub-step)\b.*$",
+    re.MULTILINE,
+)
+PLACEHOLDER_CONTENTS_RE = re.compile(
+    r"^\d+\.\s+\[Step\s+\d+\]\(#.*$",
+    re.MULTILINE,
+)
 
 REQUIRED_HEADINGS = [
-    "# About",
-    "### Status:",
-    "## Contents",
-    "***Status legend***:"
+    (1, "About"),
+    (2, "Contents"),
 ]
 
-BAD_PLACEHOLDERS = [
-    "TODO",
-    "TBD",
-    "XXX",
-    "CHECK:",
-]
+BAD_PLACEHOLDERS = {
+    "TODO": re.compile(r"\bTODO\b"),
+    "TBD": re.compile(r"\bTBD\b"),
+    "XXX": re.compile(r"\bXXX\b"),
+    "CHECK:": re.compile(r"CHECK:"),
+}
 
 DISALLOWED_TEMPLATE_TEXT = [
     "Template repository: Click `Use this template` to create a new protocol repo.",
 ]
 
-def extract_key_tokens(text: str):
+
+def extract_headings(text: str) -> List[Tuple[int, str]]:
+    return [(len(level), title.strip()) for level, title in HEADING_RE.findall(text)]
+
+
+def normalize_text(text: str) -> str:
+    return re.sub(r"\s+", " ", text.lower().replace("µ", "u"))
+
+
+def extract_key_tokens(text: str) -> List[str]:
     patterns = [
         r"\b\d+(?:\.\d+)?\s*(?:µL|uL|mL|L|g|mg|kg|ng|µg)\b",
         r"\b\d+(?:\.\d+)?\s*(?:seconds|second|minutes|minute|hours|hour|s|sec|secs|min|mins|hr|hrs)\b",
@@ -34,7 +60,57 @@ def extract_key_tokens(text: str):
         hits.extend(re.findall(pattern, text, flags=re.IGNORECASE))
     return sorted(set(hits))
 
-def main():
+
+def validate_readme(readme: str, source: Optional[str] = None) -> List[str]:
+    failures: List[str] = []
+    headings = extract_headings(readme)
+    top_level_headings = [title for level, title in headings if level == 1]
+
+    if not headings:
+        failures.append("README does not contain any Markdown headings.")
+    elif not top_level_headings:
+        failures.append("README must contain a top-level protocol title ('# ...').")
+    else:
+        first_title = top_level_headings[0]
+        if first_title == "About":
+            failures.append("Missing top-level protocol title before '# About'.")
+
+    for level, title in REQUIRED_HEADINGS:
+        if (level, title) not in headings:
+            failures.append(f"Missing heading: {'#' * level} {title}")
+
+    if not STATUS_LINE_RE.search(readme):
+        failures.append("Missing or malformed status line: expected '### Status: ...'.")
+
+    if not STATUS_LEGEND_RE.search(readme):
+        failures.append(
+            "Missing or malformed status legend row with `[OK]`, `[?]`, and `[X]`."
+        )
+
+    for token, pattern in BAD_PLACEHOLDERS.items():
+        if pattern.search(readme):
+            failures.append(f"Found unresolved placeholder: {token}")
+
+    for text in DISALLOWED_TEMPLATE_TEXT:
+        if text in readme:
+            failures.append(f"Found template-only text that must be removed: {text}")
+
+    for match in PLACEHOLDER_STEP_HEADING_RE.findall(readme):
+        failures.append(f"Found placeholder step heading: {match}")
+
+    for match in PLACEHOLDER_CONTENTS_RE.findall(readme):
+        failures.append(f"Found placeholder contents entry: {match}")
+
+    if source is not None:
+        normalized_readme = normalize_text(readme)
+        for token in extract_key_tokens(source):
+            if normalize_text(token) not in normalized_readme:
+                failures.append(f"Source token missing from README: {token}")
+
+    return list(dict.fromkeys(failures))
+
+
+def main() -> None:
     if len(sys.argv) not in {2, 3}:
         print("Usage: python validate_protocol.py README.md [legacy/source.txt]")
         sys.exit(1)
@@ -42,40 +118,16 @@ def main():
     readme = Path(sys.argv[1]).read_text(encoding="utf-8")
     source = Path(sys.argv[2]).read_text(encoding="utf-8") if len(sys.argv) == 3 else None
 
-    failures = []
-
-    for heading in REQUIRED_HEADINGS:
-        if heading not in readme:
-            failures.append(f"Missing heading: {heading}")
-
-    for token in BAD_PLACEHOLDERS:
-        if token in readme:
-            failures.append(f"Found unresolved placeholder: {token}")
-
-    for text in DISALLOWED_TEMPLATE_TEXT:
-        if text in readme:
-            failures.append(f"Found template-only text that must be removed: {text}")
-
-    if source is not None:
-        source_tokens = extract_key_tokens(source)
-        for token in source_tokens:
-            if token not in readme:
-                if token.lower() not in readme.lower():
-                    failures.append(f"Source token missing from README: {token}")
-
-    # if "## Unplaced content" not in readme:
-    #     failures.append("Missing '## Unplaced content' section")
-
-    # if "## CHECK items" not in readme:
-    #     failures.append("Missing '## CHECK items' section")
+    failures = validate_readme(readme, source)
 
     if failures:
         print("VALIDATION FAILED")
-        for f in failures:
-            print(f"- {f}")
+        for failure in failures:
+            print(f"- {failure}")
         sys.exit(1)
 
     print("Validation passed.")
+
 
 if __name__ == "__main__":
     main()
