@@ -1,4 +1,4 @@
-"""Validate a protocol README against required template elements and source text."""
+"""Validate a protocol README against template requirements and optional source text."""
 
 from pathlib import Path
 import re
@@ -31,12 +31,12 @@ def extract_key_tokens(text: str):
     return sorted(set(hits))
 
 def main():
-    if len(sys.argv) != 3:
-        print("Usage: python validate_protocol.py README.md legacy/source.txt")
+    if len(sys.argv) not in {2, 3}:
+        print("Usage: python validate_protocol.py README.md [legacy/source.txt]")
         sys.exit(1)
 
     readme = Path(sys.argv[1]).read_text(encoding="utf-8")
-    source = Path(sys.argv[2]).read_text(encoding="utf-8")
+    source = Path(sys.argv[2]).read_text(encoding="utf-8") if len(sys.argv) == 3 else None
 
     failures = []
 
@@ -48,11 +48,12 @@ def main():
         if token in readme:
             failures.append(f"Found unresolved placeholder: {token}")
 
-    source_tokens = extract_key_tokens(source)
-    for token in source_tokens:
-        if token not in readme:
-            if token.lower() not in readme.lower():
-                failures.append(f"Source token missing from README: {token}")
+    if source is not None:
+        source_tokens = extract_key_tokens(source)
+        for token in source_tokens:
+            if token not in readme:
+                if token.lower() not in readme.lower():
+                    failures.append(f"Source token missing from README: {token}")
 
     # if "## Unplaced content" not in readme:
     #     failures.append("Missing '## Unplaced content' section")

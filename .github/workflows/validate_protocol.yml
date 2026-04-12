@@ -28,12 +28,6 @@ jobs:
           set -euo pipefail
           initial_commit="$(git rev-list --max-parents=0 HEAD)"
 
-          if [ ! -f legacy/source.txt ]; then
-            echo "should_validate=false" >> "$GITHUB_OUTPUT"
-            echo "Validation skipped: legacy/source.txt does not exist yet."
-            exit 0
-          fi
-
           if git diff --quiet "$initial_commit" -- README.md; then
             echo "should_validate=false" >> "$GITHUB_OUTPUT"
             echo "Validation skipped: README.md is unchanged from the initial commit."
@@ -45,4 +39,8 @@ jobs:
       - name: Run protocol validation
         if: steps.validation_gate.outputs.should_validate == 'true'
         run: |
-          python scripts/validate_protocol.py README.md legacy/source.txt
+          if [ -f legacy/source.txt ]; then
+            python scripts/validate_protocol.py README.md legacy/source.txt
+          else
+            python scripts/validate_protocol.py README.md
+          fi
