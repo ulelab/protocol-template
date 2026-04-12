@@ -220,7 +220,7 @@ If you want to adapt or improve an existing protocol on GitHub:
 8. After pushing to any branch, wait a few minutes.
 9. GitHub will automatically generate a PDF version of the protocol on that branch.
 10. This creates another commit, usually with a message like `Update Protocol_x.pdf`.
-11. If you have questions about a protocol, open a GitHub Issue and assign relevant people.
+11. If you have questions about a protocol, or want to propose a change, open a GitHub Issue using the `Protocol issues` template and assign relevant people.
 12. If you are developing a protocol as a team, you can use a GitHub Project.
 13. Use Issues to track optimisation ideas or questions.
 14. Add images, gels, notes or links to code or data to the relevant Issue.
