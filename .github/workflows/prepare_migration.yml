@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pypdf
+          pip install pypdf==6.6.2
 
       - name: Extract text from legacy pdf
         run: |

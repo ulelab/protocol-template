@@ -19,15 +19,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: pandoc/latex:latest
+      image: pandoc/latex:3.9.0.2-debian@sha256:1ee9b79d8e8d85e7b76b1c917b5eb5d3ff1ecb5d01f260e62dabe4fff18098cc
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install deps
+      - name: Verify pinned PDF toolchain
         run: |
-          apk add --no-cache git perl
-          tlmgr install fancyhdr hyperref framed xcolor
+          set -euo pipefail
+          pandoc --version | head -n 1
+          xelatex --version | head -n 1
+
+          for package in fancyhdr hyperref framed xcolor; do
+            kpsewhich "${package}.sty" >/dev/null
+          done
 
       - name: Prepare README._pdf.md
         run: |
@@ -74,7 +79,11 @@ jobs:
       - name: Replace status tokens for PDF only
         run: |
           set -euo pipefail
-          perl -0pi -e 's/`\[OK\]`/\\OKstatus{}/g; s/`\[\?\]`/\\WARNstatus{}/g; s/`\[X\]`/\\FAILstatus{}/g' README._pdf.md
+          sed \
+            -e 's/`\[OK\]`/\\OKstatus{}/g' \
+            -e 's/`\[\?\]`/\\WARNstatus{}/g' \
+            -e 's/`\[X\]`/\\FAILstatus{}/g' \
+            README._pdf.md > README._pdf.tmp && mv README._pdf.tmp README._pdf.md
 
       - name: Create PDF metadata definitions
         run: |
