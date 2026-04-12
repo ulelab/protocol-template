@@ -35,10 +35,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run validator tests
-        run: |
-          python -m unittest discover -s tests -p 'test_*.py'
-
       - name: Check whether validation should run
         id: validation_gate
         run: |
@@ -58,6 +54,11 @@ jobs:
           fi
 
           echo "should_validate=true" >> "$GITHUB_OUTPUT"
+
+      - name: Run validator tests
+        if: steps.validation_gate.outputs.should_validate == 'true'
+        run: |
+          python -m unittest discover -s tests -p 'test_*.py'
 
       - name: Run protocol validation
         if: steps.validation_gate.outputs.should_validate == 'true'
