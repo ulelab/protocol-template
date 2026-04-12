@@ -64,6 +64,6 @@ When drafting a migrated protocol:
   - normalized formatting changes
   - content copied verbatim but not confidently placed
 - Keep ![Created with ulelab Protocol Template](https://img.shields.io/badge/created%20with-ulelab%20Protocol%20Template-blue) at the top of the file.
-- Delete the "Template repository: Use `Use this template` to create a new protocol repo..." note.
+- Delete the "Template repository: Click `Use this template` to create a new protocol repo..." note.
 
 

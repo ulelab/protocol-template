@@ -19,7 +19,7 @@ BAD_PLACEHOLDERS = [
 ]
 
 DISALLOWED_TEMPLATE_TEXT = [
-    "Template repository: Use `Use this template` to create a new protocol repo.",
+    "Template repository: Click `Use this template` to create a new protocol repo.",
 ]
 
 def extract_key_tokens(text: str):
