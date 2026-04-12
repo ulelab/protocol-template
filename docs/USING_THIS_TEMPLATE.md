@@ -48,7 +48,7 @@ The structure of the template is:
 └── README.md                   # [EDIT THIS] Protocol file (initially placeholders)
 ```
 
-The only file you must modify is `README.md`. It's recommended to also fill in `source-metadata.yml` and `CODEOWNERS`.
+The only file you must modify is `README.md`. It's recommended to also fill in `source-metadata.yml` and `CODEOWNERS`. Do not edit other files unless you want to change template mechanics themselves; that is an advanced action.
 
 #### To proceed, choose one of the following routes:
 

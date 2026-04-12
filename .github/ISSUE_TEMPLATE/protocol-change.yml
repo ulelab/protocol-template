@@ -1,0 +1,65 @@
+name: Protocol issues
+description: Ask a question or propose a change to a protocol and record the reason, evidence, and plan.
+title: "[Protocol issue]: "
+labels:
+  - protocol
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to propose a protocol change, ask a question or raise an issue.
+
+        Please explain why the issue is raised, attach supporting evidence, and list who should be involved.
+
+  - type: textarea
+    id: why_issue
+    attributes:
+      label: Why is this issue being raised?
+      description: Explain the problem, limitation, error, or optimisation opportunity.
+      placeholder: Describe what is wrong, unclear, or worth improving.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Attach or link supporting material such as plots, images, gels, code, results, notebooks, or private locations.
+      placeholder: |
+        - Plot or image:
+        - Link to code:
+        - Link to results:
+        - Notes:
+    validations:
+      required: false
+
+  - type: textarea
+    id: proposed_change
+    attributes:
+      label: Proposed change
+      description: Summarise the protocol change you think should be made.
+      placeholder: Describe the intended protocol update.
+    validations:
+      required: false
+
+  - type: textarea
+    id: action_plan
+    attributes:
+      label: Action plan
+      description: List the next steps needed to test, document, review, and implement the change.
+      placeholder: |
+        1. Test ...
+        2. Compare ...
+        3. Update README.md on branch ...
+        4. Request review ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: relevant_people
+    attributes:
+      label: Relevant people
+      description: List GitHub handles, names, or teams who should be aware of or involved in this change.
+      placeholder: e.g. @person1, @person2
+    validations:
+      required: false
