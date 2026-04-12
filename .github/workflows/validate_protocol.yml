@@ -2,10 +2,20 @@ name: Validate README protocol
 
 on:
   pull_request:
+    paths:
+      - README.md
+      - legacy/source.txt
+      - scripts/validate_protocol.py
+      - .github/workflows/validate_protocol.yml
   push:
     branches:
       - main
       - import-protocol
+    paths:
+      - README.md
+      - legacy/source.txt
+      - scripts/validate_protocol.py
+      - .github/workflows/validate_protocol.yml
   workflow_dispatch:
 
 jobs:
