@@ -19,7 +19,7 @@ Instead, create a new repository from this template and edit that new repository
 
 # Create a new protocol repository
 
-1. Open this template repository on GitHub: https://github.com/ulelab/Protocol_template
+1. Open this template repository on GitHub: https://github.com/ulelab/protocol-template
 2. Click **Use this template**.
 3. Click **Create a new repository**.
 4. Choose a repository name.

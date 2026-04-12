@@ -1,0 +1,13 @@
+protocol-template
+Copyright (C) 2026 Ira A. Iosub
+Repository: https://github.com/ulelab/protocol-template
+
+This repository contains the original protocol-template materials, including
+template text, documentation, scripts, workflow files, and related assets.
+
+Unless otherwise stated, all original materials in this repository are
+licensed under GPL-3.0. See the LICENSE file for the full license text.
+
+Repositories derived from this template may include additional copyright held
+by their respective protocol authors and contributors. Such downstream works
+must preserve applicable copyright and license notices.
