@@ -63,5 +63,6 @@ When drafting a migrated protocol:
   - ambiguous mappings
   - normalized formatting changes
   - content copied verbatim but not confidently placed
+- Keep ![Created with ulelab Protocol Template](https://img.shields.io/badge/created%20with-ulelab%20Protocol%20Template-blue) at the top of the file.
 
 
