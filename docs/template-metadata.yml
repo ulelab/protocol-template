@@ -1,4 +1,6 @@
 template_repository: ulelab/Protocol_template
 template_url: https://github.com/ulelab/Protocol_template
-template_version: 1.0.0
+template_license: MIT
+template_doi:
+template_version: 1.0.0dev
 template_release_date: 2026-04-10

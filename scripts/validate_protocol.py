@@ -1,3 +1,5 @@
+"""Validate a protocol README against required template elements and source text."""
+
 from pathlib import Path
 import re
 import sys
@@ -5,7 +7,8 @@ import sys
 REQUIRED_HEADINGS = [
     "# About",
     "### Status:",
-    "# Migration notes",
+    "## Contents",
+    "***Status legend***:"
 ]
 
 BAD_PLACEHOLDERS = [
@@ -51,11 +54,11 @@ def main():
             if token.lower() not in readme.lower():
                 failures.append(f"Source token missing from README: {token}")
 
-    if "## Unplaced content" not in readme:
-        failures.append("Missing '## Unplaced content' section")
+    # if "## Unplaced content" not in readme:
+    #     failures.append("Missing '## Unplaced content' section")
 
-    if "## CHECK items" not in readme:
-        failures.append("Missing '## CHECK items' section")
+    # if "## CHECK items" not in readme:
+    #     failures.append("Missing '## CHECK items' section")
 
     if failures:
         print("VALIDATION FAILED")

@@ -43,7 +43,7 @@ The structure of the template is:
 │   └── template-metadata.yml   # Template metadata
 ├── legacy
 │   └── source-metadata.yml     # [EDIT THIS] Source metadata
-├── scripts/                    # Logic used by GitHub Actions
+├── scripts/                    # Scripts used by GitHub Actions
 ├── CODEOWNERS                  # GitHub handles of protocol maintainers
 └── README.md                   # [EDIT THIS] Protocol file (initially placeholders)
 ```
@@ -64,7 +64,7 @@ The only file you must modify is `README.md`. It's recommended to also fill in `
 1. Create a new repository from the template (see above).
 2. Make and switch to a new branch named `import-protocol`. **DO NOT** use a different name for this branch.
 3. Edit `README.md` on GitHub or locally (after cloning the repo) on the `import-protocol` branch.
-> **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps with source protocol provenance.
+> **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps track source protocol provenance.
 4. Replace all template text with real content.
 5. Delete sections you do not need.
 6. Check that no `TODO` text remains.
@@ -92,9 +92,9 @@ This route can save time. It helps keep the template structure consistent, norma
 1. Create a new repository from the template.
 2. Make and switch to a new branch named `import-protocol`. **DO NOT** use a different name for this branch.
 3. Upload the legacy PDF to the `legacy` folder, then commit and push it.
-> **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps with source protocol provenance. 
+> **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps track source protocol provenance.
 4. Keep exactly one PDF in the `legacy` folder, otherwise the process will fail.
-5. Once you push to `import-protocol`, the `prepare migration` GitHub Action will run. This will extract the PDF text and write `legacy/source.txt`.
+5. Once you push to `import-protocol`, the `prepare migration` GitHub Action will run. This will extract the PDF text and write `legacy/source.txt`. Check this text file was created before the next step.
 6. Run `git pull` to get the latest changes locally.
 7. Use the prompt in `PROMPT.md` to ask GitHub Copilot to rewrite `README.md` using `legacy/source.txt`. Copilot will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place.
 8. Review the changes. If most of them look reasonable, commit wih a message like `copilot migration`.

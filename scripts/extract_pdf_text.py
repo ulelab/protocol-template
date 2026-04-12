@@ -1,3 +1,5 @@
+"""Extract text from a single PDF file and write it to a plain text file."""
+
 from pathlib import Path
 import sys
 from pypdf import PdfReader

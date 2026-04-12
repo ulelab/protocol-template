@@ -78,6 +78,13 @@ jobs:
           \newcommand{\gitactor}{\detokenize{${GITHUB_ACTOR}}}
           EOF
 
+      - name: Remove old Protocol_template.pdf
+        run: |
+          set -euo pipefail
+          if [ -f Protocol_template.pdf ]; then
+            rm Protocol_template.pdf
+          fi
+
       - name: Convert README -> PDF
         run: |
           set -euo pipefail
