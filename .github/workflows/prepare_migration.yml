@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - import-protocol
+    paths:
+      - legacy/*.pdf
+      - legacy/*.PDF
 
 permissions:
   contents: write
