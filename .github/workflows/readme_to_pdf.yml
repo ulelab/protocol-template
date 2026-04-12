@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: pandoc/latex:3.9.0.2-debian@sha256:1ee9b79d8e8d85e7b76b1c917b5eb5d3ff1ecb5d01f260e62dabe4fff18098cc
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - uses: actions/checkout@v4
