@@ -62,7 +62,7 @@ The only file you must modify is `README.md`. It's recommended to also fill in `
 ### Suggested workflow
 
 1. Create a new repository from the template (see above).
-2. Make and switch to a new branch named `import-protocol`. **DO NOT** use a different name for this branch.
+2. Make and switch to a new branch named e.g.`import-protocol`. Do not work on `main` directly for adding protocols.
 3. Edit `README.md` on GitHub or locally (after cloning the repo) on the `import-protocol` branch.
 > **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps track source protocol provenance.
 4. Replace all template text with real content.
@@ -70,9 +70,9 @@ The only file you must modify is `README.md`. It's recommended to also fill in `
 6. Check that no `TODO` text remains.
 7. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 8. Commit your changes, then push.
-9. Pushing to `import-protocol` will trigger a GitHub Actions workflow that checks `README.md` for formatting errors. If there are problems, this check will fail.
-10. If checks fail, fix them before trying to merge into `main`.
-11. Once all checks pass and you are happy with the result, open a pull request from `import-protocol` into `main`. This will re-trigger the validation CI test. Ask for a reviewer.
+9. Once you are happy with the result, open a pull request from `import-protocol` into `main`.
+10.  A validation GitHub Actions workflow will run on that pull request. It checks that required template headings are present and that unresolved placeholders are not left in `README.md`, as well as checks on quantities. If checks fail, fix them before merging into `main`.
+11. Ask for a reviewer.
 
 > **Note:** Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
 
@@ -90,8 +90,9 @@ This route can save time. It helps keep the template structure consistent, norma
 ### Suggested workflow
 
 1. Create a new repository from the template.
-2. Make and switch to a new branch named `import-protocol`. **DO NOT** use a different name for this branch.
+2. Make and switch to a new branch named e.g. `import-protocol`. Do not work on `main` directly for importing protocols.
 3. Upload the legacy PDF to the `legacy` folder, then commit and push it.
+> **Important**: Please use a high-quality protocol as the source. Only one PDF file per protocol is supported.
 > **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps track source protocol provenance.
 4. Keep exactly one PDF in the `legacy` folder, otherwise the process will fail.
 5. Once you push to `import-protocol`, the `prepare migration` GitHub Action will run. This will extract the PDF text and write `legacy/source.txt`. Check this text file was created before the next step.
@@ -105,9 +106,9 @@ This route can save time. It helps keep the template structure consistent, norma
 12. Check that no `TODO` text remains.
 13. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 14. Commit your changes, then push.
-15. Pushing to `import-protocol` will trigger a GitHub Actions workflow that checks `README.md` for formatting and units errors. If there are problems, this check will fail.
-16. If checks fail, fix them before trying to merge into `main`.
-17. Once all checks pass and you are happy with the result, open a pull request from `import-protocol` into `main`. This will re-trigger the verification CI test. Ask for a reviewer.
+15. Once you are happy with the result, open a pull request from `import-protocol` into `main`.
+16. A validation GitHub Actions workflow will run on that pull request. It checks that required template headings are present and that unresolved placeholders are not left in `README.md`, as well as checks on quantities. If checks fail, fix them before merging into `main`.
+17. Ask for a reviewer.
 
 ---
 

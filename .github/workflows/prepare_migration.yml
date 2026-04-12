@@ -3,8 +3,8 @@ name: Prepare migration from PDF
 on:
   workflow_dispatch:
   push:
-    branches:
-      - import-protocol
+    branches-ignore:
+      - main
     paths:
       - legacy/*.pdf
       - legacy/*.PDF
