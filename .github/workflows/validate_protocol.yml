@@ -43,11 +43,17 @@ jobs:
         id: validation_gate
         run: |
           set -euo pipefail
-          initial_commit="$(git rev-list --max-parents=0 HEAD)"
+          if ! git rev-parse --verify HEAD^ >/dev/null 2>&1; then
+            echo "should_validate=true" >> "$GITHUB_OUTPUT"
+            echo "Validation will run: no previous commit exists."
+            exit 0
+          fi
 
-          if git diff --quiet "$initial_commit" -- README.md; then
+          previous_commit="$(git rev-parse HEAD^)"
+
+          if git diff --quiet "$previous_commit" HEAD -- README.md; then
             echo "should_validate=false" >> "$GITHUB_OUTPUT"
-            echo "Validation skipped: README.md is unchanged from the initial commit."
+            echo "Validation skipped: README.md is unchanged from the previous commit."
             exit 0
           fi
 
