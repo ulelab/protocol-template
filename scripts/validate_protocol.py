@@ -18,6 +18,10 @@ BAD_PLACEHOLDERS = [
     "CHECK:",
 ]
 
+DISALLOWED_TEMPLATE_TEXT = [
+    "Template repository: Use `Use this template` to create a new protocol repo.",
+]
+
 def extract_key_tokens(text: str):
     patterns = [
         r"\b\d+(?:\.\d+)?\s*(?:µL|uL|mL|L|g|mg|kg|ng|µg)\b",
@@ -47,6 +51,10 @@ def main():
     for token in BAD_PLACEHOLDERS:
         if token in readme:
             failures.append(f"Found unresolved placeholder: {token}")
+
+    for text in DISALLOWED_TEMPLATE_TEXT:
+        if text in readme:
+            failures.append(f"Found template-only text that must be removed: {text}")
 
     if source is not None:
         source_tokens = extract_key_tokens(source)
