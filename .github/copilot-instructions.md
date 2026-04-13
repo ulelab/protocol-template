@@ -22,12 +22,13 @@ When converting legacy protocol text into the repository template:
 You may normalize formatting only when the meaning is unchanged and unambiguous:
 - Add a space between numbers and units.
 - Standardize temperature formatting to `37 °C`.
-- Standardize volume units to `µL`, `mL`, `L`.
-- Standardize concentration units to `mM`, `µM`, `nM`, `% (w/v)`, etc.
+- Standardize volume units to `µL`, `mL`, `L`, using the micro sign `µ` consistently.
+- Standardize concentration units to `mM`, `µM`, `nM`, `% (w/v)`, etc., using the micro sign `µ` consistently.
 - Standardize time units to full words: `seconds`, `minutes`, `hours`.
 - Standarize chemical names to match the source but with consistent formatting (e.g. `Tris-HCl` instead of `Tris HCl`).
 - Standardize pH formatting to `pH 7.4`.
-- Standardize H2O to H<sub>2</sub>O. Similarly for other chemical formulas (e.g. MgCl2 to MgCl<sub>2</sub>).
+- Standardize chemical formulas with HTML subscripts, for example H2O to H<sub>2</sub>O. Similarly for other chemical formulas (e.g. MgCl2 to MgCl<sub>2</sub>).
+- Do not use Unicode subscript characters such as `₂`.
 - Standardize `RNAseq` or `RNA-Seq` to `RNA-seq`.Same for `ChIP-seq`, `ATAC-seq`, etc.
 - Normalize bullet formatting and markdown table formatting.
 - Normalize heading structure to match the repository template.
