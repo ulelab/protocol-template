@@ -100,13 +100,6 @@ jobs:
           \newcommand{\gitactor}{\detokenize{${GITHUB_ACTOR}}}
           EOF
 
-      - name: Remove old protocol-template.pdf
-        run: |
-          set -euo pipefail
-          if [ -f protocol-template.pdf ]; then
-            rm protocol-template.pdf
-          fi
-
       - name: Convert README -> PDF
         run: |
           set -euo pipefail
@@ -148,6 +141,10 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if [ "$repo_name" != "protocol-template" ] && git ls-files --error-unmatch protocol-template.pdf >/dev/null 2>&1; then
+            git rm -f protocol-template.pdf
+          fi
 
           git add "${repo_name}.pdf"
           git diff --cached --quiet && exit 0
