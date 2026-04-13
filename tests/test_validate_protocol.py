@@ -28,6 +28,8 @@ Add 10 uL lysis buffer and incubate for 5 min at 20 C.
 Wash with 70% ethanol and elute.
 """
 
+TEMPLATE_NOTE = "> Template repository: Click `Use this template` to create a new protocol repo. Template docs are in [docs/USING_THIS_TEMPLATE.md](https://github.com/ulelab/protocol-template/blob/main/docs/USING_THIS_TEMPLATE.md)\n\n"
+
 
 class ValidateReadmeTests(unittest.TestCase):
     def test_valid_readme_passes(self) -> None:
@@ -76,6 +78,13 @@ class ValidateReadmeTests(unittest.TestCase):
         )
         self.assertIn(
             "Missing or malformed status line: expected '### Status: ...'.",
+            validate_readme(readme),
+        )
+
+    def test_template_repository_note_must_be_removed(self) -> None:
+        readme = TEMPLATE_NOTE + VALID_README
+        self.assertIn(
+            f"Found template-only text that must be removed: {TEMPLATE_NOTE.strip()}",
             validate_readme(readme),
         )
 

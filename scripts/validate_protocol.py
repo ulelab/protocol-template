@@ -36,7 +36,7 @@ BAD_PLACEHOLDERS = {
 }
 
 DISALLOWED_TEMPLATE_TEXT = [
-    "Template repository: Click `Use this template` to create a new protocol repo.",
+    "> Template repository: Click `Use this template` to create a new protocol repo. Template docs are in [docs/USING_THIS_TEMPLATE.md](https://github.com/ulelab/protocol-template/blob/main/docs/USING_THIS_TEMPLATE.md)",
 ]
 
 
