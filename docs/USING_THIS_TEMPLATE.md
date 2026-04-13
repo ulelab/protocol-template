@@ -10,7 +10,7 @@ Instead, create a new repository from this template and edit that new repository
 
 - [Create a new protocol repository](#create-a-new-protocol-repository)
   - [1. Add and update a protocol manually](#1-add-and-update-a-protocol-manually)
-  - [2. Add and update a protocol from a legacy PDF using GitHub Actions and Copilot](#2-add-and-update-a-protocol-from-a-legacy-pdf-using-github-actions-and-copilot)
+  - [2. Add and update a protocol from a legacy PDF using GitHub Actions and AI assistance](#2-add-and-update-a-protocol-from-a-legacy-pdf-using-github-actions-and-ai-assistance)
   - [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 - [How to make changes to a protocol](#how-to-make-changes-to-a-protocol)
 - [Using the protocol in the lab](#using-the-protocol-in-the-lab)
@@ -43,18 +43,18 @@ The structure of the template is:
 ├── legacy
 │   └── source-metadata.yml     # [EDIT THIS] Source metadata
 ├── scripts/                    # Scripts used by GitHub Actions
-├── tests/                      # Scripts for testing protocol validation
+├── tests/                      # Tests for the protocol validator
 ├── CODEOWNERS                  # GitHub handles of protocol maintainers
 └── README.md                   # [EDIT THIS] Protocol file (initially placeholders)
 ```
 
-The only file you must modify is `README.md`, which will contain all protocol content. Do not rename this file. It's recommended to also fill in `source-metadata.yml` and `CODEOWNERS`. 
+The main file you must edit for protocol content is `README.md`. Do not rename this file. For migration, you will also add a PDF in `legacy/`. It's recommended to also fill in `source-metadata.yml` and `CODEOWNERS`.
 > **Warning**: Do not edit any other files unless you want to change template mechanics themselves; that is an advanced action.
 
 #### To proceed, choose one of the following routes:
 
 - [1. Add and update a protocol manually](#1-add-and-update-a-protocol-manually): Useful if you write a protocol from scratch, editing the `README.md` directly.
-- [2. Add and update a protocol from a legacy PDF using GitHub Actions and Copilot](#2-add-and-update-a-protocol-from-a-legacy-pdf-using-github-actions-and-copilot): Useful for one-time conversion from a legacy source.
+- [2. Add and update a protocol from a legacy PDF using GitHub Actions and AI assistance](#2-add-and-update-a-protocol-from-a-legacy-pdf-using-github-actions-and-ai-assistance): Useful for one-time conversion from a legacy source.
 
 ---
 
@@ -72,7 +72,7 @@ The only file you must modify is `README.md`, which will contain all protocol co
 7. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 8. Commit your changes, then push.
 9. Once you are happy with the result, open a pull request from `import-protocol` into `main`.
-10.  A validation GitHub Actions workflow will run on that pull request. It checks that required template headings are present and that unresolved placeholders are not left in `README.md`, as well as checks on quantities. If checks fail, fix them before merging into `main`.
+10. A validation GitHub Actions workflow will run on that pull request when `README.md` has changed. It checks the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names. If checks fail, fix them before merging into `main`.
 11. Ask for a reviewer.
 
 > **Note:** Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
@@ -80,7 +80,7 @@ The only file you must modify is `README.md`, which will contain all protocol co
 
 ---
 
-## 2. Add and update a protocol from a legacy PDF using GitHub Actions and Copilot
+## 2. Add and update a protocol from a legacy PDF using GitHub Actions and AI assistance
 
 This repository also includes tools to help convert legacy protocol PDFs into Markdown.
 
@@ -96,11 +96,11 @@ This route can save time. It helps keep the template structure consistent, norma
 > **Important**: Please use a high-quality protocol as the source. Only one PDF file per protocol is supported.
 > **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps track source protocol provenance.
 4. Keep exactly one PDF in the `legacy` folder, otherwise the process will fail.
-5. Once you push to `import-protocol`, the `prepare migration` GitHub Action will run. This will extract the PDF text and write `legacy/source.txt`. Check this text file was created before the next step.
+5. Once you push a PDF change in the `legacy` folder to a non-`main` branch, the `Prepare migration from PDF` GitHub Action will run. This extracts the PDF text and writes `legacy/source.txt`. Check that this file was created before the next step.
 6. Run `git pull` to get the latest changes locally.
 7. Use the prompt in `docs/PROMPT.md` to ask GitHub Copilot or another LLM to rewrite `README.md`. The model will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place.
 > **Note:** Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better.
-8. Review the changes. If most of them look reasonable, commit with a message like `translation by LLM`.
+8. Review the changes. If most of them look reasonable, commit with a message like `migration by LLM`.
 9. Verify that `README.md` is accurate by comparing it to the original PDF and fix mistakes.
 10. Check the `Migration notes` section and every place marked with `CHECK:`. Resolve anything unclear.
 11. Make any changes necessary. Delete sections you do not need.
@@ -108,7 +108,7 @@ This route can save time. It helps keep the template structure consistent, norma
 13. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 14. Commit your changes, then push.
 15. Once you are happy with the result, open a pull request from `import-protocol` into `main`.
-16. A validation GitHub Actions workflow will run on that pull request. It checks that required template headings are present and that unresolved placeholders are not left in `README.md`, as well as checks on quantities. If checks fail, fix them before merging into `main`.
+16. A validation GitHub Actions workflow will run on that pull request when `README.md` has changed. It checks the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names. If `legacy/source.txt` is present, it also checks that key quantities from the source appear in `README.md`. If checks fail, fix them before merging into `main`.
 17. Ask for a reviewer.
 
 ---
@@ -121,10 +121,11 @@ This section applies whether you updated the protocol manually or generated it f
 
 At minimum, make sure your protocol includes:
 
-Mandatory sections (validation will fail if these sections are missing)
+Mandatory items for validation:
 
 - a clear title, formatted as a top-level Markdown heading using a single `#`, for example `# RNA-seq`
-- an accurate status and the legend.
+- an accurate `### Status:` line
+- a status legend row containing `[OK]`, `[?]`, and `[X]`
 - a short description (`# About`)
 - contents (`## Contents`)
 
@@ -203,7 +204,7 @@ If you want to adapt or improve an existing protocol on GitHub:
 7. If the change relates to a GitHub Issue, include the Issue number, for example `closes #12`.
 8. After pushing to any branch, wait a few minutes.
 9. GitHub will automatically generate a PDF version of the protocol on that branch.
-10. This creates another commit, usually with a message like `Update protocol-x.pdf`.
+10. This creates another commit, usually with a message like `Update <repo-name>.pdf`.
 11. If you have questions about a protocol, or want to propose a change, open a GitHub Issue using the `Protocol issues` template and assign relevant people.
 12. If you are developing a protocol as a team, you can use a GitHub Project.
 13. Use Issues to track optimisation ideas or questions.
@@ -221,7 +222,7 @@ If you want to adapt or improve an existing protocol on GitHub:
 
 After pushing changes to `README.md`, wait a few minutes.
 
-GitHub will automatically generate a PDF version of the protocol on that branch and commit it back to the repository, usually with a message like `Update Protocol_x.pdf`.
+GitHub will automatically generate a PDF version of the protocol on that branch and commit it back to the repository, usually with a message like `Update <repo-name>.pdf`.
 
 ### Use the commit SHA as the version identifier
 
