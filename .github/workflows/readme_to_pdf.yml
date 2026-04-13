@@ -114,7 +114,6 @@ jobs:
 
           pandoc README._pdf.md \
             -o "${repo_name}.pdf" \
-            --from=gfm+gfm_auto_identifiers \
             --pdf-engine=xelatex \
             -V colorlinks=true \
             -V linkcolor=blue \
