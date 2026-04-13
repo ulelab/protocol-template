@@ -57,6 +57,7 @@ When drafting a migrated protocol:
 - Use the template headings in `README.md`
 - Keep all source content.
 - Add `CHECK:` markers for uncertainty.
+- Use `CHECK:` only for genuine unresolved uncertainty. If no uncertainty remains, do not mention `CHECK:` at all.
 - Add an `# Migration notes` section listing:
   - Imported protocol metadata from `source-metadata.yml` (only the non-blank lines).
   - template metadata from `template-metadata.yml`
