@@ -22,9 +22,8 @@ Instead, create a new repository from this template and edit that new repository
 1. Open this template repository on GitHub: https://github.com/ulelab/protocol-template
 2. Click **Use this template**.
 3. Click **Create a new repository**.
-4. Choose a repository name.
-   Example: `Protocol_iCLIP`
-   Use a short, clear name starting with `Protocol_`.
+4. Choose a repository name. Use a short, clear name starting with `protocol-`.
+   > Example: `protocol-rnaseq`
 5. Choose the `lab protocols` custom property, if used in your organisation.
 6. Choose where to create the repository.
 7. Click **Create repository**.
@@ -44,11 +43,13 @@ The structure of the template is:
 ├── legacy
 │   └── source-metadata.yml     # [EDIT THIS] Source metadata
 ├── scripts/                    # Scripts used by GitHub Actions
+├── tests/                      # Scripts for testing protocol validation
 ├── CODEOWNERS                  # GitHub handles of protocol maintainers
 └── README.md                   # [EDIT THIS] Protocol file (initially placeholders)
 ```
 
-The only file you must modify is `README.md`. It's recommended to also fill in `source-metadata.yml` and `CODEOWNERS`. Do not edit other files unless you want to change template mechanics themselves; that is an advanced action.
+The only file you must modify is `README.md`, which will contain all protocol content. Do not rename this file. It's recommended to also fill in `source-metadata.yml` and `CODEOWNERS`. 
+> **Warning**: Do not edit any other files unless you want to change template mechanics themselves; that is an advanced action.
 
 #### To proceed, choose one of the following routes:
 
@@ -61,7 +62,7 @@ The only file you must modify is `README.md`. It's recommended to also fill in `
 
 ### Suggested workflow
 
-1. Create a new repository from the template (see above).
+1. Create a new repository from the template (see [Create a new protocol repository](#create-a-new-protocol-repository)).
 2. Make and switch to a new branch named e.g.`import-protocol`. Do not work on `main` directly for adding protocols.
 3. Edit `README.md` on GitHub or locally (after cloning the repo) on the `import-protocol` branch.
 > **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps track source protocol provenance.
@@ -98,9 +99,9 @@ This route can save time. It helps keep the template structure consistent, norma
 5. Once you push to `import-protocol`, the `prepare migration` GitHub Action will run. This will extract the PDF text and write `legacy/source.txt`. Check this text file was created before the next step.
 6. Run `git pull` to get the latest changes locally.
 7. Use the prompt in `docs/PROMPT.md` to ask GitHub Copilot or another LLM to rewrite `README.md`. The model will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place.
-> **Note:**: Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better.
-8. Review the changes. If most of them look reasonable, commit with a message like `migration by LLM`.
-9. Verify that `README.md` is accurate by comparing it to the original PDF.
+> **Note:** Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better.
+8. Review the changes. If most of them look reasonable, commit with a message like `translation by LLM`.
+9. Verify that `README.md` is accurate by comparing it to the original PDF and fix mistakes.
 10. Check the `Migration notes` section and every place marked with `CHECK:`. Resolve anything unclear.
 11. Make any changes necessary. Delete sections you do not need.
 12. Check that no `TODO` text remains.
@@ -120,9 +121,15 @@ This section applies whether you updated the protocol manually or generated it f
 
 At minimum, make sure your protocol includes:
 
-- a clear title
-- an accurate status
-- a short description
+Mandatory sections (validation will fail if these sections are missing)
+
+- a clear title, formatted as a top-level Markdown heading using a single `#`, for example `# RNA-seq`
+- an accurate status and the legend.
+- a short description (`# About`)
+- contents (`## Contents`)
+
+Recommended content:
+
 - the starting material
 - the actual steps
 - key reagents, volumes, and timings
@@ -142,7 +149,7 @@ Modify:
 Fill in:
 
 - the protocol title
-- a short description in **About**
+- a short description in `# About`
 - all protocol steps
 - reagents, volumes, and conditions
 - QC or output information if needed
@@ -181,29 +188,6 @@ Examples:
 ### Status: 🔴 `[X]` | do not use, conditions still under review
 ```
 
-
-### Common mistakes
-
-#### I edited the template repository itself
-
-Do not do that unless you are updating the master template for everyone.
-
-Create a new repository from the template instead.
-
-#### I left `TODO` text in the file
-
-Search the file for `TODO` and replace or delete all of it.
-
-#### I left headings like `Step 1` and `Step 2`
-
-Rename them to real step names.
-
-Example:
-
-- `Step 1` -> `RNA extraction`
-- `Step 2` -> `Fragmentation`
-- `Step 3` -> `Reverse transcription`
-
 ---
 
 # How to make changes to a protocol
@@ -219,7 +203,7 @@ If you want to adapt or improve an existing protocol on GitHub:
 7. If the change relates to a GitHub Issue, include the Issue number, for example `closes #12`.
 8. After pushing to any branch, wait a few minutes.
 9. GitHub will automatically generate a PDF version of the protocol on that branch.
-10. This creates another commit, usually with a message like `Update Protocol_x.pdf`.
+10. This creates another commit, usually with a message like `Update protocol-x.pdf`.
 11. If you have questions about a protocol, or want to propose a change, open a GitHub Issue using the `Protocol issues` template and assign relevant people.
 12. If you are developing a protocol as a team, you can use a GitHub Project.
 13. Use Issues to track optimisation ideas or questions.
