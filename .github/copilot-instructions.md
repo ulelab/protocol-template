@@ -27,7 +27,7 @@ You may normalize formatting only when the meaning is unchanged and unambiguous:
 - Standardize time units to full words: `seconds`, `minutes`, `hours`.
 - Standarize chemical names to match the source but with consistent formatting (e.g. `Tris-HCl` instead of `Tris HCl`).
 - Standardize pH formatting to `pH 7.4`.
-- Standardize `H2O` to `H₂O`. Similarly for other chemical formulas (e.g. `MgCl₂`).
+- Standardize H2O to H<sub>2</sub>O. Similarly for other chemical formulas (e.g. MgCl2 to MgCl<sub>2</sub>).
 - Standardize `RNAseq` or `RNA-Seq` to `RNA-seq`.Same for `ChIP-seq`, `ATAC-seq`, etc.
 - Normalize bullet formatting and markdown table formatting.
 - Normalize heading structure to match the repository template.
