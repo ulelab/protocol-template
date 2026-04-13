@@ -95,7 +95,10 @@ This route can save time. It helps keep the template structure consistent, norma
 1. Create a new repository from the template.
 2. Create and switch to a new branch named e.g. `import-protocol`. Do not work on `main` directly for importing protocols.
 3. Upload the legacy PDF to the `legacy` folder, then commit and push it.
-> **Important**: Please use a high-quality protocol as the source. Only one PDF file per protocol is supported.
+> **Important**: Please use a high-quality, well-structured protocol as the source. Only one PDF file per protocol is supported.
+
+> **Warning**: Custom content in protcols (such as images) may represent a challenge for this route, you may need to add it manually.
+
 > **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps track source protocol provenance.
 4. Keep exactly one PDF in the `legacy` folder, otherwise the process will fail.
 5. Once you push a PDF change in the `legacy` folder to a non-`main` branch, the `Prepare migration from PDF` GitHub Action will run. This extracts the PDF text and writes `legacy/source.txt`. Check that this file was created before the next step.
