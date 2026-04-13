@@ -48,6 +48,48 @@ def normalize_text(text: str) -> str:
     return re.sub(r"\s+", " ", text.lower().replace("µ", "u"))
 
 
+def canonicalize_measurement(token: str) -> str:
+    token = normalize_text(token)
+    token = token.replace("°", "")
+    token = re.sub(r"\s+", "", token)
+
+    time_match = re.fullmatch(r"(\d+(?:\.\d+)?)(seconds|second|secs|sec|s|minutes|minute|mins|min|hours|hour|hrs|hr)", token)
+    if time_match:
+        value, unit = time_match.groups()
+        unit_map = {
+            "seconds": "s",
+            "second": "s",
+            "secs": "s",
+            "sec": "s",
+            "s": "s",
+            "minutes": "min",
+            "minute": "min",
+            "mins": "min",
+            "min": "min",
+            "hours": "h",
+            "hour": "h",
+            "hrs": "h",
+            "hr": "h",
+        }
+        return f"{value}{unit_map[unit]}"
+
+    temp_match = re.fullmatch(r"(\d+(?:\.\d+)?)(c)", token)
+    if temp_match:
+        value, unit = temp_match.groups()
+        return f"{value}{unit}"
+
+    volume_or_mass_match = re.fullmatch(r"(\d+(?:\.\d+)?)(ul|ml|l|g|mg|kg|ng|ug)", token)
+    if volume_or_mass_match:
+        value, unit = volume_or_mass_match.groups()
+        return f"{value}{unit}"
+
+    percent_match = re.fullmatch(r"(\d+(?:\.\d+)?)%", token)
+    if percent_match:
+        return token
+
+    return token
+
+
 def extract_key_tokens(text: str) -> List[str]:
     patterns = [
         r"\b\d+(?:\.\d+)?\s*(?:µL|uL|mL|L|g|mg|kg|ng|µg)\b",
@@ -102,9 +144,11 @@ def validate_readme(readme: str, source: Optional[str] = None) -> List[str]:
         failures.append(f"Found placeholder contents entry: {match}")
 
     if source is not None:
-        normalized_readme = normalize_text(readme)
+        readme_tokens = {
+            canonicalize_measurement(token) for token in extract_key_tokens(readme)
+        }
         for token in extract_key_tokens(source):
-            if normalize_text(token) not in normalized_readme:
+            if canonicalize_measurement(token) not in readme_tokens:
                 failures.append(f"Source token missing from README: {token}")
 
     return list(dict.fromkeys(failures))

@@ -59,6 +59,15 @@ class ValidateReadmeTests(unittest.TestCase):
         source = "Use 10 µL reagent for 5 min at 20 C and finish in 70% ethanol."
         self.assertEqual(validate_readme(VALID_README, source), [])
 
+    def test_source_token_matching_allows_spacing_and_unit_normalization(self) -> None:
+        source = "Use 1uL primer, 20ul water, incubate 10min at 65C, then hold 30min at 42  C."
+        readme = VALID_README.replace(
+            "Add 10 uL lysis buffer and incubate for 5 min at 20 C.",
+            "Add 1 µL primer and 20 µL water, incubate for 10 minutes at 65 °C, then hold for 30 minutes at 42 °C.",
+            1,
+        )
+        self.assertEqual(validate_readme(readme, source), [])
+
     def test_missing_status_line_is_reported(self) -> None:
         readme = VALID_README.replace(
             "### Status: 🟢 `[OK]` | validated and ready to use\n",
