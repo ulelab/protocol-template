@@ -107,8 +107,12 @@ This route can save time. It helps keep the template structure consistent, norma
 7. Open the repo folder in a code editor and use GitHub Copilot or another LLM assistant. We recommend [VS Code](https://code.visualstudio.com/).
 8. Use the skill in `skills/protocol-migration` (or if you prefer, the prompt in `docs/PROMPT.md`) to ask GitHub Copilot or another LLM to rewrite `README.md`. The model will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place, using `legacy/source.txt` and the legacy PDF as sources.
 > **Note**: Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better.
->**Note**: If using Claude Code, you can invoke the skill by typing `/protocol-migration`. For others, use something like:
-```Migrate this protocol using the protocol-migration skill. Preserve meaning and mark uncertainty with CHECK:.```
+
+**In VS Code**:
+  - **Codex**: use `/skills` or mention `protocol-migration`
+  - **Claude**: run `/protocol-migration`
+  - **Copilot agent mode**: ask it to use the `protocol-migration` skill (e.g. something like:
+  `Migrate this protocol using the protocol-migration skill.`)
 9. Review the changes. If most of them look reasonable, commit with a message like `migration by LLM`.
 10. Verify that `README.md` is accurate by comparing it to the original PDF and fix mistakes.
 11. Check the `Migration notes` section and every place marked with `CHECK:`. Resolve anything unclear.
