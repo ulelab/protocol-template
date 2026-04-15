@@ -105,8 +105,10 @@ This route can save time. It helps keep the template structure consistent, norma
 6. Clone the repo locally, and switch to `import-protocol` branch. If you already have a local clone, run `git pull` to get the latest changes locally.
 > **Note**: Alternatively, you can complete steps 6-15 in GitHub Codespaces. On GitHub.com select the branch you want to work on, click **Code**, go to **Codespaces** tab and click **Create codespace on import-protocol**. This will open VS Code in a new browser tab, with all files loaded automatically. Note that this uses GitHub-hosted compute, and free usage is limited.
 7. Open the repo folder in a code editor and use GitHub Copilot or another LLM assistant. We recommend [VS Code](https://code.visualstudio.com/).
-8. Use the prompt in `docs/PROMPT.md` to ask GitHub Copilot or another LLM to rewrite `README.md`. The model will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place.
-> **Note:** Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better.
+8. Use the skill in `skills/protocol-migration` (or if you prefer, the prompt in `docs/PROMPT.md`) to ask GitHub Copilot or another LLM to rewrite `README.md`. The model will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place, using `legacy/source.txt` and the legacy PDF as sources.
+> **Note**: Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better.
+>**Note**: If using Claude Code, you can invoke the skill by typing `/protocol-migration`. For others, use something like:
+```Migrate this protocol using the protocol-migration skill. Preserve meaning and mark uncertainty with CHECK:.```
 9. Review the changes. If most of them look reasonable, commit with a message like `migration by LLM`.
 10. Verify that `README.md` is accurate by comparing it to the original PDF and fix mistakes.
 11. Check the `Migration notes` section and every place marked with `CHECK:`. Resolve anything unclear.
