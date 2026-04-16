@@ -101,7 +101,7 @@ This route can save time. It helps keep the template structure consistent, norma
 
 > **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps track source protocol provenance.
 4. Keep exactly one PDF in the `legacy` folder, otherwise the process will fail.
-5. Once you push a PDF change in the `legacy` folder to a non-`main` branch, the migration GitHub Actions will run. `Prepare migration from PDF` writes `legacy/source.txt`, and `pdf-to-markdown` writes `legacy/source.md`. Check that these files were created before the next step.
+5. Once you push a PDF change in the `legacy` folder to a non-`main` branch, the migration GitHub Actions will run. `pdf-to-text` writes `legacy/source.txt`, and `pdf-to-markdown` writes `legacy/source.md`. Check that these files were created before the next step.
 6. Clone the repo locally, and switch to `import-protocol` branch. If you already have a local clone, run `git pull` to get the latest changes locally.
 > **Note**: Alternatively, you can complete steps 6-15 in GitHub Codespaces. On GitHub.com select the branch you want to work on, click **Code**, go to **Codespaces** tab and click **Create codespace on import-protocol**. This will open VS Code in a new browser tab, with all files loaded automatically. Note that this uses GitHub-hosted compute, and free usage is limited.
 7. Open the repo folder in a code editor and use GitHub Copilot or another LLM assistant. We recommend [VS Code](https://code.visualstudio.com/).

@@ -1,4 +1,4 @@
-name: Build README PDF
+name: README-to-pdf
 
 on:
   push:

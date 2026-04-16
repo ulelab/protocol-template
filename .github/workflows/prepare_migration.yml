@@ -1,4 +1,4 @@
-name: Prepare migration from PDF
+name: pdf-to-text
 
 on:
   workflow_dispatch:
