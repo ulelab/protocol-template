@@ -1,16 +1,17 @@
 ---
 name: protocol-migration
-description: Convert legacy/source.txt into README.md using the repository template, preserving scientific meaning and marking uncertainty with CHECK:.
+description: Convert legacy/source.md into README.md using the repository template, using source.txt only as fallback and marking uncertainty with CHECK:.
 ---
 
 Use this skill when migrating a legacy protocol into this repository template.
 
 Goal:
-Convert `legacy/source.txt` into `README.md`, using the existing `README.md` as the target template and structure.
+Convert `legacy/source.md` into `README.md`, using the existing `README.md` as the target template and structure.
 
 Primary sources:
-- `legacy/source.txt` is the main source
-- also consult the PDF in `legacy/` for tables, layout-dependent content, and anything unclear
+- `legacy/source.md` is the main source
+- `legacy/source.txt` is a fallback source only when `legacy/source.md` looks malformed, incomplete, or unclear
+- consult the PDF in `legacy/` as the final reference source of truth for tables, figures, layout-dependent content, and anything still ambiguous
 
 Core rules:
 - Do not change protocol meaning
@@ -57,15 +58,17 @@ Output requirements:
   - content copied verbatim but not confidently placed
 
 After drafting, verify the migration against the source:
-- compare the migrated `README.md` against `legacy/source.txt`
-- - compare the migrated `README.md` against the PDF in `legacy/`
+- compare the migrated `README.md` against `legacy/source.md`
+- compare any malformed, incomplete, or ambiguous passages against `legacy/source.txt`
+- compare the migrated `README.md` against the PDF in `legacy/` for tables, figures, layout-dependent content, and any remaining ambiguity
 - check that all protocol steps, notes, warnings, reagent names, quantities, temperatures, timings, and conditions are still present
 - check that no source content has been silently omitted, merged, or reordered without justification
 - check any tables, layout-dependent content, or ambiguous sections against the PDF in `legacy/`
 - leave `CHECK:` anywhere the mapping is uncertain rather than guessing
 
 Verification checklist:
-- `README.md` still matches the scientific content of `legacy/source.txt`
+- `README.md` still matches the scientific content of `legacy/source.md`
+- any malformed, incomplete, or ambiguous passages were cross-checked against `legacy/source.txt`
 - no protocol steps or warnings were omitted
 - no values were invented or made more precise than in the source
 - tables and layout-dependent content were checked against the PDF in `legacy/`

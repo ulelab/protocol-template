@@ -4,8 +4,9 @@ This repository stores laboratory protocols in Markdown in `README.md`.
 
 ## Primary rule
 Do not change protocol meaning.
-Use `legacy/source.txt` as the primary source when rewriting `README.md`.
-Also consult the PDF file in `legacy/` as the reference source for tables, layout-dependent content, and anything unclear.
+Use `legacy/source.md` as the primary source when rewriting `README.md`.
+Use `legacy/source.txt` only as a fallback when `legacy/source.md` looks malformed, incomplete, or unclear.
+Use the PDF file in `legacy/` as the final reference source of truth for tables, figures, layout-dependent content, and anything still ambiguous.
 
 ## Migration behavior
 When converting legacy protocol text into the repository template:
@@ -67,5 +68,4 @@ When drafting a migrated protocol:
   - content copied verbatim but not confidently placed
 - Keep ![Created with ulelab Protocol Template](https://img.shields.io/badge/created%20with-ulelab%20Protocol%20Template-blue) at the top of the file.
 - Delete the "Template repository: Click `Use this template` to create a new protocol repo..." note.
-
 
