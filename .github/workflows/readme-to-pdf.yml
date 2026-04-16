@@ -1,4 +1,4 @@
-name: Build README PDF
+name: README-to-pdf
 
 on:
   push:
@@ -42,14 +42,37 @@ jobs:
           set -euo pipefail
           cp README.md README._pdf.md
 
-      - name: Trim README preamble for PDF
+      - name: Drop leading YAML front matter for PDF
         run: |
           set -euo pipefail
           awk '
-            found || /^# / {
-              found = 1
-              print
+            BEGIN { in_front_matter = 0 }
+            NR == 1 && /^---[[:space:]]*$/ {
+              in_front_matter = 1
+              next
             }
+            in_front_matter && (/^---[[:space:]]*$/ || /^\.\.\.[[:space:]]*$/) {
+              in_front_matter = 0
+              next
+            }
+            in_front_matter { next }
+            { print }
+          ' README._pdf.md > README._pdf.tmp && mv README._pdf.tmp README._pdf.md
+
+      - name: Remove top template preamble for PDF
+        run: |
+          set -euo pipefail
+          awk '
+            BEGIN { started = 0 }
+            !started {
+              if (/^\[!\[/) next
+              if (/^> Template repository:/) next
+              if (/^[[:space:]]*$/) next
+              started = 1
+              print
+              next
+            }
+            { print }
           ' README._pdf.md > README._pdf.tmp && mv README._pdf.tmp README._pdf.md
 
       - name: Exclude migration notes from PDF
@@ -107,6 +130,7 @@ jobs:
 
           pandoc README._pdf.md \
             -o "${repo_name}.pdf" \
+            --from=markdown-yaml_metadata_block \
             --pdf-engine=xelatex \
             -V colorlinks=true \
             -V linkcolor=blue \

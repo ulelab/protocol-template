@@ -1,0 +1,101 @@
+name: pdf-to-markdown
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - legacy/*.pdf
+      - legacy/*.PDF
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    env:
+      LEGACY_DIR: legacy
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Check whether conversion should run
+        id: pdf_gate
+        run: |
+          set -euo pipefail
+
+          if [ ! -d "$LEGACY_DIR" ]; then
+            echo "should_convert=false" >> "$GITHUB_OUTPUT"
+            echo "Conversion skipped: $LEGACY_DIR/ does not exist."
+            exit 0
+          fi
+
+          mapfile -t pdf_files < <(find "$LEGACY_DIR" -maxdepth 1 -type f \( -iname '*.pdf' \) | sort)
+          pdf_count="${#pdf_files[@]}"
+
+          if [ "$pdf_count" -eq 0 ]; then
+            echo "should_convert=false" >> "$GITHUB_OUTPUT"
+            echo "Conversion skipped: no PDF files found in $LEGACY_DIR/."
+            exit 0
+          fi
+
+          if [ "$pdf_count" -gt 1 ]; then
+            printf 'Found %s PDF files in %s/:\n' "$pdf_count" "$LEGACY_DIR"
+            printf ' - %s\n' "${pdf_files[@]}"
+            echo "Expected exactly one PDF file in $LEGACY_DIR/."
+            exit 1
+          fi
+
+          echo "should_convert=true" >> "$GITHUB_OUTPUT"
+          echo "pdf_path=${pdf_files[0]}" >> "$GITHUB_OUTPUT"
+          echo "Using PDF: ${pdf_files[0]}"
+
+      - name: Install fast-mode dependencies
+        if: steps.pdf_gate.outputs.should_convert == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install pymupdf pymupdf4llm
+
+      - name: Convert PDF to legacy/source.md
+        if: steps.pdf_gate.outputs.should_convert == 'true'
+        run: |
+          set -euo pipefail
+          python scripts/pdf_to_md/pdf_to_md.py "$LEGACY_DIR" "$LEGACY_DIR/source.md" --no-progress
+
+      - name: Show generated files
+        if: steps.pdf_gate.outputs.should_convert == 'true'
+        run: |
+          find "$LEGACY_DIR" -maxdepth 3 \( -name "source.md" -o -path "$LEGACY_DIR/images/*" \) | sort
+
+      - name: Commit and push generated files
+        if: steps.pdf_gate.outputs.should_convert == 'true'
+        run: |
+          set -euo pipefail
+
+          branch_name="${GITHUB_REF_NAME}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A "$LEGACY_DIR"
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "Prepare migration: extract markdown from legacy PDF"
+          git fetch origin "$branch_name"
+          git rebase "origin/$branch_name"
+          git push origin "HEAD:$branch_name"
