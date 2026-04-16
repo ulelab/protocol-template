@@ -3,7 +3,7 @@
 from pathlib import Path
 import re
 import sys
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$", re.MULTILINE)
 STATUS_LINE_RE = re.compile(
@@ -45,12 +45,18 @@ def extract_headings(text: str) -> List[Tuple[int, str]]:
 
 
 def normalize_text(text: str) -> str:
-    return re.sub(r"\s+", " ", text.lower().replace("µ", "u"))
+    return re.sub(r"\s+", " ", text.lower().replace("µ", "u").replace("μ", "u"))
+
+
+def line_number_for_offset(text: str, offset: int) -> int:
+    return text.count("\n", 0, offset) + 1
 
 
 def canonicalize_measurement(token: str) -> str:
     token = normalize_text(token)
     token = token.replace("°", "")
+    token = token.replace(",", "")
+    token = re.sub(r"\bx\s*", "", token)
     token = re.sub(r"\s+", "", token)
 
     time_match = re.fullmatch(r"(\d+(?:\.\d+)?)(seconds|second|secs|sec|s|minutes|minute|mins|min|hours|hour|hrs|hr)", token)
@@ -78,7 +84,9 @@ def canonicalize_measurement(token: str) -> str:
         value, unit = temp_match.groups()
         return f"{value}{unit}"
 
-    volume_or_mass_match = re.fullmatch(r"(\d+(?:\.\d+)?)(ul|ml|l|g|mg|kg|ng|ug)", token)
+    volume_or_mass_match = re.fullmatch(
+        r"(\d+(?:\.\d+)?)(ul|ml|l|g|mg|kg|ng|ug)", token
+    )
     if volume_or_mass_match:
         value, unit = volume_or_mass_match.groups()
         return f"{value}{unit}"
@@ -90,17 +98,33 @@ def canonicalize_measurement(token: str) -> str:
     return token
 
 
-def extract_key_tokens(text: str) -> List[str]:
+def extract_key_token_occurrences(text: str) -> List[Tuple[str, int]]:
     patterns = [
-        r"\b\d+(?:\.\d+)?\s*(?:µL|uL|mL|L|g|mg|kg|ng|µg)\b",
+        r"\b\d+(?:,\d{3})*(?:\.\d+)?\s*(?:[µμu]L|mL|L|mg|kg|ng|[µμu]g)\b",
+        r"\b\d+(?:,\d{3})*(?:\.\d+)?\s*(?:x\s*)?g\b",
         r"\b\d+(?:\.\d+)?\s*(?:seconds|second|minutes|minute|hours|hour|s|sec|secs|min|mins|hr|hrs)\b",
         r"\b\d+(?:\.\d+)?\s*°?\s*C\b",
         r"\b\d+(?:\.\d+)?%\b",
     ]
-    hits = []
+    hits: List[Tuple[str, int]] = []
     for pattern in patterns:
-        hits.extend(re.findall(pattern, text, flags=re.IGNORECASE))
-    return sorted(set(hits))
+        for match in re.finditer(pattern, text, flags=re.IGNORECASE):
+            hits.append((match.group(0), line_number_for_offset(text, match.start())))
+    return hits
+
+
+def first_line_for_text(text: str, snippet: str) -> Optional[int]:
+    index = text.find(snippet)
+    if index == -1:
+        return None
+    return line_number_for_offset(text, index)
+
+
+def first_line_for_regex(text: str, pattern: re.Pattern) -> Optional[int]:
+    match = pattern.search(text)
+    if match is None:
+        return None
+    return line_number_for_offset(text, match.start())
 
 
 def validate_readme(readme: str, source: Optional[str] = None) -> List[str]:
@@ -130,26 +154,55 @@ def validate_readme(readme: str, source: Optional[str] = None) -> List[str]:
         )
 
     for token, pattern in BAD_PLACEHOLDERS.items():
-        if pattern.search(readme):
-            failures.append(f"Found unresolved placeholder: {token}")
+        line = first_line_for_regex(readme, pattern)
+        if line is not None:
+            failures.append(f"Found unresolved placeholder: {token} (README line {line})")
 
     for text in DISALLOWED_TEMPLATE_TEXT:
         if text in readme:
-            failures.append(f"Found template-only text that must be removed: {text}")
+            line = first_line_for_text(readme, text)
+            if line is None:
+                failures.append(f"Found template-only text that must be removed: {text}")
+            else:
+                failures.append(
+                    f"Found template-only text that must be removed: {text} (README line {line})"
+                )
 
-    for match in PLACEHOLDER_STEP_HEADING_RE.findall(readme):
-        failures.append(f"Found placeholder step heading: {match}")
+    for match in PLACEHOLDER_STEP_HEADING_RE.finditer(readme):
+        line = line_number_for_offset(readme, match.start())
+        failures.append(
+            f"Found placeholder step heading: {match.group(0)} (README line {line})"
+        )
 
-    for match in PLACEHOLDER_CONTENTS_RE.findall(readme):
-        failures.append(f"Found placeholder contents entry: {match}")
+    for match in PLACEHOLDER_CONTENTS_RE.finditer(readme):
+        line = line_number_for_offset(readme, match.start())
+        failures.append(
+            f"Found placeholder contents entry: {match.group(0)} (README line {line})"
+        )
 
     if source is not None:
-        readme_tokens = {
-            canonicalize_measurement(token) for token in extract_key_tokens(readme)
-        }
-        for token in extract_key_tokens(source):
-            if canonicalize_measurement(token) not in readme_tokens:
-                failures.append(f"Source token missing from README: {token}")
+        readme_tokens: Dict[str, List[Tuple[str, int]]] = {}
+        for token, line in extract_key_token_occurrences(readme):
+            readme_tokens.setdefault(canonicalize_measurement(token), []).append(
+                (token, line)
+            )
+
+        source_tokens: Dict[str, List[Tuple[str, int]]] = {}
+        for token, line in extract_key_token_occurrences(source):
+            source_tokens.setdefault(canonicalize_measurement(token), []).append(
+                (token, line)
+            )
+
+        for canonical_token, occurrences in source_tokens.items():
+            if canonical_token in readme_tokens:
+                continue
+
+            raw_token, first_source_line = occurrences[0]
+            all_source_lines = ", ".join(str(line) for _, line in occurrences)
+            failures.append(
+                "Source token missing from README: "
+                f"{raw_token} (source line {first_source_line}; all source lines: {all_source_lines})"
+            )
 
     return list(dict.fromkeys(failures))
 
