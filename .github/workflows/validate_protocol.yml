@@ -1,4 +1,4 @@
-name: Validate README protocol
+name: validate-protocol-README
 
 on:
   pull_request:
