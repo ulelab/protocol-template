@@ -214,7 +214,7 @@ def extract_pdf_to_markdown(
         )
         return md
     else:
-        return extract_pdf_fast(pdf_path, show_progress)
+        return extract_pdf_fast(pdf_path, show_progress=show_progress)
 
 
 def get_page_count(pdf_path: str) -> int:

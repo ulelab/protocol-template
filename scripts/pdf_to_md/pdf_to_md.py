@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """
 PDF to Markdown Converter for LLM Context
 
@@ -63,6 +65,35 @@ os.environ.setdefault("PYMUPDF_SUGGEST_LAYOUT_ANALYZER", "0")
 
 # Default cache directory
 DEFAULT_CACHE_DIR = Path.home() / ".cache" / "pdf-to-markdown"
+
+
+def resolve_input_pdf(input_arg: str) -> Path:
+    """Resolve either a direct PDF path or a folder containing exactly one PDF."""
+    input_path = Path(input_arg)
+
+    if input_path.is_file():
+        return input_path
+
+    if input_path.is_dir():
+        pdf_files = sorted(
+            [p for p in input_path.iterdir() if p.is_file() and p.suffix.lower() == ".pdf"]
+        )
+
+        if len(pdf_files) == 0:
+            raise FileNotFoundError(
+                f"No PDF files found in folder: {input_path}. Expected exactly one .pdf file."
+            )
+
+        if len(pdf_files) > 1:
+            names = ", ".join(p.name for p in pdf_files)
+            raise ValueError(
+                f"Multiple PDF files found in folder: {input_path}. "
+                f"Expected exactly one .pdf file, found {len(pdf_files)}: {names}"
+            )
+
+        return pdf_files[0]
+
+    raise FileNotFoundError(f"Input path does not exist: {input_path}")
 
 
 # =============================================================================
@@ -459,6 +490,10 @@ class ImageManager:
             return None
 
         temp_dir = Path(temp_dir)
+        output_path = Path(output_path)
+        output_images_dir = (
+            output_path.parent / "images" if output_path.suffix else output_path / "images"
+        )
 
         # Clean up empty temp directories
         if not temp_dir.exists() or not any(temp_dir.iterdir()):
@@ -466,6 +501,8 @@ class ImageManager:
                 shutil.rmtree(temp_dir)
             if temp_dir in self._temp_dirs:
                 self._temp_dirs.remove(temp_dir)
+            if output_images_dir.exists():
+                shutil.rmtree(output_images_dir)
             return None
 
         # Clean up temp directory (images are saved to cache)
@@ -479,6 +516,9 @@ class ImageManager:
             cached_image_dir = cache_dir / "images"
             if cached_image_dir.exists() and any(cached_image_dir.iterdir()):
                 return self._copy_images_to_output(cached_image_dir, output_path, show_progress)
+
+        if output_images_dir.exists():
+            shutil.rmtree(output_images_dir)
 
         return None
 
@@ -498,7 +538,10 @@ class ImageManager:
         if output_images_dir.resolve() == Path(source_dir).resolve():
             return output_images_dir
 
-        # Copy images to output location
+        # Replace previously generated content so stale images do not linger.
+        if output_images_dir.exists():
+            shutil.rmtree(output_images_dir)
+
         output_images_dir.mkdir(parents=True, exist_ok=True)
         copied_count = 0
         for img in source_dir.iterdir():
@@ -624,8 +667,12 @@ Caching:
         """,
     )
 
-    parser.add_argument("input", nargs="?", help="Input PDF file path")
-    parser.add_argument("output", nargs="?", help="Output markdown file path (default: <input>.md)")
+    parser.add_argument(
+        "input", nargs="?", help="Input PDF file path or folder containing one PDF"
+    )
+    parser.add_argument(
+        "output", nargs="?", help="Output markdown file path (default: <resolved-input>.md)"
+    )
     parser.add_argument(
         "--docling",
         "--accurate",
@@ -673,23 +720,30 @@ Caching:
 
     # Handle --clear-cache
     if args.clear_cache:
-        if cache_mgr.clear(args.input):
-            print(f"Cache cleared for: {args.input}", file=sys.stderr)
-        else:
-            print(f"No cache found for: {args.input}", file=sys.stderr)
+        try:
+            resolved_input = resolve_input_pdf(args.input)
+        except (FileNotFoundError, ValueError) as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            sys.exit(1)
 
-    # Validate input exists
-    if not os.path.exists(args.input):
-        print(f"ERROR: File not found: {args.input}", file=sys.stderr)
+        if cache_mgr.clear(str(resolved_input)):
+            print(f"Cache cleared for: {resolved_input}", file=sys.stderr)
+        else:
+            print(f"No cache found for: {resolved_input}", file=sys.stderr)
+
+    try:
+        input_pdf = resolve_input_pdf(args.input)
+    except (FileNotFoundError, ValueError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
         sys.exit(1)
 
-    if not args.input.lower().endswith(".pdf"):
-        print(f"WARNING: File may not be a PDF: {args.input}", file=sys.stderr)
+    if input_pdf.suffix.lower() != ".pdf":
+        print(f"WARNING: File may not be a PDF: {input_pdf}", file=sys.stderr)
 
     show_progress = sys.stderr.isatty() and not args.no_progress
 
     # Check cache
-    config = ExtractionConfig(pdf_path=args.input, docling=args.docling)
+    config = ExtractionConfig(pdf_path=str(input_pdf), docling=args.docling)
     valid, cache_key = cache_mgr.is_valid(config)
 
     result = None
@@ -709,7 +763,7 @@ Caching:
 
             # Copy images from cache to output location
             if cache_result.image_dir:
-                output_path = args.output or os.path.splitext(args.input)[0] + ".md"
+                output_path = args.output or str(input_pdf.with_suffix(".md"))
                 img_mgr = ImageManager()
                 image_dir = img_mgr._copy_images_to_output(
                     cache_result.image_dir, output_path, show_progress
@@ -722,13 +776,13 @@ Caching:
 
         from extractor import get_page_count
 
-        total_pages = get_page_count(args.input)
+        total_pages = get_page_count(str(input_pdf))
 
         if not cache_key:
             cache_key = cache_mgr.get_key(config)
 
         img_mgr = ImageManager()
-        temp_image_dir = img_mgr.create_temp_dir(args.input)
+        temp_image_dir = img_mgr.create_temp_dir(str(input_pdf))
 
         try:
             if show_progress:
@@ -744,7 +798,7 @@ Caching:
                     )
 
             result = convert_pdf(
-                args.input,
+                str(input_pdf),
                 image_dir=temp_image_dir,
                 show_progress=show_progress,
                 docling=args.docling,
@@ -765,7 +819,7 @@ Caching:
             print(f"Cached: {cache_mgr._get_dir(cache_key)}", file=sys.stderr)
 
         # Finalize images
-        output_path = args.output or os.path.splitext(args.input)[0] + ".md"
+        output_path = args.output or str(input_pdf.with_suffix(".md"))
         image_dir = img_mgr.finalize_images(
             temp_dir=temp_image_dir,
             cache_dir=cache_mgr._get_dir(cache_key),
@@ -785,10 +839,12 @@ Caching:
         if images:
             output += img_mgr_for_output.create_summary(images)
 
-    output = add_metadata_header(output, args.input, total_pages, image_dir, cached=cache_hit)
+    output = add_metadata_header(
+        output, str(input_pdf), total_pages, image_dir, cached=cache_hit
+    )
 
     # Write output
-    output_path = args.output or os.path.splitext(args.input)[0] + ".md"
+    output_path = args.output or str(input_pdf.with_suffix(".md"))
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(output)
 
