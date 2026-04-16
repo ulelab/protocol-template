@@ -1,3 +1,8 @@
+# Adapted in part from:
+# https://github.com/aliceisjustplaying/claude-skill-pdf-to-markdown
+# Original upstream license: MIT
+# See THIRD_PARTY_NOTICES.md for attribution details.
+
 """
 PDF extraction with multiple backends:
 - Fast mode: PyMuPDF with multi-strategy table detection (good for simple tables)

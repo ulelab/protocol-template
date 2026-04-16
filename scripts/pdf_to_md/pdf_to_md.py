@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+# Adapted in part from:
+# https://github.com/aliceisjustplaying/claude-skill-pdf-to-markdown
+# Original upstream license: MIT
+# See THIRD_PARTY_NOTICES.md for attribution details.
+
 """
 PDF to Markdown Converter for LLM Context
 
