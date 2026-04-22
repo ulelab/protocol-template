@@ -19,7 +19,7 @@
 4. [Step 4](#4-step-4)
 5. [Step 5](#5-step-5)
 6. [Step 6](#6-step-6)
-7. [Buffers](#buffers)
+7. [Materials](#7-materials)
 8. [Migration notes](#migration-notes)
 
 ---
@@ -120,7 +120,10 @@
 
 ---
 
-# 7. Buffers
+# 7. Materials
+
+## 7.1 Buffers
+## 7.2 Reagents
 
 ---
 
