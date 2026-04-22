@@ -11,10 +11,10 @@ TEMPERATURE_RE = re.compile(
 )
 PH_RE = re.compile(r"\b(?P<label>[Pp][Hh])(?P<space>\s*)(?P<value>\d+(?:\.\d+)?)\b")
 MICRO_UNIT_RE = re.compile(
-    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>uL|ul|UL|uM|UM|ug)\b"
+    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>uL|ul|UL|uM|UM|ug|μL|μM|μg)\b"
 )
 UNIT_RE = re.compile(
-    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>µL|mL|ml|ML|L|l|µg|mg|g|kg|ng|mM|µM|nM|M)\b"
+    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>µL|mL|ml|ML|L|l|µg|mg|g|kg|ng|mM|µM|nM|M|μL|μM|μg)\b"
 )
 TIME_RE = re.compile(
     rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>seconds?|second|minutes?|minute|hours?|hour|secs?|sec|mins?|min|hrs?|hr|s|h)\b",
@@ -25,18 +25,24 @@ PREFERRED_MICRO_UNITS = {
     "ul": "µL",
     "um": "µM",
     "ug": "µg",
+    "μl": "µL",
+    "μm": "µM",
+    "μg": "µg",
 }
 PREFERRED_UNITS = {
     "µl": "µL",
+    "μl": "µL",
     "ml": "mL",
     "l": "L",
     "µg": "µg",
+    "μg": "µg",
     "mg": "mg",
     "g": "g",
     "kg": "kg",
     "ng": "ng",
     "mm": "mM",
     "µm": "µM",
+    "μm": "µM",
     "m": "M",
 }
 TIME_UNIT_BASE = {

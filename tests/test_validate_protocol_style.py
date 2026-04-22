@@ -77,6 +77,16 @@ class ValidateReadmeStyleTests(unittest.TestCase):
             any("unit should use `1 µM` style" in failure for failure in failures)
         )
 
+    def test_greek_mu_is_reported_and_normalized_to_micro_sign(self) -> None:
+        readme = VALID_README.replace("10 µL lysis buffer", "10 μL lysis buffer", 1)
+        readme = readme.replace("10 µL pipette", "10 μL pipette", 1)
+
+        failures = validate_readme_style(readme)
+
+        self.assertTrue(
+            any("unit should use `10 µL` style" in failure for failure in failures)
+        )
+
     def test_ph_spacing_and_case_are_reported(self) -> None:
         readme = VALID_README.replace("pH 7.4", "PH7.4", 1)
 
