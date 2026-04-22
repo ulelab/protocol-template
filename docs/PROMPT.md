@@ -78,7 +78,7 @@ Normalize formatting only when the meaning is unchanged and unambiguous:
 - Include the following in `# Migration notes`:
   - imported protocol metadata from `source-metadata.yml` if present
   - imported protocol metadata from `source-metadata.yml` using only the non-blank lines
-  - template metadata from `template-metadata.yml`
+  - template_version from `template-metadata.yml`
   - ambiguous mappings
   - normalized formatting changes
   - content copied verbatim but not confidently placed

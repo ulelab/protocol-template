@@ -73,7 +73,7 @@ When drafting a migrated protocol:
   - content placed in `## Unplaced content`
   - Imported protocol metadata from `source-metadata.yml` (only the non-blank lines).
   - Imported protocol metadata from `source-metadata.yml` if present.
-  - template metadata from `template-metadata.yml`.
+  - template_version from `template-metadata.yml`.
   - ambiguous mappings.
   - normalized formatting changes.
   - content copied verbatim but not confidently placed.
