@@ -61,11 +61,45 @@ class ValidateReadmeContentTests(unittest.TestCase):
         failures = validate_readme(readme)
 
         self.assertIn(
-            "Found placeholder step heading: # 1. Step 1",
+            "Found placeholder step heading: # 1. Step 1 (README line 15)",
             failures,
         )
         self.assertIn(
-            "Found placeholder contents entry: 1. [Step 1](#1-step-1)",
+            "Found placeholder contents entry: 1. [Step 1](#1-step-1) (README line 12)",
+            failures,
+        )
+
+    def test_source_token_matching_normalizes_micro_symbol(self) -> None:
+        source = "Use 10 µL reagent for 5 min at 20 C and finish in 70% ethanol."
+        self.assertEqual(validate_readme(VALID_README, source), [])
+
+    def test_source_token_matching_normalizes_greek_mu_symbol(self) -> None:
+        source = "Use 10 μL reagent for 5 min at 20 C and finish in 70% ethanol."
+        self.assertEqual(validate_readme(VALID_README, source), [])
+
+    def test_source_token_matching_allows_spacing_and_unit_normalization(self) -> None:
+        source = "Use 1uL primer, 20ul water, incubate 10min at 65C, then hold 30min at 42  C."
+        readme = VALID_README.replace(
+            "Add 10 uL lysis buffer and incubate for 5 min at 20 C.",
+            "Add 1 µL primer and 20 µL water, incubate for 10 minutes at 65 °C, then hold for 30 minutes at 42 °C.",
+            1,
+        )
+        self.assertEqual(validate_readme(readme, source), [])
+
+    def test_source_token_matching_works_for_table_values(self) -> None:
+        source = "Prepare mix with 0.25 μL enzyme and 0.5μL buffer."
+        readme = VALID_README.replace(
+            "Add 10 uL lysis buffer and incubate for 5 min at 20 C.",
+            "| Component | Volume |\n|---|---|\n| Enzyme | 0.25 µL |\n| Buffer | 0.5 µL |",
+            1,
+        )
+        self.assertEqual(validate_readme(readme, source), [])
+
+    def test_missing_source_tokens_are_grouped_with_source_lines(self) -> None:
+        source = "Add 0.5 μL enzyme.\nRepeat with 0.5µL enzyme."
+        failures = validate_readme(VALID_README, source)
+        self.assertIn(
+            "Source token missing from README: 0.5 μL (source line 1; all source lines: 1, 2)",
             failures,
         )
 
@@ -83,7 +117,7 @@ class ValidateReadmeContentTests(unittest.TestCase):
     def test_template_repository_note_must_be_removed(self) -> None:
         readme = TEMPLATE_NOTE + VALID_README
         self.assertIn(
-            f"Found template-only text that must be removed: {TEMPLATE_NOTE.strip()}",
+            f"Found template-only text that must be removed: {TEMPLATE_NOTE.strip()} (README line 1)",
             validate_readme(readme),
         )
 
