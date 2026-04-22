@@ -3,7 +3,7 @@
 from pathlib import Path
 import re
 import sys
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$", re.MULTILINE)
 STATUS_LINE_RE = re.compile(
@@ -60,6 +60,25 @@ def has_required_heading(
     )
 
 
+def find_line_number_for_exact_text(text: str, needle: str) -> Optional[int]:
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        if needle in line:
+            return line_number
+    return None
+
+
+def find_line_number_for_regex(
+    text: str,
+    pattern: re.Pattern,
+    target: str,
+) -> Optional[int]:
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        for match in pattern.finditer(line):
+            if match.group(0) == target:
+                return line_number
+    return None
+
+
 def validate_readme(readme: str) -> List[str]:
     failures: List[str] = []
     headings = extract_headings(readme)
@@ -92,13 +111,31 @@ def validate_readme(readme: str) -> List[str]:
 
     for text in DISALLOWED_TEMPLATE_TEXT:
         if text in readme:
-            failures.append(f"Found template-only text that must be removed: {text}")
+            line_number = find_line_number_for_exact_text(readme, text)
+            if line_number is None:
+                failures.append(f"Found template-only text that must be removed: {text}")
+            else:
+                failures.append(
+                    f"Found template-only text that must be removed: {text} (README line {line_number})"
+                )
 
     for match in PLACEHOLDER_STEP_HEADING_RE.findall(readme):
-        failures.append(f"Found placeholder step heading: {match}")
+        line_number = find_line_number_for_regex(readme, PLACEHOLDER_STEP_HEADING_RE, match)
+        if line_number is None:
+            failures.append(f"Found placeholder step heading: {match}")
+        else:
+            failures.append(
+                f"Found placeholder step heading: {match} (README line {line_number})"
+            )
 
     for match in PLACEHOLDER_CONTENTS_RE.findall(readme):
-        failures.append(f"Found placeholder contents entry: {match}")
+        line_number = find_line_number_for_regex(readme, PLACEHOLDER_CONTENTS_RE, match)
+        if line_number is None:
+            failures.append(f"Found placeholder contents entry: {match}")
+        else:
+            failures.append(
+                f"Found placeholder contents entry: {match} (README line {line_number})"
+            )
 
     return list(dict.fromkeys(failures))
 
