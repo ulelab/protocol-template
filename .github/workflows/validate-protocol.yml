@@ -6,19 +6,23 @@ on:
       - main
     paths:
       - README.md
-      - legacy/source.txt
       - scripts/validate_protocol.py
-      - tests/test_validate_protocol.py
-      - .github/workflows/validate_protocol.yml
+      - scripts/validate_protocol_content.py
+      - scripts/validate_protocol_style.py
+      - tests/test_validate_protocol_content.py
+      - tests/test_validate_protocol_style.py
+      - .github/workflows/validate-protocol.yml
   push:
     branches:
       - main
     paths:
       - README.md
-      - legacy/source.txt
       - scripts/validate_protocol.py
-      - tests/test_validate_protocol.py
-      - .github/workflows/validate_protocol.yml
+      - scripts/validate_protocol_content.py
+      - scripts/validate_protocol_style.py
+      - tests/test_validate_protocol_content.py
+      - tests/test_validate_protocol_style.py
+      - .github/workflows/validate-protocol.yml
   workflow_dispatch:
 
 jobs:
@@ -35,7 +39,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Check whether validation should run
+      - name: Check whether README validation should run
         id: validation_gate
         run: |
           set -euo pipefail
@@ -56,15 +60,15 @@ jobs:
           echo "should_validate=true" >> "$GITHUB_OUTPUT"
 
       - name: Run validator tests
-        if: steps.validation_gate.outputs.should_validate == 'true'
         run: |
           python -m unittest discover -s tests -p 'test_*.py'
 
-      - name: Run protocol validation
+      - name: Run content validation
         if: steps.validation_gate.outputs.should_validate == 'true'
         run: |
-          if [ -f legacy/source.txt ]; then
-            python scripts/validate_protocol.py README.md legacy/source.txt
-          else
-            python scripts/validate_protocol.py README.md
-          fi
+          python scripts/validate_protocol_content.py README.md
+
+      - name: Run style validation
+        if: steps.validation_gate.outputs.should_validate == 'true'
+        run: |
+          python scripts/validate_protocol_style.py README.md

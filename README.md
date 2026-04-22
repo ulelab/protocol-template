@@ -19,7 +19,7 @@
 4. [Step 4](#4-step-4)
 5. [Step 5](#5-step-5)
 6. [Step 6](#6-step-6)
-7. [Buffers](#buffers)
+7. [Materials](#7-materials)
 8. [Migration notes](#migration-notes)
 
 ---
@@ -32,15 +32,15 @@
 
 ## 1.1 Sub-step of Step 1 TODO if Step 1 is complex
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ## 1.2 Sub-step of Step 1 TODO if Step 1 is complex
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 > **Note:** TODO
 
@@ -48,9 +48,9 @@
 
 # 2. Step 2
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ## Reagents / mix
 
@@ -66,9 +66,9 @@
 
 # 3. Step 3
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ## Program / incubation
 
@@ -82,9 +82,9 @@
 
 # 4. Step 4
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 > **Optional:** TODO
 
@@ -92,9 +92,9 @@
 
 # 5. Step 5
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ## Reaction setup
 
@@ -108,19 +108,22 @@
 
 # 6. Step 6
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ## Output / QC
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ---
 
-# 7. Buffers
+# 7. Materials
+
+## 7.1 Buffers
+## 7.2 Reagents
 
 ---
 

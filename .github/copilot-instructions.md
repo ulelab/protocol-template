@@ -38,11 +38,12 @@ You may normalize formatting only when the meaning is unchanged and unambiguous:
 - Standardize chemical formulas with HTML subscripts, for example H2O to H<sub>2</sub>O. Similarly for other chemical formulas (e.g. MgCl2 to MgCl<sub>2</sub>).
 - Do not use Unicode subscript characters such as `₂`.
 - Standardize `RNAseq` or `RNA-Seq` to `RNA-seq`. Same for `ChIP-seq`, `ATAC-seq`, etc.
+- Use numbered lists for procedural actions in sequence. For other non-procedural content, bullets are better. Note-like text such as Note, NB, Optional, Recommended, and Warning should use blockquote style such as `> **Note**`.
 - Normalize bullet formatting and markdown table formatting.
 - Normalize heading structure to match the repository template.
 - For reaction mixes and anything tabular, place them inside a table as in template.
 - Normalize markdown headings, bullets, and tables.
-- "Note" or "NOTE" or "Optional" or "Recommended" or "Warning" are normalized to start with `>` (example `> **Note**`) and are placed immediately after the step they refer to, or at the end of the protocol if they clearly refer to the whole protocol.
+- "Note" or "NOTE" or "NB" or "Optional" or "Recommended" or "Warning" are normalized to start with `>` (example `> **Note**`) and are placed immediately after the step they refer to, or at the end of the protocol if they clearly refer to the whole protocol.
 - Remove empty columns from tables.
 - Synchronize `Contents` with actual headings in the protocol.
 
@@ -73,7 +74,7 @@ When drafting a migrated protocol:
   - content placed in `## Unplaced content`
   - Imported protocol metadata from `source-metadata.yml` (only the non-blank lines).
   - Imported protocol metadata from `source-metadata.yml` if present.
-  - template metadata from `template-metadata.yml`.
+  - template_version from `template-metadata.yml`.
   - ambiguous mappings.
   - normalized formatting changes.
   - content copied verbatim but not confidently placed.

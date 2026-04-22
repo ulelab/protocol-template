@@ -74,7 +74,7 @@ The main file you must edit for protocol content is `README.md`. Do not rename t
 7. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 8. Commit your changes, then push.
 9. Once you are happy with the result, open a pull request from `import-protocol` into `main`.
-10. A validation GitHub Actions workflow will run on that pull request when `README.md` has changed. It checks the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names. If checks fail, fix them before merging into `main`.
+10. A validation GitHub Actions workflow will run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them before merging into `main`.
 11. Ask for a reviewer.
 
 > **Note:** Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
@@ -121,7 +121,7 @@ This route can save time. It helps keep the template structure consistent, norma
 14. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 15. Commit your changes, then push.
 16. Once you are happy with the result, open a pull request from `import-protocol` into `main`.
-17. A validation GitHub Actions workflow will run on that pull request when `README.md` has changed. It checks the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names. If `legacy/source.txt` is present, it also checks that key quantities from the source appear in `README.md`. If checks fail, fix them before merging into `main`.
+17. A validation GitHub Actions workflow will run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them before merging into `main`.
 18. Ask for a reviewer.
 
 ---
@@ -141,6 +141,7 @@ Mandatory items for validation:
 - a status legend row containing `[OK]`, `[?]`, and `[X]`
 - a short description (`# About`)
 - contents (`## Contents`)
+- a materials section (`# ... Materials`)
 
 Recommended content:
 

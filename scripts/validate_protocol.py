@@ -1,43 +1,15 @@
-"""Validate a protocol README against template requirements and optional source text."""
+"""Backward-compatible entrypoint for protocol README validation."""
 
 from pathlib import Path
-import re
 import sys
 from typing import Dict, List, Optional, Tuple
 
-HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$", re.MULTILINE)
-STATUS_LINE_RE = re.compile(
-    r"^### Status:\s+.*`\[(?:OK|\?|X)\]`.*$",
-    re.MULTILINE,
-)
-STATUS_LEGEND_RE = re.compile(
-    r"^\| \*\*\*Status legend\*\*\*:.*`\[OK\]`.*`\[\?\]`.*`\[X\]`.*\|$",
-    re.MULTILINE,
-)
-PLACEHOLDER_STEP_HEADING_RE = re.compile(
-    r"^#{1,6}\s+\d+(?:\.\d+)*(?:\.)?\s+(?:Step|Sub-step)\b.*$",
-    re.MULTILINE,
-)
-PLACEHOLDER_CONTENTS_RE = re.compile(
-    r"^\d+\.\s+\[Step\s+\d+\]\(#.*$",
-    re.MULTILINE,
-)
-
-REQUIRED_HEADINGS = [
-    (1, "About"),
-    (2, "Contents"),
-]
-
-BAD_PLACEHOLDERS = {
-    "TODO": re.compile(r"\bTODO\b"),
-    "TBD": re.compile(r"\bTBD\b"),
-    "XXX": re.compile(r"\bXXX\b"),
-    "CHECK:": re.compile(r"CHECK:"),
-}
-
-DISALLOWED_TEMPLATE_TEXT = [
-    "> Template repository: Click `Use this template` to create a new protocol repo. Template docs are in [docs/USING_THIS_TEMPLATE.md](https://github.com/ulelab/protocol-template/blob/main/docs/USING_THIS_TEMPLATE.md)",
-]
+try:
+    from scripts.validate_protocol_content import validate_readme as validate_content
+    from scripts.validate_protocol_style import validate_readme_style
+except ModuleNotFoundError:
+    from validate_protocol_content import validate_readme as validate_content
+    from validate_protocol_style import validate_readme_style
 
 
 def extract_headings(text: str) -> List[Tuple[int, str]]:
@@ -213,9 +185,7 @@ def main() -> None:
         sys.exit(1)
 
     readme = Path(sys.argv[1]).read_text(encoding="utf-8")
-    source = Path(sys.argv[2]).read_text(encoding="utf-8") if len(sys.argv) == 3 else None
-
-    failures = validate_readme(readme, source)
+    failures = validate_readme(readme)
 
     if failures:
         print("VALIDATION FAILED")
