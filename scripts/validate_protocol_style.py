@@ -20,6 +20,10 @@ TIME_RE = re.compile(
     rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>seconds?|second|minutes?|minute|hours?|hour|secs?|sec|mins?|min|hrs?|hr|s|h)\b",
     re.IGNORECASE,
 )
+CHEMICAL_FORMULA_RE = re.compile(
+    r"\b(?P<formula>(?:[A-Z][a-z]?\d*){2,})\b"
+)
+UNICODE_SUBSCRIPT_RE = re.compile(r"\b(?P<formula>[A-Za-z₀₁₂₃₄₅₆₇₈₉]+)\b")
 
 PREFERRED_MICRO_UNITS = {
     "ul": "µL",
@@ -61,12 +65,27 @@ TIME_UNIT_BASE = {
     "hour": "hour",
     "hours": "hour",
 }
+UNICODE_SUBSCRIPT_MAP = str.maketrans("₀₁₂₃₄₅₆₇₈₉", "0123456789")
 
 
 def preferred_time_token(value: str, unit: str) -> str:
     base = TIME_UNIT_BASE[unit.lower()]
     plural = "" if value == "1" else "s"
     return f"{value} {base}{plural}"
+
+
+def html_subscript_formula(formula: str) -> str:
+    return re.sub(r"(\d+)", r"<sub>\1</sub>", formula)
+
+
+def format_unit_failure(line_number: int, found: str, preferred: str) -> str:
+    if "μ" in found:
+        return (
+            f"Line {line_number}: unit uses Greek mu `μ`; use the micro sign `µ` "
+            f"in `{preferred}` instead of `{found}`."
+        )
+
+    return f"Line {line_number}: unit should use `{preferred}` style, found `{found}`."
 
 
 def validate_readme_style(readme: str) -> List[str]:
@@ -84,17 +103,13 @@ def validate_readme_style(readme: str) -> List[str]:
             preferred_unit = PREFERRED_MICRO_UNITS[match.group("unit").lower()]
             preferred = f"{match.group('value')} {preferred_unit}"
             if match.group(0) != preferred:
-                failures.append(
-                    f"Line {line_number}: unit should use `{preferred}` style, found `{match.group(0)}`."
-                )
+                failures.append(format_unit_failure(line_number, match.group(0), preferred))
 
         for match in UNIT_RE.finditer(line):
             preferred_unit = PREFERRED_UNITS[match.group("unit").lower()]
             preferred = f"{match.group('value')} {preferred_unit}"
             if match.group(0) != preferred:
-                failures.append(
-                    f"Line {line_number}: unit should use `{preferred}` style, found `{match.group(0)}`."
-                )
+                failures.append(format_unit_failure(line_number, match.group(0), preferred))
 
         for match in TIME_RE.finditer(line):
             preferred = preferred_time_token(match.group("value"), match.group("unit"))
@@ -109,6 +124,28 @@ def validate_readme_style(readme: str) -> List[str]:
                 failures.append(
                     f"Line {line_number}: pH should use `{preferred}` style, found `{match.group(0)}`."
                 )
+
+        for match in CHEMICAL_FORMULA_RE.finditer(line):
+            formula = match.group("formula")
+            if "<sub>" in formula or not any(char.isdigit() for char in formula):
+                continue
+
+            preferred = html_subscript_formula(formula)
+            if formula != preferred:
+                failures.append(
+                    f"Line {line_number}: chemical formula should use `{preferred}` style, found `{formula}`."
+                )
+
+        for match in UNICODE_SUBSCRIPT_RE.finditer(line):
+            formula = match.group("formula")
+            if not any(char in "₀₁₂₃₄₅₆₇₈₉" for char in formula):
+                continue
+
+            normalized = formula.translate(UNICODE_SUBSCRIPT_MAP)
+            preferred = html_subscript_formula(normalized)
+            failures.append(
+                f"Line {line_number}: chemical formula should use `{preferred}` style, found `{formula}`."
+            )
 
     return list(dict.fromkeys(failures))
 
