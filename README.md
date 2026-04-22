@@ -32,15 +32,15 @@
 
 ## 1.1 Sub-step of Step 1 TODO if Step 1 is complex
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ## 1.2 Sub-step of Step 1 TODO if Step 1 is complex
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 > **Note:** TODO
 
@@ -48,9 +48,9 @@
 
 # 2. Step 2
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ## Reagents / mix
 
@@ -66,9 +66,9 @@
 
 # 3. Step 3
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ## Program / incubation
 
@@ -82,9 +82,9 @@
 
 # 4. Step 4
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 > **Optional:** TODO
 
@@ -92,9 +92,9 @@
 
 # 5. Step 5
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ## Reaction setup
 
@@ -108,15 +108,15 @@
 
 # 6. Step 6
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ## Output / QC
 
-- TODO
-- TODO
-- TODO
+1. TODO
+2. TODO
+3. TODO
 
 ---
 

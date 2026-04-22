@@ -42,9 +42,10 @@ Normalize formatting only when the meaning is unchanged and unambiguous:
 - standardize chemical formulas with HTML subscripts, for example H2O to H<sub>2</sub>O and MgCl2 to MgCl<sub>2</sub>
 - do not use Unicode subscript characters such as `₂`
 - standardize `RNAseq` or `RNA-Seq` to `RNA-seq`, and similarly for `ChIP-seq`, `ATAC-seq`, and related names
+- Use numbered lists for procedural actions in sequence. For other non-procedural content, bullets are better. Note-like text such as Note, NB, Optional, Recommended, and Warning should use blockquote style such as `> **Note**`.
 - normalize bullets, headings, and markdown tables to match the repository template
 - use tables for reaction mixes and other tabular content
-- normalize note-like text to blockquote style, for example `> **Note**`
+- normalize note-like text such as Note, NB, Optional, Recommended, and Warning to blockquote style, for example `> **Note**`
 - place note-like text immediately after the step it refers to, or at the end of the protocol if it clearly refers to the whole protocol
 - remove empty columns from tables
 - synchronize `Contents` with the actual headings in the protocol
