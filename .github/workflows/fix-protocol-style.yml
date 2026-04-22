@@ -1,0 +1,60 @@
+name: fix-protocol-style
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_branch:
+        description: Branch to fix and open a PR against
+        required: true
+        default: main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: fix-protocol-style-${{ github.event.inputs.base_branch || 'main' }}
+  cancel-in-progress: false
+
+jobs:
+  fix-style:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out target branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.base_branch }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run unit tests
+        run: |
+          python -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Apply style fixer
+        run: |
+          python scripts/fix_protocol_style.py README.md
+
+      - name: Verify README style after fixing
+        run: |
+          python scripts/validate_protocol_style.py README.md
+
+      - name: Create pull request with style fixes
+        uses: peter-evans/create-pull-request@v7
+        with:
+          base: ${{ github.event.inputs.base_branch }}
+          branch: automation/fix-protocol-style/${{ github.event.inputs.base_branch }}
+          delete-branch: true
+          commit-message: Normalize protocol README style
+          title: Normalize protocol README style
+          body: |
+            This PR was opened automatically by the style-fix workflow.
+
+            It applies deterministic README style fixes from `scripts/fix_protocol_style.py` and re-validates the result with `scripts/validate_protocol_style.py`.
+          add-paths: |
+            README.md
