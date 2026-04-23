@@ -124,6 +124,13 @@ class ValidateReadmeStyleTests(unittest.TestCase):
             )
         )
 
+    def test_non_chemical_abbreviation_with_digits_is_not_reported(self) -> None:
+        readme = VALID_README + "\nHold at RT1 before proceeding.\nThen move to RT₁ if needed.\n"
+
+        failures = validate_readme_style(readme)
+
+        self.assertFalse(any("RT<sub>1</sub>" in failure for failure in failures))
+
 
 if __name__ == "__main__":
     unittest.main()
