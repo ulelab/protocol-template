@@ -604,12 +604,14 @@ def check_dependencies(docling_mode: bool = False):
 
 def convert_pdf(pdf_path, image_dir, show_progress=False, docling=False, images_scale=4.0):
     """Convert PDF to markdown."""
+    normalized_image_dir = str(image_dir) if image_dir is not None else None
+
     if docling:
         from extractor import extract_pdf_docling
 
         markdown, _image_paths = extract_pdf_docling(
             pdf_path,
-            output_dir=image_dir,
+            output_dir=normalized_image_dir,
             images_scale=images_scale,
             show_progress=show_progress,
         )
@@ -619,7 +621,7 @@ def convert_pdf(pdf_path, image_dir, show_progress=False, docling=False, images_
 
         markdown = extract_pdf_fast(
             pdf_path,
-            image_dir=image_dir,
+            image_dir=normalized_image_dir,
             show_progress=show_progress,
         )
         return markdown
