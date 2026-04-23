@@ -110,9 +110,10 @@ This route can save time. It helps keep the template structure consistent, norma
 
 **In VS Code**:
   - **Codex**: use `/skills` and select the `protocol-migration` skill, or enter `$protocol-migration` in the Codex chat input box.
-  - **Claude**: exnter `/protocol-migration`
+  - **Claude**: enter `/protocol-migration`
   - **Copilot agent mode**: ask it to use the `protocol-migration` skill (e.g. something like:
   `Migrate this protocol using the protocol-migration skill.`)
+
 9. Review the changes. If most of them look reasonable, commit with a message like `migration by LLM`.
 10. Verify that `README.md` is accurate by comparing it to the original PDF and fix mistakes.
 11. Check the `Migration notes` section and every place marked with `CHECK:`. Resolve anything unclear.
