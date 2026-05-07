@@ -112,7 +112,7 @@ This route can save time. It helps keep the template structure consistent, norma
 8. Use the `protocol-migration` skill (or if you prefer, paste the prompt in `docs/PROMPT.md`) to ask GitHub Copilot or another LLM to rewrite `README.md`. The model will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place, using `legacy/source.md` as the primary source, `legacy/source.txt` as a fallback when needed, extracted images in `legacy/images/` as protocol content to review, and the legacy PDF as the final tie-breaker for tables, figures, and unclear layout-dependent content.
 > **Note**: Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better, especially with more difficult documents.
 
->**Note**: The initial migration request explicitly asks the model to perform the mandatory image/table pass and convert legible image-based tables to Markdown during the first draft. In cases where some wher left unconverted, the user can subsequently resolve this manually or ask an LLM to attempt to convert them.
+> **Note**: The initial migration request asks the model to perform the mandatory image/table pass and convert legible image-based tables to Markdown during the first draft. If some images are left unconverted, resolve them manually or ask an LLM to attempt the conversion.
 
 **In VS Code**:
   - **Codex**: use `/skills` and select the `protocol-migration` skill, or enter `$protocol-migration` in the Codex chat input box.
