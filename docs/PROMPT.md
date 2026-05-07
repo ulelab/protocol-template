@@ -33,19 +33,22 @@ When converting legacy protocol content into the repository template:
 ## Images, figures, and image-based tables
 PDF-to-Markdown conversion may extract protocol-relevant content as images, especially tables, thermocycler programs, reagent layouts, flow diagrams, gel/example images, or figure panels.
 
+Before drafting `README.md`, do a mandatory image/table pass. Do not finish the migration until every image reference in `legacy/source.md` and every file in `legacy/images/` has been accounted for as converted, retained, omitted, or uncertain.
+
 When migrating:
 
 - scan `legacy/source.md` for image references such as `![](images/...)`, and inspect `legacy/images/` for extracted images
+- for each extracted image, decide whether it is a table-like protocol artifact, another protocol-relevant visual, decorative/non-protocol content, or a duplicate
 - keep images that contain protocol content needed to perform or interpret the protocol
 - omit only clearly decorative images such as logos, icons, page chrome, ornamental separators, or duplicated images that add no protocol content
-- prefer converting image-based tables into Markdown tables when all headers, rows, values, units, grouping, and notes are legible and unambiguous
+- convert image-based tables into Markdown tables when all headers, rows, values, units, grouping, and notes are legible and unambiguous. This is required; do not leave a legible image-based table as an image merely because the source was extracted as an image
 - preserve row grouping and cycle counts from thermocycler/program tables. If Markdown cannot represent the original grouping cleanly, add a short note or use repeated values rather than losing meaning
 - do not OCR or transcribe illegible values by guesswork. If any value, header, grouping, or placement is uncertain, keep the image and add `CHECK:`
 - if an image contains non-tabular protocol content that cannot be safely converted to text, include the image in `README.md`
 - place converted tables or retained images at the same logical location as the source image, near the step or section they support
 - in `README.md`, image paths must be valid from the repository root. Change extracted paths from `images/<file>` to `legacy/images/<file>` unless the image has deliberately been moved
 - use descriptive alt text, for example `![Thermocycler program](legacy/images/page-3-image-2.png)`, not empty alt text
-- mention in `# Migration notes` which extracted images were converted to Markdown tables, which were retained as images, and which were omitted as non-protocol/decorative
+- mention in `# Migration notes` which extracted images were converted to Markdown tables, which were retained as images, which were omitted as non-protocol/decorative, and which require `CHECK:`
 
 ## Allowed formatting normalization
 Normalize formatting only when the meaning is unchanged and unambiguous:
@@ -63,7 +66,7 @@ Normalize formatting only when the meaning is unchanged and unambiguous:
 - Use numbered lists for procedural actions in sequence. For other non-procedural content, bullets are better. Note-like text such as Note, NB, Optional, Recommended, and Warning should use blockquote style such as `> **Note**`.
 - normalize bullets, headings, and markdown tables to match the repository template
 - use tables for reaction mixes and other tabular content
-- convert image-based tables to Markdown tables wherever this is legible and unambiguous; otherwise retain the image at the correct protocol location
+- convert image-based tables to Markdown tables wherever this is legible and unambiguous; otherwise retain the image at the correct protocol location with `CHECK:` explaining why it could not be safely converted
 - normalize note-like text such as Note, NB, Optional, Recommended, and Warning to blockquote style, for example `> **Note**`
 - place note-like text immediately after the step it refers to, or at the end of the protocol if it clearly refers to the whole protocol
 - remove empty columns from tables
@@ -105,6 +108,7 @@ Normalize formatting only when the meaning is unchanged and unambiguous:
   - extracted images converted to Markdown tables
   - extracted images retained in `README.md`
   - extracted images omitted because they were decorative or duplicated non-protocol content
+  - extracted images that could not be confidently classified or converted, marked with `CHECK:`
   - content copied verbatim but not confidently placed
 - Keep ![Created with ulelab Protocol Template](https://img.shields.io/badge/created%20with-ulelab%20Protocol%20Template-blue) at the top of the file.
 - Remove the template instruction note.
