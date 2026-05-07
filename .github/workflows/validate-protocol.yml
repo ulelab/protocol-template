@@ -6,23 +6,29 @@ on:
       - main
     paths:
       - README.md
+      - scripts/fix_protocol_style.py
       - scripts/validate_protocol.py
       - scripts/validate_protocol_content.py
       - scripts/validate_protocol_style.py
+      - tests/test_fix_protocol_style.py
       - tests/test_validate_protocol_content.py
       - tests/test_validate_protocol_style.py
       - .github/workflows/validate-protocol.yml
+      - .github/workflows/fix-protocol-style.yml
   push:
     branches:
       - main
     paths:
       - README.md
+      - scripts/fix_protocol_style.py
       - scripts/validate_protocol.py
       - scripts/validate_protocol_content.py
       - scripts/validate_protocol_style.py
+      - tests/test_fix_protocol_style.py
       - tests/test_validate_protocol_content.py
       - tests/test_validate_protocol_style.py
       - .github/workflows/validate-protocol.yml
+      - .github/workflows/fix-protocol-style.yml
   workflow_dispatch:
 
 jobs:

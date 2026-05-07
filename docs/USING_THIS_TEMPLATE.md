@@ -101,18 +101,16 @@ This route can save time. It helps keep the template structure consistent, norma
 3. Upload the legacy PDF to the `legacy` folder, then commit and push it.
 > **Important**: Please use a high-quality, well-structured protocol as the source. Only one PDF file per protocol is supported.
 
-> **Warning**: Custom content in protcols (such as images) may represent a challenge for this route, you may need to add it manually.
+> **Warning**: Custom content in protocols may represent a challenge for this route. Protocol-relevant extracted images, such as table images, figures, diagrams, or visual instructions, should either be converted to Markdown when legible and unambiguous, or retained in `README.md` at the correct location.
 
 > **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps track source protocol provenance.
-
-4. Keep exactly **one** PDF in the `legacy` folder, otherwise the process will fail.
-5. Once you push a PDF change in the `legacy` folder to a non-`main` branch, the migration GitHub Actions will run. `pdf-to-text` writes `legacy/source.txt`, and `pdf-to-markdown` writes `legacy/source.md`. Check that these files were created before the next step.
+4. Keep exactly one PDF in the `legacy` folder, otherwise the process will fail.
+5. Once you push a PDF change in the `legacy` folder to a non-`main` branch, the migration GitHub Actions will run. `pdf-to-text` writes `legacy/source.txt`, and `pdf-to-markdown` writes `legacy/source.md` and may write extracted images to `legacy/images/`. Check that these files were created before the next step.
 6. Clone the repo locally, and switch to `import-protocol` branch. If you already have a local clone, run `git pull` to get the latest changes locally.
 > **Note**: Alternatively, you can complete steps 6-15 in GitHub Codespaces. On GitHub.com select the branch you want to work on, click **Code**, go to **Codespaces** tab and click **Create codespace on import-protocol**. This will open VS Code in a new browser tab, with all files loaded automatically. Note that this uses GitHub-hosted compute, and free usage is limited.
-
-7. Open the repo folder in a code editor and use GitHub Copilot or another LLM assistant. We recommend [VS Code](https://code.visualstudio.com/) or similar code editors.
-8. Use the `protocol-migration` skill (or if you prefer, paste the prompt in `docs/PROMPT.md`) to ask GitHub Copilot or another LLM to rewrite `README.md`. The model will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place, using `legacy/source.md` as the primary source, `legacy/source.txt` as a fallback when needed, and the legacy PDF as the final tie-breaker for tables, figures, and unclear layout-dependent content.
-> **Note**: Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better, especially with more difficult documents.
+7. Open the repo folder in a code editor and use GitHub Copilot or another LLM assistant. We recommend [VS Code](https://code.visualstudio.com/).
+8. Use the `protocol-migration` skill (or if you prefer, paste the prompt in `docs/PROMPT.md`) to ask GitHub Copilot or another LLM to rewrite `README.md`. The model will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place, using `legacy/source.md` as the primary source, `legacy/source.txt` as a fallback when needed, extracted images in `legacy/images/` as protocol content to review, and the legacy PDF as the final tie-breaker for tables, figures, and unclear layout-dependent content.
+> **Note**: Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better.
 
 **In VS Code**:
   - **Codex**: use `/skills` and select the `protocol-migration` skill, or enter `$protocol-migration` in the Codex chat input box.
@@ -122,7 +120,7 @@ This route can save time. It helps keep the template structure consistent, norma
 
 9. Review the changes. If most of them look reasonable, commit with a message like `migration by LLM`.
 10. Verify that `README.md` is accurate by comparing it to the original PDF and fix mistakes.
-11. Check the `Migration notes` section and every place marked with `CHECK:`. Resolve anything unclear, and once resolved, delete the `CHECK:` markers.
+11. Check the `Migration notes` section and every place marked with `CHECK:`. Confirm that protocol-relevant extracted images were converted to Markdown tables where possible, or retained as images with valid `legacy/images/...` paths.
 12. Make any changes necessary. Delete sections you do not need.
 13. Check that no `TODO` text remains.
 14. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
