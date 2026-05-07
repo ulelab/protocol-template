@@ -24,6 +24,128 @@ CHEMICAL_FORMULA_RE = re.compile(
     r"\b(?P<formula>(?:[A-Z][a-z]?\d*){2,})\b"
 )
 UNICODE_SUBSCRIPT_RE = re.compile(r"\b(?P<formula>[A-Za-z₀₁₂₃₄₅₆₇₈₉]+)\b")
+ELEMENT_TOKEN_RE = re.compile(r"[A-Z][a-z]?\d*")
+
+PERIODIC_TABLE_SYMBOLS = {
+    "H",
+    "He",
+    "Li",
+    "Be",
+    "B",
+    "C",
+    "N",
+    "O",
+    "F",
+    "Ne",
+    "Na",
+    "Mg",
+    "Al",
+    "Si",
+    "P",
+    "S",
+    "Cl",
+    "Ar",
+    "K",
+    "Ca",
+    "Sc",
+    "Ti",
+    "V",
+    "Cr",
+    "Mn",
+    "Fe",
+    "Co",
+    "Ni",
+    "Cu",
+    "Zn",
+    "Ga",
+    "Ge",
+    "As",
+    "Se",
+    "Br",
+    "Kr",
+    "Rb",
+    "Sr",
+    "Y",
+    "Zr",
+    "Nb",
+    "Mo",
+    "Tc",
+    "Ru",
+    "Rh",
+    "Pd",
+    "Ag",
+    "Cd",
+    "In",
+    "Sn",
+    "Sb",
+    "Te",
+    "I",
+    "Xe",
+    "Cs",
+    "Ba",
+    "La",
+    "Ce",
+    "Pr",
+    "Nd",
+    "Pm",
+    "Sm",
+    "Eu",
+    "Gd",
+    "Tb",
+    "Dy",
+    "Ho",
+    "Er",
+    "Tm",
+    "Yb",
+    "Lu",
+    "Hf",
+    "Ta",
+    "W",
+    "Re",
+    "Os",
+    "Ir",
+    "Pt",
+    "Au",
+    "Hg",
+    "Tl",
+    "Pb",
+    "Bi",
+    "Po",
+    "At",
+    "Rn",
+    "Fr",
+    "Ra",
+    "Ac",
+    "Th",
+    "Pa",
+    "U",
+    "Np",
+    "Pu",
+    "Am",
+    "Cm",
+    "Bk",
+    "Cf",
+    "Es",
+    "Fm",
+    "Md",
+    "No",
+    "Lr",
+    "Rf",
+    "Db",
+    "Sg",
+    "Bh",
+    "Hs",
+    "Mt",
+    "Ds",
+    "Rg",
+    "Cn",
+    "Nh",
+    "Fl",
+    "Mc",
+    "Lv",
+    "Ts",
+    "Og",
+}
 
 PREFERRED_MICRO_UNITS = {
     "ul": "µL",
@@ -78,6 +200,21 @@ def html_subscript_formula(formula: str) -> str:
     return re.sub(r"(\d+)", r"<sub>\1</sub>", formula)
 
 
+def is_supported_chemical_formula(formula: str) -> bool:
+    if not any(char.isdigit() for char in formula):
+        return False
+
+    tokens = ELEMENT_TOKEN_RE.findall(formula)
+    if not tokens or "".join(tokens) != formula:
+        return False
+
+    return all(
+        re.match(r"([A-Z][a-z]?)(\d*)$", token) is not None
+        and re.match(r"([A-Z][a-z]?)(\d*)$", token).group(1) in PERIODIC_TABLE_SYMBOLS
+        for token in tokens
+    )
+
+
 def format_unit_failure(line_number: int, found: str, preferred: str) -> str:
     if "μ" in found:
         return (
@@ -127,7 +264,7 @@ def validate_readme_style(readme: str) -> List[str]:
 
         for match in CHEMICAL_FORMULA_RE.finditer(line):
             formula = match.group("formula")
-            if "<sub>" in formula or not any(char.isdigit() for char in formula):
+            if "<sub>" in formula or not is_supported_chemical_formula(formula):
                 continue
 
             preferred = html_subscript_formula(formula)
@@ -142,6 +279,8 @@ def validate_readme_style(readme: str) -> List[str]:
                 continue
 
             normalized = formula.translate(UNICODE_SUBSCRIPT_MAP)
+            if not is_supported_chemical_formula(normalized):
+                continue
             preferred = html_subscript_formula(normalized)
             failures.append(
                 f"Line {line_number}: chemical formula should use `{preferred}` style, found `{formula}`."

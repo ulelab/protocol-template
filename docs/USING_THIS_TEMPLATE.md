@@ -68,13 +68,17 @@ The main file you must edit for protocol content is `README.md`. Do not rename t
 > **Note**: Alternatively, you can complete steps 3-8 in GitHub Codespaces. On GitHub.com select the branch you want to work on, click **Code**, go to **Codespaces** tab and click **Create codespace on import-protocol**. This will open VS Code in a new browser tab, with all files loaded automatically. Note that this uses GitHub-hosted compute, and free usage is limited.
 
 > **Recommended**: Also fill in the `source-metadata.yml`, even if not fully. Helps track source protocol provenance.
+
 4. Replace all template text with real content.
 5. Delete sections you do not need.
 6. Check that no `TODO` text remains.
 7. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 8. Commit your changes, then push.
+> **Important:** Before making any further local changes after pushing, run `git pull`. GitHub Actions may have added a new commit on your branch.
+> **Recommended:** After pushing your changes, go to GitHub Actions tab on your protocol's repo page, and manually run the `validate-protocol-README` workflow on the `import-protocol` branch. This will validate the `README.md` file, or flag content and formatting errors. If there are problems, this check will fail, and the error messages will point your to the specific issues that need addressing.
+
 9. Once you are happy with the result, open a pull request from `import-protocol` into `main`.
-10. A validation GitHub Actions workflow will run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them before merging into `main`.
+10. The validation GitHub Actions workflow (`validate-protocol-README`) will automatically run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them before merging into `main`.
 11. Ask for a reviewer.
 
 > **Note:** Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
@@ -110,9 +114,10 @@ This route can save time. It helps keep the template structure consistent, norma
 
 **In VS Code**:
   - **Codex**: use `/skills` and select the `protocol-migration` skill, or enter `$protocol-migration` in the Codex chat input box.
-  - **Claude**: exnter `/protocol-migration`
+  - **Claude**: enter `/protocol-migration`
   - **Copilot agent mode**: ask it to use the `protocol-migration` skill (e.g. something like:
   `Migrate this protocol using the protocol-migration skill.`)
+
 9. Review the changes. If most of them look reasonable, commit with a message like `migration by LLM`.
 10. Verify that `README.md` is accurate by comparing it to the original PDF and fix mistakes.
 11. Check the `Migration notes` section and every place marked with `CHECK:`. Confirm that protocol-relevant extracted images were converted to Markdown tables where possible, or retained as images with valid `legacy/images/...` paths.
@@ -120,8 +125,11 @@ This route can save time. It helps keep the template structure consistent, norma
 13. Check that no `TODO` text remains.
 14. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 15. Commit your changes, then push.
+> **Important:** Before making any further local changes after pushing, run `git pull`. GitHub Actions may have added a new commit on your branch.
+> **Recommended:** After pushing your changes, go to GitHub Actions tab on your protocol's repo page, and manually run the `validate-protocol-README` workflow on the `import-protocol` branch. This will validate the `README.md` file, or flag content and formatting errors. If there are problems, this check will fail, and the error messages will point your to the specific issues that need addressing.
+
 16. Once you are happy with the result, open a pull request from `import-protocol` into `main`.
-17. A validation GitHub Actions workflow will run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them before merging into `main`.
+17. The validation GitHub Actions workflow (`validate-protocol-README`) will automatically run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them before merging into `main`.
 18. Ask for a reviewer.
 
 ---
@@ -219,14 +227,15 @@ If you want to adapt or improve an existing protocol on GitHub:
 8. After pushing to any branch, wait a few minutes.
 9. GitHub will automatically generate a PDF version of the protocol on that branch.
 10. This creates another commit, usually with a message like `Update <repo-name>.pdf`.
-11. If you have questions about a protocol, or want to propose a change, open a GitHub Issue using the `Protocol issues` template and assign relevant people.
-12. If you are developing a protocol as a team, you can use a GitHub Project.
-13. Use Issues to track optimisation ideas or questions.
-14. Add images, gels, notes or links to code or data to the relevant Issue.
-15. Close the Issue when the question is resolved.
-16. This helps keep a record of what has already been tried.
-17. If your change should become part of the main protocol, open a pull request to `main` and request review from relevant people.
-18. Do not merge into `main` without review, unless you are the only person using that protocol.
+11. Before making any further local changes after pushing, run `git pull`. GitHub Actions may have added a new commit on your branch.
+12. If you have questions about a protocol, or want to propose a change, open a GitHub Issue using the `Protocol issues` template and assign relevant people.
+13. If you are developing a protocol as a team, you can use a GitHub Project.
+14. Use Issues to track optimisation ideas or questions.
+15. Add images, gels, notes or links to code or data to the relevant Issue.
+16. Close the Issue when the question is resolved.
+17. This helps keep a record of what has already been tried.
+18. If your change should become part of the main protocol, open a pull request to `main` and request review from relevant people.
+19. Do not merge into `main` without review, unless you are the only person using that protocol.
 
 ---
 
@@ -237,6 +246,8 @@ If you want to adapt or improve an existing protocol on GitHub:
 After pushing changes to `README.md`, wait a few minutes.
 
 GitHub will automatically generate a PDF version of the protocol on that branch and commit it back to the repository, usually with a message like `Update <repo-name>.pdf`.
+
+Before making any further local changes after pushing, run `git pull`. GitHub Actions may have added a new commit on your branch.
 
 ### Use the commit SHA as the version identifier
 
