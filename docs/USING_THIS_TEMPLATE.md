@@ -94,7 +94,7 @@ This route can save time. It helps keep the template structure consistent, norma
 
 > **Important:** This route is AI-assisted, not AI-reliant. Always compare the generated `README.md` against the original PDF before merging. Every migration must be checked by the person carrying it out and by a separate reviewer before it is merged into `main`.
 
-### Suggested workflow
+### Suggested step-by-step workflow
 
 1. Create a new repository from the template.
 2. Create and switch to a new branch named e.g. `import-protocol`. Do not work on `main` directly for importing protocols.
