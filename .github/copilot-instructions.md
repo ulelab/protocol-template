@@ -7,6 +7,7 @@ Do not change protocol meaning.
 Use `legacy/source.md` as the primary source when rewriting `README.md`.
 Use `legacy/source.txt` only as a fallback when `legacy/source.md` looks malformed, incomplete, or unclear.
 Use the PDF file in `legacy/` as the final reference source of truth for tables, figures, layout-dependent content, and anything still ambiguous.
+Treat image references in `legacy/source.md` and files in `legacy/images/` as extracted protocol content, not decorative artifacts, until they have been reviewed.
 If `legacy/source.md` and `legacy/source.txt` disagree, prefer `legacy/source.md` for general structure and prose, but use the original PDF as the final tie-breaker.
 
 ## Migration behavior
@@ -26,6 +27,22 @@ When converting legacy protocol content into the repository template:
 - Preserve the step order from the source unless the source clearly indicates otherwise.
 - Preserve exact reagent and equipment names unless only formatting is changing.
 
+## Images, figures, and image-based tables
+PDF-to-Markdown conversion may extract protocol-relevant content as images, especially tables, thermocycler programs, reagent layouts, flow diagrams, gel/example images, or figure panels.
+
+When migrating:
+- Scan `legacy/source.md` for image references such as `![](images/...)`, and inspect `legacy/images/` for extracted images.
+- Keep images that contain protocol content needed to perform or interpret the protocol.
+- Omit only clearly decorative images such as logos, icons, page chrome, ornamental separators, or duplicated images that add no protocol content.
+- Prefer converting image-based tables into Markdown tables when all headers, rows, values, units, grouping, and notes are legible and unambiguous.
+- Preserve row grouping and cycle counts from thermocycler/program tables. If Markdown cannot represent the original grouping cleanly, add a short note or use repeated values rather than losing meaning.
+- Do not OCR or transcribe illegible values by guesswork. If any value, header, grouping, or placement is uncertain, keep the image and add `CHECK:`.
+- If an image contains non-tabular protocol content that cannot be safely converted to text, include the image in `README.md`.
+- Place converted tables or retained images at the same logical location as the source image, near the step or section they support.
+- In `README.md`, image paths must be valid from the repository root. Change extracted paths from `images/<file>` to `legacy/images/<file>` unless the image has deliberately been moved.
+- Use descriptive alt text, for example `![Thermocycler program](legacy/images/page-3-image-2.png)`, not empty alt text.
+- Mention in `# Migration notes` which extracted images were converted to Markdown tables, which were retained as images, and which were omitted as non-protocol/decorative.
+
 ## Allowed formatting normalization
 You may normalize formatting only when the meaning is unchanged and unambiguous:
 - Add a space between numbers and units.
@@ -42,6 +59,7 @@ You may normalize formatting only when the meaning is unchanged and unambiguous:
 - Normalize bullet formatting and markdown table formatting.
 - Normalize heading structure to match the repository template.
 - For reaction mixes and anything tabular, place them inside a table as in template.
+- For image-based tables, convert to Markdown tables wherever this is legible and unambiguous; otherwise retain the image at the correct protocol location.
 - Normalize markdown headings, bullets, and tables.
 - "Note" or "NOTE" or "NB" or "Optional" or "Recommended" or "Warning" are normalized to start with `>` (example `> **Note**`) and are placed immediately after the step they refer to, or at the end of the protocol if they clearly refer to the whole protocol.
 - Remove empty columns from tables.
@@ -60,6 +78,7 @@ You may normalize formatting only when the meaning is unchanged and unambiguous:
 - Do not replace one reagent name with another.
 - Do not remove repeated warnings or notes.
 - Do not omit unmapped text.
+- Do not omit protocol-relevant images, image-based tables, figures, diagrams, or visual instructions.
 
 ## Output requirements
 When drafting a migrated protocol:
@@ -77,6 +96,9 @@ When drafting a migrated protocol:
   - template_version from `template-metadata.yml`.
   - ambiguous mappings.
   - normalized formatting changes.
+  - extracted images converted to Markdown tables.
+  - extracted images retained in `README.md`.
+  - extracted images omitted because they were decorative or duplicated non-protocol content.
   - content copied verbatim but not confidently placed.
 - Keep ![Created with ulelab Protocol Template](https://img.shields.io/badge/created%20with-ulelab%20Protocol%20Template-blue) at the top of the file.
 - Delete the "Template repository: Click `Use this template` to create a new protocol repo..." note.
@@ -88,7 +110,10 @@ After drafting, verify the migration against the source:
 - compare the migrated `README.md` against `legacy/source.md`
 - compare any malformed, incomplete, or ambiguous passages against `legacy/source.txt`
 - compare the migrated `README.md` against the PDF in `legacy/` for tables, figures, layout-dependent content, and any remaining ambiguity
+- compare every protocol-relevant image reference in `legacy/source.md` and every relevant file in `legacy/images/` against the migrated `README.md`
 - check that all protocol steps, notes, warnings, reagent names, quantities, temperatures, timings, and conditions are still present
+- check that image-based tables were converted accurately or retained as images with valid `legacy/images/...` paths
+- check that no protocol-relevant figure, table image, diagram, gel/example image, or visual instruction was silently omitted
 - check that no source content has been silently omitted, merged, or reordered without justification
 - check any tables, layout-dependent content, or ambiguous sections against the PDF in `legacy/`
 - leave `CHECK:` anywhere the mapping is uncertain rather than guessing
@@ -99,6 +124,8 @@ Verification checklist:
 - no protocol steps or warnings were omitted
 - no values were invented or made more precise than in the source
 - tables and layout-dependent content were checked against the PDF in `legacy/`
+- protocol-relevant extracted images were either converted to Markdown tables or retained at the correct location
+- retained image links resolve from `README.md`
 - any uncertain mappings are marked with `CHECK:`
 - any meaningful normalization choices are noted in `# Migration notes`
 
