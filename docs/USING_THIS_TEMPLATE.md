@@ -112,13 +112,13 @@ This route can save time. It helps keep the template structure consistent, norma
 8. Use the `protocol-migration` skill (or if you prefer, paste the prompt in `docs/PROMPT.md`) to ask GitHub Copilot or another LLM to rewrite `README.md`. The model will also follow the repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). This will edit the `README.md` file in-place, using `legacy/source.md` as the primary source, `legacy/source.txt` as a fallback when needed, extracted images in `legacy/images/` as protocol content to review, and the legacy PDF as the final tie-breaker for tables, figures, and unclear layout-dependent content.
 > **Note**: Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better, especially with more difficult documents.
 
->**Note**: The initial migration request explicitly asks the model to perform the mandatory image/table pass and convert legible image-based tables to Markdown during the first draft. In cases where some wher left unconverted, the user can subsequently resolve this manually or ask their LLM to attempt to convert them.
+>**Note**: The initial migration request explicitly asks the model to perform the mandatory image/table pass and convert legible image-based tables to Markdown during the first draft. In cases where some wher left unconverted, the user can subsequently resolve this manually or ask an LLM to attempt to convert them.
 
 **In VS Code**:
   - **Codex**: use `/skills` and select the `protocol-migration` skill, or enter `$protocol-migration` in the Codex chat input box.
   - **Claude**: enter `/protocol-migration`
   - **Copilot agent mode**: ask it to use the `protocol-migration` skill (e.g. something like:
-  `Migrate this protocol using the protocol-migration skill. Before drafting README.md, perform the mandatory image/table pass: inspect legacy/source.md image references and legacy/images/, convert every legible protocol table image to Markdown, retain only non-convertible protocol images in the right place, and record each image decision in Migration notes.`)
+  `Migrate this protocol using the protocol-migration skill.`)
 
 9. Review the changes. If most of them look reasonable, commit with a message like `migration by LLM`.
 10. Verify that `README.md` is accurate by comparing it to the original PDF and fix mistakes.
