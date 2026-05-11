@@ -34,7 +34,7 @@ Use 10 µL enzyme, then wait 1 hour.
         readme = """# RNA extraction
 
 > **Note:** Keep samples cold.
-Use 10 µL reagent for 5 minutes at 37 °C in H<sub>2</sub>O.
+Use 10 µL reagent with 25 nM primer for 5 minutes at 37 °C in H<sub>2</sub>O.
 """
 
         self.assertEqual(fix_readme_style(fix_readme_style(readme)), readme)

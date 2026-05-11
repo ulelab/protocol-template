@@ -42,6 +42,7 @@ PREFERRED_UNITS = {
     "g": "g",
     "kg": "kg",
     "ng": "ng",
+    "nm": "nM",
     "mm": "mM",
     "µm": "µM",
     "μm": "µM",

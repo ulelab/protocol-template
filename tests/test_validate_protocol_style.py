@@ -24,6 +24,7 @@ Extract total RNA from cultured cells.
 
 Add 10 µL lysis buffer and incubate for 5 minutes at 20 °C.
 Adjust to pH 7.4 with 1 mM Tris-HCl.
+Dilute primer to 25 nM.
 Prepare with H<sub>2</sub>O and MgCl<sub>2</sub>.
 
 # 2. Cleanup
@@ -34,6 +35,7 @@ Wash with ethanol and elute.
 
 - 10 µL pipette
 - 1 mM Tris-HCl
+- 25 nM primer
 """
 
 
