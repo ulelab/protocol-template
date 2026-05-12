@@ -7,7 +7,6 @@ on:
     paths:
       - README.md
       - scripts/fix_protocol_style.py
-      - scripts/validate_protocol.py
       - scripts/validate_protocol_content.py
       - scripts/validate_protocol_style.py
       - tests/test_fix_protocol_style.py
@@ -21,7 +20,6 @@ on:
     paths:
       - README.md
       - scripts/fix_protocol_style.py
-      - scripts/validate_protocol.py
       - scripts/validate_protocol_content.py
       - scripts/validate_protocol_style.py
       - tests/test_fix_protocol_style.py
