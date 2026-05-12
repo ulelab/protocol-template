@@ -30,6 +30,16 @@ Use 10 µL enzyme, then wait 1 hour.
 
         self.assertEqual(fix_readme_style(original), expected)
 
+    def test_fixer_does_not_subscript_non_chemical_product_codes(self) -> None:
+        readme = """# Reagents
+
+- Totalpure NGS/Ampure XP beads
+- 20 µM Cas9 Nuclease, S. pyogenes (M0386T)
+- 20 µM Cas9 Nuclease, S. pyogenes (M₀₃₈₆T)
+"""
+
+        self.assertEqual(fix_readme_style(readme), readme)
+
     def test_fixer_is_idempotent(self) -> None:
         readme = """# RNA extraction
 

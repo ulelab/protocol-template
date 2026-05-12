@@ -5,6 +5,11 @@ import argparse
 import re
 from typing import Callable, Match
 
+try:
+    from scripts.validate_protocol_style import is_supported_chemical_formula
+except ModuleNotFoundError:
+    from validate_protocol_style import is_supported_chemical_formula
+
 NUMBER_RE = r"\d+(?:\.\d+)?"
 TEMPERATURE_RE = re.compile(
     rf"\b(?P<value>{NUMBER_RE})(?P<space1>\s*)(?P<degree>°?)(?P<space2>\s*)(?P<unit>[Cc])\b"
@@ -106,6 +111,26 @@ def normalize_note_label(match: Match[str]) -> str:
     )
 
 
+def normalize_unicode_subscript_formula(match: Match[str]) -> str:
+    formula = match.group("formula")
+    if not any(char in "₀₁₂₃₄₅₆₇₈₉" for char in formula):
+        return match.group(0)
+
+    normalized = formula.translate(UNICODE_SUBSCRIPT_MAP)
+    if not is_supported_chemical_formula(normalized):
+        return match.group(0)
+
+    return html_subscript_formula(normalized)
+
+
+def normalize_plain_chemical_formula(match: Match[str]) -> str:
+    formula = match.group("formula")
+    if not is_supported_chemical_formula(formula):
+        return match.group(0)
+
+    return html_subscript_formula(formula)
+
+
 def fix_readme_style(readme: str) -> str:
     fixed = readme
 
@@ -117,20 +142,12 @@ def fix_readme_style(readme: str) -> str:
     fixed = apply_regex_substitution(
         fixed,
         UNICODE_SUBSCRIPT_RE,
-        lambda match: (
-            html_subscript_formula(match.group("formula").translate(UNICODE_SUBSCRIPT_MAP))
-            if any(char in "₀₁₂₃₄₅₆₇₈₉" for char in match.group("formula"))
-            else match.group(0)
-        ),
+        normalize_unicode_subscript_formula,
     )
     fixed = apply_regex_substitution(
         fixed,
         CHEMICAL_FORMULA_RE,
-        lambda match: (
-            html_subscript_formula(match.group("formula"))
-            if any(char.isdigit() for char in match.group("formula"))
-            else match.group(0)
-        ),
+        normalize_plain_chemical_formula,
     )
     fixed = apply_regex_substitution(
         fixed,
