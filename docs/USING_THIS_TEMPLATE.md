@@ -85,6 +85,8 @@ The main file you must edit for protocol content is `README.md`. **Do not rename
 10. The validation GitHub Actions workflow (`validate-protocol-README`) will automatically run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them before merging into `main`.
 11. Ask for a reviewer where possible.
 
+> **Review scope**: Before opening the pull request, check the changed files. For a normal protocol-content pull request, only `README.md`, `CODEOWNERS`, and `legacy/source-metadata.yml` should be changed. If any other files changed, remove those changes or explain clearly why they are needed.
+
 > **Note**: Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
 
 ---
@@ -141,6 +143,8 @@ This route can save time. It helps keep the template structure consistent, norma
 17. Once you are happy with the result and you've thoroughly checked the created protocol is correct, open a pull request from `import-protocol` into `main`.
 18. The validation GitHub Actions workflow (`validate-protocol-README`) will automatically run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them *before* merging into `main`.
 19. Ask for a reviewer where possible.
+
+> **Review scope**: Before opening the pull request, check the changed files. For a normal protocol-content pull request, only `README.md`, `CODEOWNERS`, and `legacy/source-metadata.yml` should be changed. If any other files changed, remove those changes or explain clearly why they are needed.
 
 ---
 
@@ -270,7 +274,8 @@ If you want to adapt or improve an existing protocol on GitHub:
 16. Close the Issue when the question is resolved.
 17. This helps keep a record of what has already been tried.
 18. If your change should become part of the main protocol, open a pull request to `main` and request review from relevant people.
-19. Do not merge into `main` without review, unless you are the only person using that protocol.
+19. Before requesting review, check the changed files. For a normal protocol-content pull request, only `README.md`, `CODEOWNERS`, and `legacy/source-metadata.yml` should be changed. If any other files changed, remove those changes or explain clearly why they are needed.
+20. Do not merge into `main` without review, unless you are the only person using that protocol.
 
 ---
 
