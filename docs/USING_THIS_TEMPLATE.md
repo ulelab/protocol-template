@@ -15,8 +15,9 @@ If you are new to GitHub, start with this short [GitHub Hello World tutorial](ht
   - [1. Add and update a protocol manually](#1-add-and-update-a-protocol-manually)
   - [2. Add and update a protocol from a legacy PDF using GitHub Actions and AI assistance](#2-add-and-update-a-protocol-from-a-legacy-pdf-using-github-actions-and-ai-assistance)
   - [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
-- [How to make changes to a protocol](#how-to-make-changes-to-a-protocol)
-- [Using the protocol in the lab](#using-the-protocol-in-the-lab)
+- [Validate and fix protocol style](#validate-and-fix-protocol-style)
+- [Make changes to an existing protocol](#make-changes-to-an-existing-protocol)
+- [Use the protocol in the lab](#use-the-protocol-in-the-lab)
 - [Release a protocol](#release-a-protocol)
 ---
 
@@ -63,7 +64,7 @@ The main file you must edit for protocol content is `README.md`. **Do not rename
 
 ## 1. Add and update a protocol manually
 
-### Suggested workflow
+### Suggested step-by-step workflow
 
 1. Create a new repository from the template (see [Create a new protocol repository](#create-a-new-protocol-repository)).
 2. Create and switch to a new branch named e.g.`import-protocol`. Do not work on `main` directly for adding protocols.
@@ -77,14 +78,14 @@ The main file you must edit for protocol content is `README.md`. **Do not rename
 6. Check that no `TODO` text remains.
 7. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
 8. Commit your changes, then push.
-> **Important:** Before making any further local changes after pushing, run `git pull`. GitHub Actions may have added a new commit on your branch.
-> **Recommended:** After pushing your changes, go to GitHub Actions tab on your protocol's repo page, and manually run the `validate-protocol-README` workflow on the `import-protocol` branch. This will validate the `README.md` file, or flag content and formatting errors. If there are problems, this check will fail, and the error messages will point your to the specific issues that need addressing.
+> **Important**: Before making any further local changes after pushing, run `git pull`. GitHub Actions may have added a new commit on your branch.
+> **Recommended**: After pushing your changes, go to the GitHub **Actions** tab on your protocol's repo page, and manually run the `validate-protocol-README` workflow. In the **Use workflow from** branch menu, select your own working branch, for example `import-protocol`. This will validate the `README.md` file, or flag content and formatting errors. If there are problems, this check will fail, and the error messages will point you to the specific issues that need addressing. This workflow does not check whether the scientific content is correct.
 
 9. Once you are happy with the result and you've thoroughly checked the created protocol is correct, open a pull request from `import-protocol` into `main`.
 10. The validation GitHub Actions workflow (`validate-protocol-README`) will automatically run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them before merging into `main`.
 11. Ask for a reviewer where possible.
 
-> **Note:** Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
+> **Note**: Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
 
 ---
 
@@ -94,7 +95,7 @@ This repository includes tools to help convert legacy protocol PDFs into Markdow
 
 This route can save time. It helps keep the template structure consistent, normalizes formatting, standardizes units where this can be done without changing meaning, and highlights parts of the source protocol that need manual review.
 
-> **Important:** This route is AI-assisted, not AI-reliant. Always compare the generated `README.md` against the original PDF before merging. Every migration must be checked by the person carrying it out and by a separate reviewer before it is merged into `main`.
+> **Important**: This route is AI-assisted, not AI-reliant. Always compare the generated `README.md` against the original PDF before merging. Every migration must be checked by the person carrying it out and by a separate reviewer before it is merged into `main`.
 
 ### Suggested step-by-step workflow
 
@@ -126,14 +127,16 @@ This route can save time. It helps keep the template structure consistent, norma
 
 9. Review the changes. If most of them look reasonable, commit with a message like `migration by LLM`. Do not push yet at this stage.
 10. Verify that `README.md` is accurate by comparing it to the original PDF and fix mistakes.
-11. Check the `Migration notes` section and every place marked with `CHECK:`. 
+11. Check the `Migration notes` section and every place marked with `CHECK:`.
 12. Confirm that protocol-relevant extracted images were converted to Markdown tables where possible, or retained as images.
 13. Make any changes necessary. Delete sections you do not need.
 14. Check that no `TODO` text remains.
 15. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
+> **Note**: Steps 10-15 can be either performed manually or by further prompting the LLM in your code editor or VS Code.
+
 16. Commit your changes, then push.
-> **Important:** Before making any further local changes after pushing, run `git pull`. GitHub Actions will have added a new commit on your branch with a PDF version of `README.md`.
-> **Recommended:** After pushing your changes, go to GitHub Actions tab on your protocol's repo page, and manually run the `validate-protocol-README` workflow on the `import-protocol` branch. This will validate the `README.md` file, or flag content and formatting errors. If there are problems, this check will fail, and the error messages will point your to the specific issues that need addressing.
+> **Important**: Before making any further local changes after pushing, run `git pull`. GitHub Actions will have added a new commit on your branch with a PDF version of `README.md`.
+> **Recommended**: After pushing your changes, go to the GitHub **Actions** tab on your protocol's repo page, and manually run the `validate-protocol-README` workflow. In the **Use workflow from** branch menu, select your own working branch, for example `import-protocol`. This will validate the `README.md` file, or flag content and formatting errors. If there are problems, this check will fail, and the error messages will point you to the specific issues that need addressing. This workflow does not check whether the scientific content is correct.
 
 16. Once you are happy with the result and you've thoroughly checked the created protocol is correct, open a pull request from `import-protocol` into `main`.
 17. The validation GitHub Actions workflow (`validate-protocol-README`) will automatically run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them *before* merging into `main`.
@@ -147,9 +150,7 @@ This section applies whether you updated the protocol manually or generated it f
 
 #### Minimum content every protocol should have
 
-At minimum, make sure your protocol includes:
-
-Mandatory items for validation:
+**At minimum, make sure your protocol includes:**
 
 - a clear title, formatted as a top-level Markdown heading using a single `#`, for example `# RNA-seq`
 - an accurate `### Status:` line
@@ -157,6 +158,7 @@ Mandatory items for validation:
 - a short description (`# About`)
 - contents (`## Contents`)
 - a materials section (`# ... Materials`)
+These are mandatory items for validation.
 
 Recommended content:
 
@@ -197,6 +199,7 @@ Before finishing, search `README.md` for:
 - `TODO`
 - `Optional sub-step`
 - placeholder text such as `Step 1` and `Step 2`
+- unresolved `CHECK:`
 
 These should usually be replaced or deleted.
 
@@ -220,7 +223,32 @@ Examples:
 
 ---
 
-# How to make changes to a protocol
+# Validate and fix protocol style
+
+You can manually run protocol formatting validation at any time from the GitHub **Actions** tab:
+
+1. Open **Actions**.
+2. Select the `validate-protocol-README` workflow.
+3. Click **Run workflow**.
+4. In the **Use workflow from** branch menu, select your own working branch, for example `import-protocol`, unless you are intentionally validating another branch.
+5. Click **Run workflow** and read the result.
+
+If validation fails, fix the reported problems on your branch, commit, push, and run validation again.
+
+**Optional**: if validation reports unit or notation style issues, you can ask GitHub to open an automated style-fix pull request:
+
+1. Open **Actions**.
+2. Select the `fix-protocol-style` workflow.
+3. Click **Run workflow**.
+4. In the **Use workflow from** branch menu, choose the branch whose workflow file should run. If you are unsure, use `main`.
+5. In `base_branch`, enter the branch that contains the `README.md` you want to fix, for example `import-protocol`.
+6. Click **Run workflow**.
+
+The `fix-protocol-style` workflow applies deterministic formatting fixes, then opens a new pull request back into the `base_branch` you entered. Review that pull request before merging it. This workflow does not check whether the scientific content is correct.
+
+---
+
+# Make changes to an existing protocol
 
 If you want to adapt or improve an existing protocol on GitHub:
 
@@ -246,7 +274,7 @@ If you want to adapt or improve an existing protocol on GitHub:
 
 ---
 
-# Using the protocol in the lab
+# Use the protocol in the lab
 
 ### Always use the PDF that matches the protocol version you want
 
@@ -279,7 +307,8 @@ Before using a protocol in the lab, check all of the following:
 # Release a protocol
 
 Once a protocol has been added and confirmed to be working — that is, its status is 🟢 `[OK]` and this is clearly marked at the top of the file, create the first release: `1.0.0`.
+> **Recommended**: Link releases to Zenodo if you want each protocol version to have a citable DOI.
 
-Further changes can then be released using semantic versioning. Ensure maintainers listed in `CODEOWNERS` are involved or aware if a new version release is planned.
+Further changes can then be released using semantic versioning. Ensure maintainers listed in `CODEOWNERS` and other protocol developers and users are involved or aware if a new version release is planned.
 
 ---
