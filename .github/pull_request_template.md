@@ -27,6 +27,8 @@ List people (GitHub usernames) who should review or comment on this change.
 
 ## Checklist
 
-- [ ] I only changed `README.md`, `legacy/source-metadata.yml`, and/or `CODEOWNERS`
+- [ ] I only edited `README.md`, `legacy/source-metadata.yml`, and/or `CODEOWNERS`
 - [ ] I checked that `README.md` is accurate
+- [ ] I checked that the generated protocol PDF is accurate and matches `README.md` content
 - [ ] I linked the relevant issue(s)
+- [ ] I tagged or requested review from the relevant people
