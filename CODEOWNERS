@@ -1,5 +1,3 @@
 # List GitHub usernames or teams who should review changes.
-# Example: * @your-username
-
-# Replace this placeholder with your real code owners.
-* @replace-me
+# Example:
+# * @your-username
