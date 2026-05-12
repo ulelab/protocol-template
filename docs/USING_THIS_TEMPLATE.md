@@ -154,7 +154,7 @@ This section applies whether you updated the protocol manually or generated it f
 
 #### Minimum content every protocol should have
 
-**At minimum, make sure your protocol includes:**
+At minimum, make sure your protocol includes:
 
 - a clear title, formatted as a top-level Markdown heading using a single `#`, for example `# RNA-seq`
 - an accurate `### Status:` line
@@ -162,7 +162,8 @@ This section applies whether you updated the protocol manually or generated it f
 - a short description (`# About`)
 - contents (`## Contents`)
 - a materials section (`# ... Materials`)
-These are mandatory items for validation.
+
+> **Note**: These are mandatory items for validation.
 
 Recommended content:
 
