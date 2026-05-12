@@ -1,7 +1,7 @@
 # Third-Party Notices
 
-This repository is primarily licensed under GPL-3.0, but it also contains
-specific files adapted from third-party code under different terms.
+This repository is primarily licensed under the MIT License. It also contains
+specific files adapted from third-party code under compatible MIT terms.
 
 ## `pdf_to_md` scripts
 
@@ -18,5 +18,4 @@ Upstream licensing note:
 - Source checked: <https://github.com/aliceisjustplaying/claude-skill-pdf-to-markdown>
 
 Attribution note:
-- This repository records the upstream source and preserves attribution for the
-  adapted files listed above.
+- This repository records the upstream source and preserves attribution for the adapted files listed above.

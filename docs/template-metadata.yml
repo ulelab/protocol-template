@@ -1,9 +1,11 @@
 template_repository: ulelab/protocol-template
 template_url: https://github.com/ulelab/protocol-template
-template_license: GPL-3.0
+template_license: MIT
 template_authors:
   - name: Ule lab
+    github: ulelab
   - name: Ira A. Iosub
+    github: iraiosub
 template_doi:
 template_version: 1.0.0dev
 template_release_date: 
