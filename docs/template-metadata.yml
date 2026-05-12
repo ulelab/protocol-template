@@ -7,6 +7,6 @@ template_organisation:
 template_authors:
   - name: Ira A. Iosub
     github: iraiosub
-template_doi:
+template_doi: 10.5281/zenodo.20148013
 template_version: 1.0.0
 template_release_date: 2026-05-12
