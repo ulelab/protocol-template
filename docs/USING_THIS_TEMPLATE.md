@@ -85,7 +85,7 @@ The main file you must edit for protocol content is `README.md`. **Do not rename
 10. The validation GitHub Actions workflow (`validate-protocol-README`) will automatically run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them before merging into `main`.
 11. Ask for a reviewer where possible.
 
-> **Review scope**: Before opening the pull request, check the changed files. For a normal protocol-content pull request, only `README.md`, `CODEOWNERS`, and `legacy/source-metadata.yml` should be changed. If any other files changed, remove those changes or explain clearly why they are needed.
+> **Review scope**: Before opening the pull request, check the changed files. For a routine protocol edit, only `README.md` or `CODEOWNERS` should change. This does not apply to the one-time legacy PDF import workflow, where files in `legacy/` may also be created or updated. If any other files changed, remove those changes or explain clearly why they are needed.
 
 > **Note**: Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
 
@@ -144,7 +144,7 @@ This route can save time. It helps keep the template structure consistent, norma
 18. The validation GitHub Actions workflow (`validate-protocol-README`) will automatically run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them *before* merging into `main`.
 19. Ask for a reviewer where possible.
 
-> **Review scope**: Before opening the pull request, check the changed files. For a normal protocol-content pull request, only `README.md`, `CODEOWNERS`, and `legacy/source-metadata.yml` should be changed. If any other files changed, remove those changes or explain clearly why they are needed.
+> **Review scope**: Before opening the pull request, check the changed files. For a legacy PDF import pull request, expected changes are `README.md`, `CODEOWNERS`, and files in `legacy/`, such as `legacy/source-metadata.yml`, the source PDF, `legacy/source.txt`, `legacy/source.md`, or `legacy/images/`. If any other files changed, remove those changes or explain clearly why they are needed.
 
 ---
 
@@ -265,17 +265,18 @@ If you want to adapt or improve an existing protocol on GitHub:
 7. If the change relates to a GitHub Issue, include the Issue number, for example `closes #12`.
 8. After pushing to any branch, wait a few minutes.
 9. GitHub will automatically generate a PDF version of the protocol on that branch.
-10. This creates another commit, usually with a message like `Update <repo-name>.pdf`.
-11. Before making any further local changes after pushing, run `git pull`. GitHub Actions may have added a new commit on your branch.
-12. If you have questions about a protocol, or want to propose a change, open a GitHub Issue using the `Protocol issues` template and assign relevant people.
-13. If you are developing a protocol as a team, you can use a GitHub Project.
-14. Use Issues to track optimisation ideas or questions.
-15. Add images, gels, notes or links to code or data to the relevant Issue.
-16. Close the Issue when the question is resolved.
-17. This helps keep a record of what has already been tried.
-18. If your change should become part of the main protocol, open a pull request to `main` and request review from relevant people.
-19. Before requesting review, check the changed files. For a normal protocol-content pull request, only `README.md`, `CODEOWNERS`, and `legacy/source-metadata.yml` should be changed. If any other files changed, remove those changes or explain clearly why they are needed.
-20. Do not merge into `main` without review, unless you are the only person using that protocol.
+10. If the PDF is not generated within a few minutes (you may need to refresh the page), go to the GitHub **Actions** tab, manually run the `README-to-pdf` workflow, and select your working branch in the **Use workflow from** branch menu.
+11. PDF generation creates another commit, usually with a message like `Update <repo-name>.pdf`.
+12. Before making any further local changes after pushing, run `git pull`. GitHub Actions may have added a new commit on your branch.
+13. If you have questions about a protocol, or want to propose a change, open a GitHub Issue using the `Protocol issues` template and assign relevant people.
+14. If you are developing a protocol as a team, you can use a GitHub Project.
+15. Use Issues to track optimisation ideas or questions.
+16. Add images, gels, notes or links to code or data to the relevant Issue.
+17. Close the Issue when the question is resolved.
+18. This helps keep a record of what has already been tried.
+19. If your change should become part of the main protocol, open a pull request to `main` and request review from relevant people.
+20. Before requesting review, check the changed files. For a routine protocol edit, only `README.md` or `CODEOWNERS` should change. For a legacy PDF import, files in `legacy/` may also be created or updated. If any other files changed, remove those changes or explain clearly why they are needed.
+21. Do not merge into `main` without review, unless you are the only person using that protocol.
 
 ---
 
@@ -286,6 +287,8 @@ If you want to adapt or improve an existing protocol on GitHub:
 After pushing changes to `README.md`, wait a few minutes.
 
 GitHub will automatically generate a PDF version of the protocol on that branch and commit it back to the repository, usually with a message like `Update <repo-name>.pdf`.
+
+If the PDF is not generated within a few minutes, go to the GitHub **Actions** tab, manually run the `README-to-pdf` workflow, and select your working branch in the **Use workflow from** branch menu.
 
 Before making any further local changes after pushing, run `git pull`. GitHub Actions may have added a new commit on your branch.
 
