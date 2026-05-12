@@ -123,7 +123,7 @@ This route can save time. It helps keep the template structure consistent, norma
 
 **In VS Code**:
   - **Codex**: use `/skills` and select the `protocol-migration` skill, or enter `$protocol-migration` in the Codex chat input box.
-  - **Claude**: enter `/protocol-migration`
+  - **Claude Code**: enter `/protocol-migration`, or ask it to use the `protocol-migration` skill.
   - **Copilot agent mode**: ask it to use the `protocol-migration` skill (e.g. something like:
   `Migrate this protocol using the protocol-migration skill.`)
 
