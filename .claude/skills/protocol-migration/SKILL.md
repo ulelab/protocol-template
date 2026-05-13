@@ -104,8 +104,7 @@ You may normalize formatting only when the meaning is unchanged and unambiguous:
   - ambiguities and uncertainty flagged
   - content placed in `## Unplaced content`
 - add `# Migration notes` including:
-  - imported protocol metadata from `source-metadata.yml` if present
-  - imported protocol metadata from `source-metadata.yml` using only the non-blank lines
+  - imported protocol metadata from `source-metadata.yml`, using only the non-blank lines
   - template_version from `template-metadata.yml`
   - ambiguous mappings
   - normalized formatting changes
@@ -114,8 +113,7 @@ You may normalize formatting only when the meaning is unchanged and unambiguous:
   - extracted images omitted because they were decorative or duplicated non-protocol content
   - extracted images that could not be confidently classified or converted, marked with `CHECK:`
   - content copied verbatim but not confidently placed
-- keep the template badge at the top
-- keep ![Created with ulelab Protocol Template](https://img.shields.io/badge/created%20with-ulelab%20Protocol%20Template-blue) at the top of the file
+- keep `[![Created with Ule Lab Protocol Template](https://img.shields.io/badge/created%20with-Ule%20Lab%20Protocol%20Template-blue)](https://github.com/ulelab/protocol-template)` at the top of the file
 - remove the template instruction note
 - delete the "Template repository: Click `Use this template` to create a new protocol repo..." note
 
