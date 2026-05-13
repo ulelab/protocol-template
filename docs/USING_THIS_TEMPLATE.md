@@ -32,6 +32,7 @@ If you are new to GitHub, start with this short [GitHub Hello World tutorial](ht
 - [Make changes to an existing protocol](#make-changes-to-an-existing-protocol)
 - [Use the protocol in the lab](#use-the-protocol-in-the-lab)
 - [Release a protocol](#release-a-protocol)
+- [Citation information](#citation-information)
 ---
 
 # Create a new protocol repository
@@ -334,3 +335,24 @@ Once a protocol has been added and confirmed to be working — that is, its stat
 Further changes can then be released using semantic versioning. Ensure maintainers listed in `CODEOWNERS` and other protocol developers and users are involved or aware if a new version release is planned.
 
 ---
+
+# Citation information
+
+When citing work that uses this template, cite both:
+
+1. the exact protocol version used
+2. the template, if its tools helped create, migrate, validate, format, or release the protocol
+
+For the protocol citation, prefer the DOI for the specific release if the repository is linked to Zenodo. If there is no DOI, cite the GitHub release or commit URL. Include:
+
+- protocol title
+- authors and maintainers
+- repository name and GitHub URL
+- commit SHA printed in the PDF
+- release version and DOI, if available
+
+Template citation:
+
+Ira A. Iosub. `protocol-template`, DOI: https://doi.org/10.5281/zenodo.20148013
+
+The template citation metadata is stored in `docs/template-metadata.yml`.
