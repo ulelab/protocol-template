@@ -1,8 +1,21 @@
 # How to use this template
 
-This repository is a template for creating a new protocol repository.
+This repository is a template for creating new protocol repositories. It includes:
 
-Do not edit this repository directly unless you are maintaining the template itself.
+- an editable template Markdown protocol file (`README.md`) that acts as the single source of truth for each protocol
+- scripts and GitHub Actions workflows
+- agent skills that guide AI-assisted protocol migration, editing, unit cleanup, and consistency improvements
+- issue and pull request templates
+
+Together, these tools integrate with GitHub to support the protocol life cycle and evolution by:
+
+- automating migration from legacy PDF files
+- validating required protocol sections and improving style formatting
+- supporting maintenance and collaboration
+- producing a lab-ready PDF
+- creating versioned releases
+
+**Do not edit this repository directly unless you are maintaining the template itself.**
 
 Instead, create a new repository from this template and edit that new repository.
 
@@ -115,11 +128,11 @@ This route can save time. It helps keep the template structure consistent, norma
 
 6. Clone the repo locally, and switch to `import-protocol` branch. If you already have a local clone, run `git pull` to get the latest changes locally.
 > **Note**: Alternatively, you can complete steps 6-16 in GitHub Codespaces. On GitHub.com select the branch you want to work on, click **Code**, go to **Codespaces** tab and click **Create codespace on import-protocol**. This will open VS Code in a new browser tab, with all files loaded automatically. Note that this uses GitHub-hosted compute, and free usage is limited.
-7. Open the repo folder in a code editor and use GitHub Copilot or another LLM assistant. We recommend [VS Code](https://code.visualstudio.com/).
-8. Use the `protocol-migration` skill (or if you prefer, paste the prompt in `docs/PROMPT.md`) to ask GitHub Copilot or another LLM to rewrite `README.md`. The model will also follow the repository instructions in [`../.github/copilot-instructions.md`](../.github/copilot-instructions.md). This will edit the `README.md` file in-place, using `legacy/source.md` as the primary source, `legacy/source.txt` as a fallback when needed, extracted images in `legacy/images/` as protocol content to review, and the legacy PDF as the final tie-breaker for tables, figures, and unclear layout-dependent content.
+7. Open the repo folder in a code editor and use GitHub Copilot or another AI coding assistant. We recommend [VS Code](https://code.visualstudio.com/).
+8. Use the `protocol-migration` skill (or if you prefer, paste the prompt in `docs/PROMPT.md`) to ask GitHub Copilot or another AI coding assistant to rewrite `README.md`. The model will also follow the repository instructions in [`../.github/copilot-instructions.md`](../.github/copilot-instructions.md). This will edit the `README.md` file in-place, using `legacy/source.md` as the primary source, `legacy/source.txt` as a fallback when needed, extracted images in `legacy/images/` as protocol content to review, and the legacy PDF as the final tie-breaker for tables, figures, and unclear layout-dependent content.
 > **Note**: Use the best model you have access to. We tested capability with the Copilot Free Usage plan, and it works reasonably well, but advanced models will likely work even better, especially with more difficult documents.
 
-> **Note**: The initial migration request asks the model to perform the mandatory image/table pass and convert legible image-based tables to Markdown during the first draft. If some images are left unconverted, resolve them manually or ask an LLM to attempt the conversion.
+> **Note**: The initial migration request asks the model to perform the mandatory image/table pass and convert legible image-based tables to Markdown during the first draft. If some images are left unconverted, resolve them manually or ask the AI coding assistant to attempt the conversion.
 
 **In VS Code**:
   - **Codex**: use `/skills` and select the `protocol-migration` skill, or enter `$protocol-migration` in the Codex chat input box.
@@ -127,14 +140,14 @@ This route can save time. It helps keep the template structure consistent, norma
   - **Copilot agent mode**: ask it to use the `protocol-migration` skill (e.g. something like:
   `Migrate this protocol using the protocol-migration skill.`)
 
-9. Review the changes. If most of them look reasonable, commit with a message like `migration by LLM`. Do not push yet at this stage.
+9. Review the changes. If most of them look reasonable, commit with a message like `AI-assisted migration`. Do not push yet at this stage.
 10. Verify that `README.md` is accurate by comparing it to the original PDF and fix mistakes.
 11. Check the `Migration notes` section and every place marked with `CHECK:`.
 12. Confirm that protocol-relevant extracted images were converted to Markdown tables where possible, or retained as images.
 13. Make any changes necessary. Delete sections you do not need.
 14. Check that no `TODO` text remains.
 15. Follow the guidelines in [3. General guidelines for the protocol file (`README.md`)](#3-general-guidelines-for-the-protocol-file-readmemd)
-> **Note**: Steps 10-15 can be either performed manually or by further prompting the LLM in your code editor or VS Code.
+> **Note**: Steps 10-15 can be either performed manually or by further prompting the AI coding assistant in your code editor or VS Code.
 
 16. Commit your changes, then push.
 > **Important**: Before making any further local changes after pushing, run `git pull`. GitHub Actions will have added a new commit on your branch with a PDF version of `README.md`.
