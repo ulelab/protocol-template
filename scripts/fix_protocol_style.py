@@ -22,8 +22,7 @@ UNIT_RE = re.compile(
     rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>µL|mL|ml|ML|L|l|µg|mg|g|kg|ng|mM|µM|nM|M|μL|μM|μg)\b"
 )
 TIME_RE = re.compile(
-    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>seconds?|second|minutes?|minute|hours?|hour|secs?|sec|mins?|min|hrs?|hr|s|h)\b",
-    re.IGNORECASE,
+    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>(?i:seconds?|minutes?|hours?|secs?|mins?|hrs?)|s|h)\b",
 )
 CHEMICAL_FORMULA_RE = re.compile(r"\b(?P<formula>(?:[A-Z][a-z]?\d*){2,})\b")
 UNICODE_SUBSCRIPT_RE = re.compile(r"\b(?P<formula>[A-Za-z₀₁₂₃₄₅₆₇₈₉]+)\b")
@@ -70,6 +69,9 @@ TIME_UNIT_BASE = {
     "hours": "hour",
 }
 UNICODE_SUBSCRIPT_MAP = str.maketrans("₀₁₂₃₄₅₆₇₈₉", "0123456789")
+LITERAL_CHEMICAL_FORMULAS = {
+    "ddH2O": "ddH<sub>2</sub>O",
+}
 NOTE_LABEL_RE = re.compile(
     r"^(?P<indent>\s*)(?P<label>Note|NOTE|NB|Optional|Recommended|Warning):\s*(?P<body>.*)$",
     re.MULTILINE,
@@ -84,6 +86,41 @@ def preferred_time_token(value: str, unit: str) -> str:
 
 def html_subscript_formula(formula: str) -> str:
     return re.sub(r"(\d+)", r"<sub>\1</sub>", formula)
+
+
+def is_word_char(char: str) -> bool:
+    return char.isalnum() or char == "_"
+
+
+def replace_literal_token(text: str, token: str, replacement: str) -> str:
+    fixed = []
+    start = 0
+
+    while True:
+        index = text.find(token, start)
+        if index == -1:
+            fixed.append(text[start:])
+            return "".join(fixed)
+
+        before = text[index - 1] if index > 0 else ""
+        after_index = index + len(token)
+        after = text[after_index] if after_index < len(text) else ""
+        if (not before or not is_word_char(before)) and (
+            not after or not is_word_char(after)
+        ):
+            fixed.append(text[start:index])
+            fixed.append(replacement)
+        else:
+            fixed.append(text[start:after_index])
+
+        start = after_index
+
+
+def normalize_literal_chemical_formulas(text: str) -> str:
+    fixed = text
+    for found, preferred in LITERAL_CHEMICAL_FORMULAS.items():
+        fixed = replace_literal_token(fixed, found, preferred)
+    return fixed
 
 
 def apply_regex_substitution(
@@ -134,6 +171,7 @@ def normalize_plain_chemical_formula(match: Match[str]) -> str:
 def fix_readme_style(readme: str) -> str:
     fixed = readme
 
+    fixed = normalize_literal_chemical_formulas(fixed)
     fixed = apply_regex_substitution(
         fixed,
         PH_RE,

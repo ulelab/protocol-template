@@ -62,6 +62,20 @@ class ValidateReadmeStyleTests(unittest.TestCase):
             )
         )
 
+    def test_uppercase_biology_and_figure_labels_are_not_time_units(self) -> None:
+        readme = (
+            VALID_README
+            + "\nMeasure 25S rRNA and 3S RNA.\n"
+            + "See Supplementary Figure 1S, Figure 2H, and Table 2H.\n"
+        )
+
+        failures = validate_readme_style(readme)
+
+        self.assertFalse(any("25 seconds" in failure for failure in failures))
+        self.assertFalse(any("3 seconds" in failure for failure in failures))
+        self.assertFalse(any("1 second" in failure for failure in failures))
+        self.assertFalse(any("2 hours" in failure for failure in failures))
+
     def test_temperature_formatting_is_reported(self) -> None:
         readme = VALID_README.replace("20 °C", "20C", 1)
 
@@ -114,6 +128,26 @@ class ValidateReadmeStyleTests(unittest.TestCase):
             )
         )
 
+    def test_ddh2o_uses_html_subscript(self) -> None:
+        readme = VALID_README + "\nRinse with ddH2O before storage.\n"
+
+        failures = validate_readme_style(readme)
+
+        self.assertTrue(
+            any(
+                "chemical formula should use `ddH<sub>2</sub>O` style"
+                in failure
+                for failure in failures
+            )
+        )
+
+    def test_ddh2o_substring_is_not_reported(self) -> None:
+        readme = VALID_README + "\nKeep the addH2O helper label unchanged.\n"
+
+        failures = validate_readme_style(readme)
+
+        self.assertFalse(any("ddH<sub>2</sub>O" in failure for failure in failures))
+
     def test_unicode_subscript_formula_is_reported(self) -> None:
         readme = VALID_README.replace("MgCl<sub>2</sub>", "MgCl₂", 1)
 
@@ -132,6 +166,18 @@ class ValidateReadmeStyleTests(unittest.TestCase):
         failures = validate_readme_style(readme)
 
         self.assertFalse(any("RT<sub>1</sub>" in failure for failure in failures))
+
+    def test_bioinformatics_acronyms_with_digits_are_not_chemical_formulas(self) -> None:
+        readme = (
+            VALID_README
+            + "\nCompare CHIP3, FISH3, and NGS2 annotations before ChIP-seq.\n"
+        )
+
+        failures = validate_readme_style(readme)
+
+        self.assertFalse(any("CHIP<sub>3</sub>" in failure for failure in failures))
+        self.assertFalse(any("FISH<sub>3</sub>" in failure for failure in failures))
+        self.assertFalse(any("NGS<sub>2</sub>" in failure for failure in failures))
 
 
 if __name__ == "__main__":
