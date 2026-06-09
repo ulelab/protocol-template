@@ -19,7 +19,7 @@ MICRO_UNIT_RE = re.compile(
     rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>uL|ul|UL|uM|UM|ug|μL|μM|μg)\b"
 )
 UNIT_RE = re.compile(
-    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>µL|mL|ml|ML|L|l|µg|mg|g|kg|ng|mM|µM|nM|M|μL|μM|μg)\b"
+    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>µL|mL|ml|ML|L|l|µg|mg|g|kg|ng|mM|µM|nM|M)\b"
 )
 TIME_RE = re.compile(
     rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>(?i:seconds?|minutes?|hours?|secs?|mins?|hrs?)|s|h)\b",

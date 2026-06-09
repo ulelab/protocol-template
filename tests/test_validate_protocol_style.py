@@ -102,10 +102,31 @@ class ValidateReadmeStyleTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "unit uses Greek mu `μ`; use the micro sign `µ`" in failure
+                "unit uses Greek letter mu `μ` (U+03BC); copy/paste the micro sign `µ` (U+00B5)"
+                in failure
                 for failure in failures
             )
         )
+
+    def test_greek_mu_unit_reports_one_copyable_message_per_token(self) -> None:
+        cases = [
+            ("10 μL lysis buffer", "10 µL", "10 μL"),
+            ("1 μM primer", "1 µM", "1 μM"),
+            ("2 μg enzyme", "2 µg", "2 μg"),
+        ]
+
+        for readme, preferred, found in cases:
+            with self.subTest(found=found):
+                failures = validate_readme_style(readme)
+
+                self.assertEqual(
+                    failures,
+                    [
+                        "Line 1: unit uses Greek letter mu `μ` (U+03BC); "
+                        "copy/paste the micro sign `µ` (U+00B5) in "
+                        f"`{preferred}` instead of `{found}`."
+                    ],
+                )
 
     def test_ph_spacing_and_case_are_reported(self) -> None:
         readme = VALID_README.replace("pH 7.4", "PH7.4", 1)
