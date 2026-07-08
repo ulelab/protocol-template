@@ -113,6 +113,11 @@ jobs:
             -e 's/`\[X\]`/\\FAILstatus{}/g' \
             README._pdf.md > README._pdf.tmp && mv README._pdf.tmp README._pdf.md
 
+      - name: Render HTML subscripts for PDF only
+        run: |
+          set -euo pipefail
+          sed -E 's|<sub>([^<]+)</sub>|\\textsubscript{\1}|g' README._pdf.md > README._pdf.tmp && mv README._pdf.tmp README._pdf.md
+
       - name: Create PDF metadata definitions
         run: |
           set -euo pipefail
