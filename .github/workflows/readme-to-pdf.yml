@@ -122,9 +122,11 @@ jobs:
         run: |
           set -euo pipefail
           sha_short="${GITHUB_SHA::7}"
+          repo_path="${GITHUB_REPOSITORY}"
 
           cat > pdf-meta.tex <<EOF
           \newcommand{\repoURL}{https://github.com/${GITHUB_REPOSITORY}}
+          \newcommand{\repoPath}{\detokenize{${repo_path}}}
           \newcommand{\commitURL}{https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}}
           \newcommand{\githash}{${sha_short}}
           \newcommand{\gitactor}{\detokenize{${GITHUB_ACTOR}}}
