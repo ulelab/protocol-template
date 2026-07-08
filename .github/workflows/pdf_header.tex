@@ -30,17 +30,16 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\setlength{\headheight}{26pt}
+\setlength{\headheight}{14pt}
 
 \fancyhead[L]{%
-  \begin{minipage}[t]{0.60\textwidth}
-    \raggedright\scriptsize\href{\repoURL}{\repoPath}
+  \begin{minipage}[t]{0.54\textwidth}
+    \raggedright\scriptsize\href{\repoURL}{\nolinkurl{\repoURL}}
   \end{minipage}%
 }
 \fancyhead[R]{%
-  \begin{minipage}[t]{0.36\textwidth}
-    \raggedleft\small\textbf{Commit:} \href{\commitURL}{\githash}\\[-1pt]
-    \tiny\texttt{\gitactor}
+  \begin{minipage}[t]{0.44\textwidth}
+    \raggedleft\scriptsize\textbf{Commit:} \href{\commitURL}{\githash}\ \textbar\ \texttt{\gitactor}
   \end{minipage}%
 }
 
