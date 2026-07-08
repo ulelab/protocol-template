@@ -82,7 +82,7 @@ When drafting a migrated protocol:
 - Only edit `README.md`.
 - Use the template headings exactly.
 - Keep all source content.
-- Keep the Ule Lab Protocol Template badge at the top of the file.
+- Keep the Ule Lab Protocol Template attribution badge at the top of the file, but do not add or preserve a template release-version badge.
 - Remove the template instruction note and the "Template repository: Click `Use this template`..." note.
 - Add `CHECK:` markers only for genuine unresolved uncertainty.
 - Add an `# Migration notes` section covering:

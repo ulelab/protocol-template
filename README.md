@@ -1,5 +1,4 @@
 [![Created with Ule Lab Protocol Template](https://img.shields.io/badge/created%20with-Ule%20Lab%20Protocol%20Template-blue)](https://github.com/ulelab/protocol-template)
-[![Template version](https://img.shields.io/github/v/release/ulelab/protocol-template)](https://github.com/ulelab/protocol-template/releases)
 
 > Template repository: Click `Use this template` to create a new protocol repo. Template docs are in [docs/USING_THIS_TEMPLATE.md](https://github.com/ulelab/protocol-template/blob/main/docs/USING_THIS_TEMPLATE.md)
 # TODO: Protocol title
