@@ -34,6 +34,7 @@ If you are new to GitHub, start with this short [GitHub Hello World tutorial](ht
 - [Release a protocol](#release-a-protocol)
 - [Citation information](#citation-information)
 - [Maintainer and contributor notes (template maintainers only)](#maintainer-and-contributor-notes)
+
 ---
 
 # Create a new protocol repository
@@ -52,6 +53,10 @@ You now have your own copy of the template.
 The structure of the template is:
 ```md
 .
+├── .agents
+│   └── skills/protocol-migration/ # Codex migration skill
+├── .claude
+│   └── skills/protocol-migration/ # Claude Code migration skill
 ├── .github
 │   ├── workflows/              # Automation for validations and PDF generation
 │   └── copilot-instructions.md # AI-assisted migration instructions
@@ -100,7 +105,7 @@ The main file you must edit for protocol content is `README.md`. **Do not rename
 10. The validation GitHub Actions workflow (`validate-protocol-README`) will automatically run on that pull request when `README.md` has changed. It runs a content check for the required title, status line, status legend, key headings, unresolved placeholders, and placeholder step names, plus a style check for unit formatting. If checks fail, fix them before merging into `main`.
 11. Ask for a reviewer where possible.
 
-> **Review scope**: Before opening the pull request, check the changed files. For a routine protocol edit, only `README.md` or `CODEOWNERS` should change. This does not apply to the one-time legacy PDF import workflow, where files in `legacy/` may also be created or updated. If any other files changed, remove those changes or explain clearly why they are needed.
+> **Review scope**: Before opening the pull request, check the changed files. For a routine protocol edit, expected changes are `README.md`, `CODEOWNERS`, and optionally `legacy/source-metadata.yml` when provenance is updated. This does not apply to the one-time legacy PDF import workflow, where files in `legacy/` may also be created or updated. If any other files changed, remove those changes or explain clearly why they are needed.
 
 > **Note**: Always check accuracy and make sure required sections, such as protocol status and the status legend, are present.
 
@@ -291,7 +296,7 @@ If you want to adapt or improve an existing protocol on GitHub:
 17. Close the Issue when the question is resolved.
 18. This helps keep a record of what has already been tried.
 19. If your change should become part of the main protocol, open a pull request to `main` and request review from relevant people.
-20. Before requesting review, check the changed files. For a routine protocol edit, only `README.md` or `CODEOWNERS` should change. For a legacy PDF import, files in `legacy/` may also be created or updated. If any other files changed, remove those changes or explain clearly why they are needed.
+20. Before requesting review, check the changed files. For a routine protocol edit, expected changes are `README.md`, `CODEOWNERS`, and optionally `legacy/source-metadata.yml` when provenance is updated. For a legacy PDF import, files in `legacy/` may also be created or updated. If any other files changed, remove those changes or explain clearly why they are needed.
 21. Do not merge into `main` without review, unless you are the only person using that protocol.
 
 ---
@@ -330,10 +335,18 @@ Before using a protocol in the lab, check all of the following:
 
 # Release a protocol
 
-Once a protocol has been added and confirmed to be working — that is, its status is 🟢 `[OK]` and this is clearly marked at the top of the file, create the first release: `1.0.0`.
-> **Recommended**: Link releases to Zenodo if you want each protocol version to have a citable DOI.
+Once a protocol has been added and confirmed to be working, create the first release: `1.0.0`.
 
-Further changes can then be released using semantic versioning. Ensure maintainers listed in `CODEOWNERS` and other protocol developers and users are involved or aware if a new version release is planned.
+Before releasing:
+
+1. Confirm the protocol status is 🟢 `[OK]`.
+2. Confirm validation passes on `main`.
+3. Confirm the generated PDF is current and the PDF header commit SHA matches the protocol commit you intend to release.
+4. Create a GitHub release and tag, starting with `1.0.0`.
+5. Link the release to Zenodo if you want a citable DOI.
+6. Tell maintainers listed in `CODEOWNERS` and relevant protocol users when a new version is released.
+
+Further changes can then be released using semantic versioning.
 
 ---
 
@@ -368,7 +381,7 @@ The template citation metadata is stored in `docs/template-metadata.yml`.
 
 Change this repository only when the change should apply to future protocol repositories or to the shared template machinery.
 
->*Important:* Existing protocol repositories do not automatically inherit changes made here after they were created from the template. If a template change is important for existing protocol repositories, communicate it separately or apply it to those repositories directly.
+> **Important:** Existing protocol repositories do not automatically inherit changes made here after they were created from the template. If a template change is important for existing protocol repositories, communicate it separately or apply it to those repositories directly.
 
 Good reasons to change the template include:
 
