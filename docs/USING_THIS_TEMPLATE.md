@@ -33,6 +33,7 @@ If you are new to GitHub, start with this short [GitHub Hello World tutorial](ht
 - [Use the protocol in the lab](#use-the-protocol-in-the-lab)
 - [Release a protocol](#release-a-protocol)
 - [Citation information](#citation-information)
+- [Maintainer and contributor notes (template maintainers only)](#maintainer-and-contributor-notes)
 ---
 
 # Create a new protocol repository
@@ -356,3 +357,52 @@ Template citation:
 Ira A. Iosub. `protocol-template`, DOI: https://doi.org/10.5281/zenodo.20148013
 
 The template citation metadata is stored in `docs/template-metadata.yml`.
+
+---
+
+# Maintainer and contributor notes
+
+> **Template maintainers only:** This section is for people maintaining `ulelab/protocol-template` itself. It is not part of the normal protocol-author workflow; most users can stop at [Citation information](#citation-information).
+
+## When to change this template
+
+Change this repository only when the change should apply to future protocol repositories or to the shared template machinery.
+
+>*Important:* Existing protocol repositories do not automatically inherit changes made here after they were created from the template. If a template change is important for existing protocol repositories, communicate it separately or apply it to those repositories directly.
+
+Good reasons to change the template include:
+
+- improving the default protocol structure in `README.md`
+- clarifying the user guide
+- changing validation or style-fix rules
+- improving legacy PDF migration support
+- adjusting PDF rendering
+- updating shared issue, pull request, or ownership defaults
+- updating template metadata, licensing, notices, or release information
+
+For a one-off correction to a single protocol, change that protocol repository instead.
+
+## Keep the user experience lightweight
+
+The template should make the common path obvious: create a repository, edit `README.md`, validate, review, and use the generated PDF.
+
+- Do not add new required user steps unless they prevent a real recurring failure.
+- Prefer improving existing workflows, scripts, or docs over adding new files.
+- Keep maintainer rationale out of the main protocol-author path.
+- Keep generated or temporary files out of the template unless users need them as examples or defaults.
+- Avoid broad rewrites when a small, tested change fixes the problem.
+
+## Change checklist
+
+Before merging template changes:
+
+1. For Markdown-only documentation changes, at least inspect the rendered Markdown or diff carefully.
+2. For PDF rendering changes, generate or inspect the PDF produced by the `README-to-pdf` workflow.
+3. For workflow changes, check triggers, permissions, branch behavior, generated commits, and whether users need to run `git pull` afterwards.
+4. For migration behavior changes, keep `docs/PROMPT.md`, `.github/copilot-instructions.md`, `.agents/skills/protocol-migration/SKILL.md`, and `.claude/skills/protocol-migration/SKILL.md` consistent.
+5. For validator or fixer changes, add or update exact regression tests for the intended behavior and important false positives.
+6. Update this guide if applicable.
+
+## Releases
+
+Use template releases for meaningful template changes. Update `docs/template-metadata.yml` when the template version, citation metadata, or release metadata changes.
