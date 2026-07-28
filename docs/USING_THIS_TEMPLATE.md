@@ -356,7 +356,7 @@ Use the repository as both the current protocol and the record of how the protoc
 - Keep issues modular: if the discussion splits into a separate problem, open a separate issue and link it. If an issue is complex, open sub-issues.
 - Link issues to a GitHub Project when work is shared, ongoing, or has multiple follow-up steps.
 - Add useful evidence directly to the issue: images, gels, follow-up results, notes, links to analysis repositories, database records, sample sheets, or source data.
-- Close the issue when the result is incorporated into `README.md`, rejected with a clear reason, or moved to a new issue. Add coments to explain the reason and to discuss an issue. 
+- Close the issue when the result is incorporated into `README.md`, rejected with a clear reason, or moved to a new issue. Add comments to explain the reason and to discuss an issue.
 
 ### Branches, commits, and pull requests
 
@@ -377,9 +377,9 @@ If your team uses Slack, you can connect a protocol repository to a Slack channe
 
 Replace `owner/repo` with the protocol repository, for example `ulelab/protocol-rnaseq`.
 
-You can set what type of notifications you want updates for on clack by specifying the type of subscription:
+You can set what type of notifications you want updates for on Slack by specifying the type of subscription:
 
-Examples: 
+Examples:
 ```text
 /github subscribe owner/repo issues pulls reviews comments
 /github subscribe owner/repo workflows
