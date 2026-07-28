@@ -62,6 +62,20 @@ class ValidateReadmeStyleTests(unittest.TestCase):
             )
         )
 
+    def test_uppercase_biology_and_figure_labels_are_not_time_units(self) -> None:
+        readme = (
+            VALID_README
+            + "\nMeasure 25S rRNA and 3S RNA.\n"
+            + "See Supplementary Figure 1S, Figure 2H, and Table 2H.\n"
+        )
+
+        failures = validate_readme_style(readme)
+
+        self.assertFalse(any("25 seconds" in failure for failure in failures))
+        self.assertFalse(any("3 seconds" in failure for failure in failures))
+        self.assertFalse(any("1 second" in failure for failure in failures))
+        self.assertFalse(any("2 hours" in failure for failure in failures))
+
     def test_temperature_formatting_is_reported(self) -> None:
         readme = VALID_README.replace("20 °C", "20C", 1)
 
@@ -88,10 +102,31 @@ class ValidateReadmeStyleTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "unit uses Greek mu `μ`; use the micro sign `µ`" in failure
+                "unit uses Greek letter mu `μ` (U+03BC); copy/paste the micro sign `µ` (U+00B5)"
+                in failure
                 for failure in failures
             )
         )
+
+    def test_greek_mu_unit_reports_one_copyable_message_per_token(self) -> None:
+        cases = [
+            ("10 μL lysis buffer", "10 µL", "10 μL"),
+            ("1 μM primer", "1 µM", "1 μM"),
+            ("2 μg enzyme", "2 µg", "2 μg"),
+        ]
+
+        for readme, preferred, found in cases:
+            with self.subTest(found=found):
+                failures = validate_readme_style(readme)
+
+                self.assertEqual(
+                    failures,
+                    [
+                        "Line 1: unit uses Greek letter mu `μ` (U+03BC); "
+                        "copy/paste the micro sign `µ` (U+00B5) in "
+                        f"`{preferred}` instead of `{found}`."
+                    ],
+                )
 
     def test_ph_spacing_and_case_are_reported(self) -> None:
         readme = VALID_README.replace("pH 7.4", "PH7.4", 1)
@@ -114,6 +149,26 @@ class ValidateReadmeStyleTests(unittest.TestCase):
             )
         )
 
+    def test_ddh2o_uses_html_subscript(self) -> None:
+        readme = VALID_README + "\nRinse with ddH2O before storage.\n"
+
+        failures = validate_readme_style(readme)
+
+        self.assertTrue(
+            any(
+                "chemical formula should use `ddH<sub>2</sub>O` style"
+                in failure
+                for failure in failures
+            )
+        )
+
+    def test_ddh2o_substring_is_not_reported(self) -> None:
+        readme = VALID_README + "\nKeep the addH2O helper label unchanged.\n"
+
+        failures = validate_readme_style(readme)
+
+        self.assertFalse(any("ddH<sub>2</sub>O" in failure for failure in failures))
+
     def test_unicode_subscript_formula_is_reported(self) -> None:
         readme = VALID_README.replace("MgCl<sub>2</sub>", "MgCl₂", 1)
 
@@ -132,6 +187,18 @@ class ValidateReadmeStyleTests(unittest.TestCase):
         failures = validate_readme_style(readme)
 
         self.assertFalse(any("RT<sub>1</sub>" in failure for failure in failures))
+
+    def test_bioinformatics_acronyms_with_digits_are_not_chemical_formulas(self) -> None:
+        readme = (
+            VALID_README
+            + "\nCompare CHIP3, FISH3, and NGS2 annotations before ChIP-seq.\n"
+        )
+
+        failures = validate_readme_style(readme)
+
+        self.assertFalse(any("CHIP<sub>3</sub>" in failure for failure in failures))
+        self.assertFalse(any("FISH<sub>3</sub>" in failure for failure in failures))
+        self.assertFalse(any("NGS<sub>2</sub>" in failure for failure in failures))
 
 
 if __name__ == "__main__":

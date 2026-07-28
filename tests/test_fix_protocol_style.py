@@ -20,6 +20,20 @@ Adjust to pH 7.4 with 1 µM primer in H<sub>2</sub>O and MgCl<sub>2</sub>.
 
         self.assertEqual(fix_readme_style(original), expected)
 
+    def test_fixer_normalizes_literal_ddh2o(self) -> None:
+        original = """# Wash
+
+Rinse with ddH2O before storage.
+Keep the addH2O helper label unchanged.
+"""
+        expected = """# Wash
+
+Rinse with ddH<sub>2</sub>O before storage.
+Keep the addH2O helper label unchanged.
+"""
+
+        self.assertEqual(fix_readme_style(original), expected)
+
     def test_fixer_normalizes_greek_mu_and_note_labels(self) -> None:
         original = """NB: Keep samples cold.
 Use 10 μL enzyme, then wait 1hr.
@@ -30,12 +44,29 @@ Use 10 µL enzyme, then wait 1 hour.
 
         self.assertEqual(fix_readme_style(original), expected)
 
+    def test_fixer_does_not_rewrite_uppercase_biology_and_figure_labels(self) -> None:
+        readme = """# Notes
+
+Measure 25S rRNA and 3S RNA.
+See Supplementary Figure 1S, Figure 2H, and Table 2H.
+"""
+
+        self.assertEqual(fix_readme_style(readme), readme)
+
     def test_fixer_does_not_subscript_non_chemical_product_codes(self) -> None:
         readme = """# Reagents
 
 - Totalpure NGS/Ampure XP beads
 - 20 µM Cas9 Nuclease, S. pyogenes (M0386T)
 - 20 µM Cas9 Nuclease, S. pyogenes (M₀₃₈₆T)
+"""
+
+        self.assertEqual(fix_readme_style(readme), readme)
+
+    def test_fixer_does_not_subscript_bioinformatics_acronyms(self) -> None:
+        readme = """# Notes
+
+Compare CHIP3, FISH3, and NGS2 annotations before ChIP-seq.
 """
 
         self.assertEqual(fix_readme_style(readme), readme)

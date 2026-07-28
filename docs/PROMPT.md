@@ -9,7 +9,7 @@ Apply those instructions even if you are not GitHub Copilot.
 Do not change protocol meaning.
 Use `legacy/source.md` as the primary source when rewriting `README.md`.
 Use `legacy/source.txt` only as a fallback when `legacy/source.md` looks malformed, incomplete, or unclear.
-Use the PDF file in `legacy/` as the final reference source of truth for tables, figures, layout-dependent content, and anything still ambiguous after checking the generated text sources.
+Use the PDF file in `legacy/` as the final reference source of truth for tables, figures, layout-dependent content, and anything still ambiguous.
 Treat image references in `legacy/source.md` and files in `legacy/images/` as extracted protocol content, not decorative artifacts, until they have been reviewed.
 If `legacy/source.md` and `legacy/source.txt` disagree, prefer `legacy/source.md` for general structure and prose, but use the original PDF as the final tie-breaker.
 
@@ -51,26 +51,21 @@ When migrating:
 - mention in `# Migration notes` which extracted images were converted to Markdown tables, which were retained as images, which were omitted as non-protocol/decorative, and which require `CHECK:`
 
 ## Allowed formatting normalization
-Normalize formatting only when the meaning is unchanged and unambiguous:
+You may normalize formatting only when the meaning is unchanged and unambiguous:
 
-- add a space between numbers and units
-- use `seconds`, `minutes`, `hours`
-- use `µL`, `mL`, `L`
-- use `37 °C` style temperature formatting
-- standardize concentration units to `mM`, `µM`, `nM`, `% (w/v)`, etc., using the micro sign `µ` consistently
-- standardize pH formatting to `pH 7.4`
-- standardize chemical names to match the source but with consistent formatting, for example `Tris-HCl` instead of `Tris HCl`
-- standardize chemical formulas with HTML subscripts, for example H2O to H<sub>2</sub>O and MgCl2 to MgCl<sub>2</sub>
-- do not use Unicode subscript characters such as `₂`
-- standardize `RNAseq` or `RNA-Seq` to `RNA-seq`, and similarly for `ChIP-seq`, `ATAC-seq`, and related names
-- Use numbered lists for procedural actions in sequence. For other non-procedural content, bullets are better. Note-like text such as Note, NB, Optional, Recommended, and Warning should use blockquote style such as `> **Note**`.
-- normalize bullets, headings, and markdown tables to match the repository template
-- use tables for reaction mixes and other tabular content
-- convert image-based tables to Markdown tables wherever this is legible and unambiguous; otherwise retain the image at the correct protocol location with `CHECK:` explaining why it could not be safely converted
-- normalize note-like text such as Note, NB, Optional, Recommended, and Warning to blockquote style, for example `> **Note**`
-- place note-like text immediately after the step it refers to, or at the end of the protocol if it clearly refers to the whole protocol
-- remove empty columns from tables
-- synchronize `Contents` with the actual headings in the protocol
+- Add a space between numbers and units.
+- Use full-word time units: `seconds`, `minutes`, `hours`.
+- Use standard units and spacing, for example `37 °C`, `10 µL`, `1 mM`, `100 nM`.
+- Standardize pH formatting to `pH 7.4`.
+- Standardize chemical names without changing meaning, for example `Tris-HCl` instead of `Tris HCl`.
+- Standardize chemical formulas with HTML subscripts, for example H2O to H<sub>2</sub>O and MgCl2 to MgCl<sub>2</sub>.
+- Do not use Unicode subscript characters such as `₂`.
+- Standardize names such as `RNAseq` or `RNA-Seq` to `RNA-seq`, and similarly for `ChIP-seq`, `ATAC-seq`, and related names.
+- Use numbered lists for procedural actions in sequence, bullets for non-procedural lists, and tables for reaction mixes or other tabular content.
+- Normalize note-like labels such as Note, NB, Optional, Recommended, and Warning to blockquote style, for example `> **Note:**`.
+- Normalize headings, bullets, Markdown tables, and `Contents` links to match the repository template.
+- Convert image-based tables to Markdown tables when legible and unambiguous; otherwise retain the image with `CHECK:`.
+- Remove empty columns from tables.
 
 ## Disallowed changes
 - do not infer omitted concentrations, times, temperatures, or volumes
@@ -90,28 +85,21 @@ Normalize formatting only when the meaning is unchanged and unambiguous:
 ## Output requirements
 - Only edit `README.md`.
 - Use the template headings exactly.
-- Use the template headings in `README.md`.
 - Keep all source content.
-- Add `CHECK:` markers for uncertainty.
-- Use `CHECK:` only for genuine unresolved uncertainty. If no uncertainty remains, do not mention `CHECK:` at all.
-- Add an `# Migration notes` section.
-- After drafting, add a short summary in `# Migration notes` covering:
+- Keep the Ule Lab Protocol Template attribution badge at the top of the file, but do not add or preserve a template release-version badge.
+- Remove the template instruction note and the "Template repository: Click `Use this template`..." note.
+- Add `CHECK:` markers only for genuine unresolved uncertainty.
+- Add an `# Migration notes` section covering:
+  - imported protocol metadata from `source-metadata.yml`, using only non-blank lines
+  - `template_version` from `template-metadata.yml`
   - formatting normalizations performed
   - ambiguities and uncertainty flagged
   - content placed in `## Unplaced content`
-- Include the following in `# Migration notes`:
-  - imported protocol metadata from `source-metadata.yml`, using only the non-blank lines
-  - template_version from `template-metadata.yml`
-  - ambiguous mappings
-  - normalized formatting changes
   - extracted images converted to Markdown tables
   - extracted images retained in `README.md`
   - extracted images omitted because they were decorative or duplicated non-protocol content
-  - extracted images that could not be confidently classified or converted, marked with `CHECK:`
+  - extracted images that could not be confidently classified or converted
   - content copied verbatim but not confidently placed
-- Keep `[![Created with Ule Lab Protocol Template](https://img.shields.io/badge/created%20with-Ule%20Lab%20Protocol%20Template-blue)](https://github.com/ulelab/protocol-template)` at the top of the file.
-- Remove the template instruction note.
-- Delete the "Template repository: Click `Use this template` to create a new protocol repo..." note.
 
 ## Verification
 After drafting, verify the migration against the source:

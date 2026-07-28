@@ -14,11 +14,10 @@ MICRO_UNIT_RE = re.compile(
     rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>uL|ul|UL|uM|UM|ug|μL|μM|μg)\b"
 )
 UNIT_RE = re.compile(
-    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>µL|mL|ml|ML|L|l|µg|mg|g|kg|ng|mM|µM|nM|M|μL|μM|μg)\b"
+    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>µL|mL|ml|ML|L|l|µg|mg|g|kg|ng|mM|µM|nM|M)\b"
 )
 TIME_RE = re.compile(
-    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>seconds?|second|minutes?|minute|hours?|hour|secs?|sec|mins?|min|hrs?|hr|s|h)\b",
-    re.IGNORECASE,
+    rf"\b(?P<value>{NUMBER_RE})(?P<space>\s*)(?P<unit>(?i:seconds?|minutes?|hours?|secs?|mins?|hrs?)|s|h)\b",
 )
 CHEMICAL_FORMULA_RE = re.compile(
     r"\b(?P<formula>(?:[A-Z][a-z]?\d*){2,})\b"
@@ -189,6 +188,9 @@ TIME_UNIT_BASE = {
     "hours": "hour",
 }
 UNICODE_SUBSCRIPT_MAP = str.maketrans("₀₁₂₃₄₅₆₇₈₉", "0123456789")
+LITERAL_CHEMICAL_FORMULAS = {
+    "ddH2O": "ddH<sub>2</sub>O",
+}
 
 
 def preferred_time_token(value: str, unit: str) -> str:
@@ -201,6 +203,41 @@ def html_subscript_formula(formula: str) -> str:
     return re.sub(r"(\d+)", r"<sub>\1</sub>", formula)
 
 
+def is_word_char(char: str) -> bool:
+    return char.isalnum() or char == "_"
+
+
+def contains_literal_token(text: str, token: str) -> bool:
+    start = 0
+    while True:
+        index = text.find(token, start)
+        if index == -1:
+            return False
+
+        before = text[index - 1] if index > 0 else ""
+        after_index = index + len(token)
+        after = text[after_index] if after_index < len(text) else ""
+        if (not before or not is_word_char(before)) and (
+            not after or not is_word_char(after)
+        ):
+            return True
+
+        start = index + len(token)
+
+
+def is_acronym_like_formula(formula: str, token_matches: List[re.Match]) -> bool:
+    if any(char.islower() for char in formula) or len(token_matches) < 3:
+        return False
+
+    if not token_matches[-1].group(2):
+        return False
+
+    uncounted_prefix_tokens = [
+        token_match for token_match in token_matches[:-1] if not token_match.group(2)
+    ]
+    return len(uncounted_prefix_tokens) >= 2
+
+
 def is_supported_chemical_formula(formula: str) -> bool:
     if not any(char.isdigit() for char in formula):
         return False
@@ -209,18 +246,25 @@ def is_supported_chemical_formula(formula: str) -> bool:
     if not tokens or "".join(tokens) != formula:
         return False
 
-    return all(
-        re.match(r"([A-Z][a-z]?)(\d*)$", token) is not None
-        and re.match(r"([A-Z][a-z]?)(\d*)$", token).group(1) in PERIODIC_TABLE_SYMBOLS
-        for token in tokens
-    )
+    token_matches = []
+    for token in tokens:
+        token_match = re.match(r"([A-Z][a-z]?)(\d*)$", token)
+        if token_match is None or token_match.group(1) not in PERIODIC_TABLE_SYMBOLS:
+            return False
+        token_matches.append(token_match)
+
+    if is_acronym_like_formula(formula, token_matches):
+        return False
+
+    return True
 
 
 def format_unit_failure(line_number: int, found: str, preferred: str) -> str:
     if "μ" in found:
         return (
-            f"Line {line_number}: unit uses Greek mu `μ`; use the micro sign `µ` "
-            f"in `{preferred}` instead of `{found}`."
+            f"Line {line_number}: unit uses Greek letter mu `μ` (U+03BC); "
+            f"copy/paste the micro sign `µ` (U+00B5) in `{preferred}` "
+            f"instead of `{found}`."
         )
 
     return f"Line {line_number}: unit should use `{preferred}` style, found `{found}`."
@@ -261,6 +305,12 @@ def validate_readme_style(readme: str) -> List[str]:
             if match.group(0) != preferred:
                 failures.append(
                     f"Line {line_number}: pH should use `{preferred}` style, found `{match.group(0)}`."
+                )
+
+        for found, preferred in LITERAL_CHEMICAL_FORMULAS.items():
+            if contains_literal_token(line, found):
+                failures.append(
+                    f"Line {line_number}: chemical formula should use `{preferred}` style, found `{found}`."
                 )
 
         for match in CHEMICAL_FORMULA_RE.finditer(line):
