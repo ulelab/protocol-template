@@ -417,6 +417,8 @@ The template citation metadata is stored in `docs/template-metadata.yml`.
 
 > **Template maintainers only:** This section is for people maintaining `ulelab/protocol-template` itself. It is not part of the normal protocol-author workflow; most users can stop at [Citation information](#citation-information).
 
+> **Note:** The template `README.md` intentionally contains placeholders, so content validation may fail in this template repository. Protocol repositories created from the template should pass content validation after the placeholders are replaced.
+
 ## When to change this template
 
 Change this repository only when the change should apply to future protocol repositories or to the shared template machinery.
