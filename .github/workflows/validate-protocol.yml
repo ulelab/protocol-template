@@ -74,11 +74,23 @@ jobs:
           python -m unittest discover -s tests -p 'test_*.py'
 
       - name: Run content validation
+        id: content_validation
         if: steps.validation_gate.outputs.should_validate == 'true'
+        continue-on-error: true
         run: |
           python scripts/validate_protocol_content.py README.md
 
       - name: Run style validation
+        id: style_validation
         if: steps.validation_gate.outputs.should_validate == 'true'
+        continue-on-error: true
         run: |
           python scripts/validate_protocol_style.py README.md
+
+      - name: Fail if README validation failed
+        if: ${{ steps.validation_gate.outputs.should_validate == 'true' && (steps.content_validation.outcome != 'success' || steps.style_validation.outcome != 'success') }}
+        run: |
+          echo "README validation failed."
+          echo "Content validation outcome: ${{ steps.content_validation.outcome }}"
+          echo "Style validation outcome: ${{ steps.style_validation.outcome }}"
+          exit 1
