@@ -182,7 +182,7 @@ At minimum, make sure your protocol includes:
 - a status legend row containing `[OK]`, `[?]`, and `[X]`
 - a short description (`# About`)
 - contents (`## Contents`)
-- a materials section (`# ... Materials`)
+- a top-level materials section, optionally numbered, for example `# Materials` or `# 7. Materials`
 
 > **Note**: These are mandatory items for validation.
 
