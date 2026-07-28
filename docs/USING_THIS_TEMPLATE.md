@@ -32,6 +32,7 @@ If you are new to GitHub, start with this short [GitHub Hello World tutorial](ht
 - [Make changes to an existing protocol](#make-changes-to-an-existing-protocol)
 - [Use the protocol in the lab](#use-the-protocol-in-the-lab)
 - [Release a protocol](#release-a-protocol)
+- [Tips for making the most of the template](#tips-for-making-the-most-of-the-template)
 - [Citation information](#citation-information)
 - [Maintainer and contributor notes (template maintainers only)](#maintainer-and-contributor-notes)
 
@@ -289,15 +290,10 @@ If you want to adapt or improve an existing protocol on GitHub:
 10. If the PDF is not generated within a few minutes (you may need to refresh the page), go to the GitHub **Actions** tab, manually run the `README-to-pdf` workflow, and select your working branch in the **Use workflow from** branch menu.
 11. PDF generation creates another commit, usually with a message like `Update <repo-name>.pdf`.
 12. Before making any further local changes after pushing, run `git pull`. GitHub Actions may have added a new commit on your branch.
-13. If you have questions about a protocol, or want to propose a change, open a GitHub Issue using the `Protocol issues` template and assign relevant people.
-14. If you are developing a protocol as a team, you can use a GitHub Project.
-15. Use Issues to track optimisation ideas or questions.
-16. Add images, gels, notes or links to code or data to the relevant Issue.
-17. Close the Issue when the question is resolved.
-18. This helps keep a record of what has already been tried.
-19. If your change should become part of the main protocol, open a pull request to `main` and request review from relevant people.
-20. Before requesting review, check the changed files. For a routine protocol edit, expected changes are `README.md`, `CODEOWNERS`, and optionally `legacy/source-metadata.yml` when provenance is updated. For a legacy PDF import, files in `legacy/` may also be created or updated. If any other files changed, remove those changes or explain clearly why they are needed.
-21. Do not merge into `main` without review, unless you are the only person using that protocol.
+13. For issue tracking, Projects, branches, commits, pull requests, and Slack notifications, follow [Tips for making the most of the template](#tips-for-making-the-most-of-the-template).
+14. If your change should become part of the main protocol, open a pull request to `main` and request review from relevant people.
+15. Before requesting review, check the changed files. For a routine protocol edit, expected changes are `README.md`, `CODEOWNERS`, and optionally `legacy/source-metadata.yml` when provenance is updated. For a legacy PDF import, files in `legacy/` may also be created or updated. If any other files changed, remove those changes or explain clearly why they are needed.
+16. Do not merge into `main` without review, unless you are the only person using that protocol.
 
 ---
 
@@ -347,6 +343,50 @@ Before releasing:
 6. Tell maintainers listed in `CODEOWNERS` and relevant protocol users when a new version is released.
 
 Further changes can then be released using semantic versioning.
+
+---
+
+# Tips for making the most of the template
+
+Use the repository as both the current protocol and the record of how the protocol changed.
+
+### Issues and Projects
+
+- Open one GitHub Issue per problem, optimisation, question, or protocol aspect. Use the `Protocol issues` template.
+- Keep issues modular: if the discussion splits into a separate problem, open a separate issue and link it. If an issue is complex, open sub-issues.
+- Link issues to a GitHub Project when work is shared, ongoing, or has multiple follow-up steps.
+- Add useful evidence directly to the issue: images, gels, follow-up results, notes, links to analysis repositories, database records, sample sheets, or source data.
+- Close the issue when the result is incorporated into `README.md`, rejected with a clear reason, or moved to a new issue. Add coments to explain the reason and to discuss an issue. 
+
+### Branches, commits, and pull requests
+
+- Create a branch for each meaningful feature, fix, or experimental optimisation round. Use the appropriate base branch; it does not always need to be `main`.
+- Keep commits small and descriptive.
+- Mention related issues in commit messages or pull requests, for example `refs #12` while investigating or `closes #12` when the change resolves the issue.
+- In pull requests, request reviewers, tag relevant people, and invite discussion before merging changes that affect how people run or interpret the protocol.
+
+### Slack integration
+
+If your team uses Slack, you can connect a protocol repository to a Slack channel with the [GitHub integration for Slack](https://github.com/integrations/slack). In the relevant Slack channel:
+
+```text
+/invite @github
+/github signin
+/github subscribe owner/repo
+```
+
+Replace `owner/repo` with the protocol repository, for example `ulelab/protocol-rnaseq`.
+
+You can set what type of notifications you want updates for on clack by specifying the type of subscription:
+
+Examples: 
+```text
+/github subscribe owner/repo issues pulls reviews comments
+/github subscribe owner/repo workflows
+/github unsubscribe owner/repo commits
+```
+
+Use Slack notifications to keep the channel aware of issues, pull requests, reviews, and workflow status. Tune subscriptions if the channel becomes noisy.
 
 ---
 
